@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  Permission.photos.request();
+  requestPermission();
   runApp(MyApp());
 }
-Future requestPermission(Permission permission) async{
-  var status =  permission.request();
-  print('permission_$status');
+Future requestPermission() async{
+   PermissionHandler().requestPermissions([PermissionGroup.photos]);
+  
 }
 
 class MyApp extends StatelessWidget {
