@@ -1,5 +1,6 @@
 import '../views/index.dart';
 final routes = {
   // '/':(context)=>,
-  '/login':(context)=>Login()
+  '/login':(context)=>Login(),
+  '/home':(context)=>Home()
 };

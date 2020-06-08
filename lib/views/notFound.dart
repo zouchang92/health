@@ -7,8 +7,9 @@ class NotFound extends StatelessWidget {
       appBar: AppBar(title:Text('404')),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children:<Widget>[
-            Icon(Icons.error),
+            Icon(Icons.error,color: Colors.grey),
             Text('页面不存在')
           ]
         ),
