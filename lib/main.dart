@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:health/store/profileNotify.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
+
+import 'package:health/views/index.dart';
+import 'model/global.dart';
+import 'routes/index.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  requestPermission();
-  runApp(MyApp());
+  // requestPermission();
+  final _profileNotify = ProfileNotify();
+  Global.init().then((e) => runApp(
+    Provider<bool>.value(
+      value: false,
+      child: ChangeNotifierProvider.value(value: _profileNotify),
+    )
+  ));
 }
-Future requestPermission() async{
-   PermissionHandler().requestPermissions([PermissionGroup.photos]);
-  
+
+Future requestPermission() async {
+  PermissionHandler().requestPermissions([PermissionGroup.photos]);
 }
 
 class MyApp extends StatelessWidget {
@@ -16,23 +29,34 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      locale: Locale('zh', 'CH'),
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        buttonColor: Colors.blue,
+        buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary)
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+
+       onGenerateRoute:(RouteSettings routeSetting){
+        // print('routeSetting$routeSetting');
+        String routeName = routeSetting.name;
+        
+        print('${Global.profile.isLogin}');
+        if (Global.profile.isLogin!=null&&Global.profile.isLogin == true) {
+          if(routes[routeName]!=null){
+          return MaterialPageRoute(
+              builder: routes[routeName], settings: routeSetting);
+          }else{
+            return MaterialPageRoute(
+              builder: (context)=>NotFound()); 
+          }
+
+        }else{
+          return MaterialPageRoute(
+              builder: routes['/login']);
+        }
+        
+      },
     );
   }
 }
