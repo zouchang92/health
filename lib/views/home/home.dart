@@ -24,11 +24,11 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     List<BottomNavigationBarItem> _bottomItems = bottom.map((e) => BottomNavigationBarItem(icon: e['icon'],title: Text(e['name']))).toList();
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title:Text(bottom[index]['name']),
+      // appBar: AppBar(
+      //   automaticallyImplyLeading: false,
+      //   title:Text(bottom[index]['name']),
 
-      ),
+      // ),
       body:bottom[index]['url'],
       bottomNavigationBar: BottomNavigationBar(
         items: _bottomItems,
