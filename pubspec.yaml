@@ -63,4 +63,4 @@ flutter:
 
   assets:
     - images/
-    # - images/icon
+    - images/icon/
