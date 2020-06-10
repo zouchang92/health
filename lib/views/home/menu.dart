@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:health/model/global.dart';
+import 'package:health/model/profile.dart';
 import 'package:health/value/menuValue.dart';
 
 class Menu extends StatefulWidget {
@@ -14,10 +16,12 @@ class _MenuState extends State<Menu> {
     {"picUrl": 'images/upload_bg.png', "title": '通知标题'},
     {"picUrl": 'images/upload_bg.png', "title": '通知标题2'}
   ];
+  Profile _profile = Global.profile;
   /*菜单-教师*/
-  List menus = MenuValue.TEACHER_VALUE;
+  List menus ;
   @override
   Widget build(BuildContext context) {
+   
     return ListView(
       children: <Widget>[column1(), gridContainer()],
     );
@@ -88,6 +92,7 @@ Text('更多',style: TextStyle(color:Colors.white))
 
   /*功能按钮-container*/
   Widget gridContainer() {
+    menus = _profile.user.roleNames.contains('超级管理员')?MenuValue.TEACHER_VALUE:MenuValue.PARENT_VALUE;
     double _width_Item =
         (MediaQuery.of(context).size.width) / GRID_VIEW_ITEM_COUNT;
     // print(_width);

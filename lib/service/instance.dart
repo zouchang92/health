@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flui/flui.dart';
 
 import 'package:health/model/global.dart';
 /**/ 
@@ -8,14 +9,14 @@ import './base.dart';
 
 
 class DioManager {
-  static final baseApi = "http://115.223.19.233:8998/cloud";
+  static final baseApi = "http://115.223.19.233:9886/zhxyx/";
   static final DioManager _shared = DioManager._internal();
   factory DioManager() => _shared;
   Dio dio;
   DioManager._internal() {
     if (dio == null) {
       BaseOptions opt = BaseOptions(
-        baseUrl: '',
+        baseUrl: baseApi,
         contentType: Headers.jsonContentType,
         responseType: ResponseType.json,
         receiveDataWhenStatusError: false,
@@ -33,19 +34,21 @@ class DioManager {
     Map<String, dynamic> params,
   }) async {
     try {
+      var dismiss = FLToast.showLoading();
       Response response =
           await dio.post(path, data: data, queryParameters: params,options:Options(headers:{
             "token":Global.profile.token
           }));
       // print('response${response.data}');
       if (response != null) {
+        dismiss();
         BaseEntity entity = BaseEntity<T>.fromJson(response.data);
 
         if (entity.code == 0) {
           return entity.data;
         } else {
           //消息提示
-         
+          FLToast.error(text: entity.message);
           // return ErrorEntity(code: entity.code, message: entity.message);
         }
       }
@@ -53,7 +56,7 @@ class DioManager {
       //消息提示
       ErrorEntity er = createErrorEntity(e);
       
-      // print(er.message);
+      print('post$e');
       // print(er.code);
       return er;
     }

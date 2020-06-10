@@ -6,7 +6,7 @@ class MenuValue{
       "picUrl":'images/icon/menu_icon_1.png'
     },{
       "title":'晨午检上报',
-      "path":'',
+      "path":'/healthReport',
       "picUrl":'images/icon/menu_icon_2.png'
     },{
       "title":'晨午检查询',

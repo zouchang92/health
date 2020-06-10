@@ -1,7 +1,8 @@
 import '../views/index.dart';
 final routes = {
-  // '/':(context)=>,
+  '/':(context)=>Home(),
   '/login':(context)=>Login(),
-  '/home':(context)=>Home(),
-  '/safetyReport':(context)=>SafetyReport()
+  '/safetyReport':(context)=>SafetyReport(),
+  '/healthReport':(context)=>HealthReport(),
+  '/searchStudent':(context)=>ContactList()
 };

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:health/model/profile.dart';
+import 'package:health/store/profileNotify.dart';
+import 'package:provider/provider.dart';
 
 class Person extends StatefulWidget {
   @override
@@ -6,23 +9,32 @@ class Person extends StatefulWidget {
 }
 
 class _PersonState extends State<Person> {
+  Profile _profile;
   @override
   Widget build(BuildContext context) {
+    return Consumer<ProfileNotify>(
+        builder: (context, ProfileNotify profileNotify, _) =>
+            listview(profileNotify));
+  }
+
+  Widget listview(ProfileNotify profileNotify) {
+    _profile = profileNotify.value;
+    print('222${_profile.user.userName}');
     return ListView(
       padding: EdgeInsets.all(0),
       physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
         infoCard(),
-        listTile(title: '手机号码', value: '15579297489'),
+        listTile(title: '手机号码', value: _profile.user.phone),
         Divider(height: 1),
-        listTile(title: '性别', value: '男'),
+        listTile(title: '性别', value: _profile.user.gender),
         Divider(height: 1),
-        listTile(title: '所属机构', value: ''),
+        listTile(title: '所属机构', value: _profile.user.organName),
         Divider(height: 1),
-        listTile(title: '所在校区', value: ''),
+        listTile(title: '所在校区', value: _profile.user.schName),
         Divider(height: 1),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20,vertical: 50),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
           child: RaisedButton(
             onPressed: () {
               Navigator.of(context).pushNamed('/login');
@@ -57,28 +69,34 @@ class _PersonState extends State<Person> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   /*姓名*/
-                  Text('例如风',
+                  Text(_profile.user.userName,
                       style: TextStyle(color: Colors.white, fontSize: 20.0)),
-                  Text('九江一中', style: TextStyle(color: Colors.white)),
-                  Text('工号:15475644', style: TextStyle(color: Colors.white))
+                  Text(_profile.user.schName,
+                      style: TextStyle(color: Colors.white)),
+                  Text('角色:${_profile.user.roleNames}',
+                      style: TextStyle(color: Colors.white))
                 ])
           ])),
     );
   }
 
   Widget listTile({String title, String value}) {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: Text(title,
-                style: TextStyle(fontSize: 18.0, color: Color(0xff888888))),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            child: Text(value, style: TextStyle(fontSize: 16.0)),
-          )
-        ]);
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+                padding: EdgeInsets.only(right:5.0),
+                child: Text(title,
+                    style:
+                        TextStyle(fontSize: 18.0, color: Color(0xff888888)))),
+            Expanded(
+              // flex: 1,
+              child: Text(value,
+                  textAlign: TextAlign.right, style: TextStyle(fontSize: 16.0)),
+            )
+          ]),
+    );
   }
 }

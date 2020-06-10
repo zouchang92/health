@@ -4,17 +4,37 @@ part 'user.g.dart';
 class User{
   /*--id*/ 
   String id;
-  /*用户id*/
-  String userId; 
+  
   /*用户名*/ 
-  String name;
+  String userName;
   /*用户性别*/ 
   String gender;
   /*头像*/  
   String photo;
   /*电话*/ 
   String phone;
-  User(this.id,this.userId,this.name,this.gender,this.photo,this.phone);
+  /*组织名称*/
+  String organName;
+  /*证件信息*/  
+  String credNum;
+  /*organId*/ 
+  String organId;
+  /*schName*/ 
+  String schName;
+  /*schLogo*/
+  String schLogo;
+  /*personType*/ 
+  String personType;
+  /*roleNames*/ 
+  List roleNames;
+  /*账号*/
+  String loginName;
+  
+  User({
+    this.id,this.userName,this.gender,this.photo,this.phone,this.credNum,
+    this.organId,this.organName,this.personType,this.roleNames,this.schLogo,
+    this.schName,this.loginName
+  });
   factory User.fromJson(Map<String,dynamic> json)=>_$UserFromJson(json);
   Map<String, dynamic> toJson()=>_$UserToJson(this);
 }
