@@ -1,12 +1,14 @@
+import 'package:date_format/date_format.dart';
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:health/model/global.dart';
 import 'package:health/model/health.dart';
 import 'package:health/model/profile.dart';
+import 'package:health/widget/index.dart';
 
 class HealthReport extends StatefulWidget {
-  String title = '晨午检上报';
+  final String title = '晨午检上报';
 
   @override
   _HealthReportState createState() => _HealthReportState();
@@ -80,20 +82,36 @@ class _HealthReportState extends State<HealthReport> {
           Divider(height: 1),
           FLListTile(
             title: Text('登记类型'),
-            // trailing: Icon(Icons.navigate_next),
+            trailing: choiceOpt(),
             // onTap: openSearch,
           ),
           Divider(height: 1),
           FLListTile(
             title: Text('上报类型'),
-            // trailing: Icon(Icons.navigate_next),
+            trailing: ChoiceChipOptions(data: ['类型3', '类型4']),
             // onTap: openSearch,
           ),
           Divider(height: 1),
           FLListTile(
             title: Text('发病日期'),
-            // trailing: Icon(Icons.navigate_next),
-            // onTap: openSearch,
+            trailing:  Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: <Widget>[
+                  Text(_health.approveTime ?? ''),
+                  Icon(Icons.calendar_today)
+                ]),
+            onTap: () {
+              showDatePicker(
+                  context: context,
+                  initialDate: new DateTime.now(),
+                  firstDate:
+                      new DateTime.now().subtract(new Duration(days: 30)),
+                  lastDate: new DateTime.now().add(new Duration(days: 30))).then((value) => {
+                    this.setState(() {
+                      this._health.approveTime = formatDate(value, [yyyy, '-', mm, '-', dd]);
+                    })
+                  });
+            },
           ),
           Divider(height: 1),
           FLListTile(
@@ -107,18 +125,20 @@ class _HealthReportState extends State<HealthReport> {
               // readOnly: true,
               // enabled: false,
               // autofocus: true,
+
               textAlign: TextAlign.right,
               decoration: InputDecoration(
+                  border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                   prefixIcon: Padding(
                       padding: EdgeInsets.only(left: 10.0, right: 10.0),
                       child: Text('学生症状:')),
                   prefixIconConstraints: BoxConstraints())),
-          ListTile(title: Text('是否就诊')),
+          ListTile(
+              title: Text('是否就诊'), trailing: RadioOptions(data: ['是', '否'])),
           ListTile(title: Text('病例类型')),
           ListTile(title: Text('确诊详情')),
           ListTile(title: Text('就诊日期')),
-
           TextFormField(
               // expands: true,
               // readOnly: true,
@@ -126,6 +146,7 @@ class _HealthReportState extends State<HealthReport> {
               // autofocus: true,
               textAlign: TextAlign.right,
               decoration: InputDecoration(
+                  border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                   prefixIcon: Padding(
                       padding: EdgeInsets.only(left: 10.0, right: 10.0),
@@ -138,14 +159,15 @@ class _HealthReportState extends State<HealthReport> {
               // autofocus: true,
               textAlign: TextAlign.right,
               decoration: InputDecoration(
+                  border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                   prefixIcon: Padding(
                       padding: EdgeInsets.only(left: 10.0, right: 10.0),
                       child: Text('采取措施:')),
                   prefixIconConstraints: BoxConstraints())),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal:10.0,vertical: 30.0),
-            child: RaisedButton(onPressed: (){},child: Text('提交')),
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
+            child: RaisedButton(onPressed: () {}, child: Text('提交')),
           )
         ],
       ),
@@ -178,5 +200,11 @@ class _HealthReportState extends State<HealthReport> {
 
   void openSearch() {
     Navigator.of(context).pushNamed('/searchStudent');
+  }
+
+  Widget choiceOpt() {
+    return ChoiceChipOptions(
+      data: ['类型1', '类型2'],
+    );
   }
 }

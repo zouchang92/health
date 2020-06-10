@@ -39,10 +39,12 @@ class _LoginState extends State<Login> {
       key: _formKey,
       autovalidate: true,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset('images/appIcon.png'),
+            Flexible(child: Image.asset('images/appIcon.png')),
+            // Image.asset('images/appIcon.png'),
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: LoginStyle.containerHorizontal),

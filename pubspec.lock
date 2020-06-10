@@ -162,6 +162,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.3.6"
+  date_format:
+    dependency: "direct main"
+    description:
+      name: date_format
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.8"
   dio:
     dependency: "direct main"
     description:
@@ -240,6 +247,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.2.0"
+  grouped_checkbox:
+    dependency: "direct main"
+    description:
+      name: grouped_checkbox
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.0"
   html:
     dependency: transitive
     description:

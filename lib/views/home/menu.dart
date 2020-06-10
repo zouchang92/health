@@ -10,7 +10,7 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  final int GRID_VIEW_ITEM_COUNT = 3;
+  final int gridVIEWITEMCOUNT = 3;
   /*轮播-通知-数据*/
   List images = [
     {"picUrl": 'images/upload_bg.png', "title": '通知标题'},
@@ -84,6 +84,8 @@ Text('更多',style: TextStyle(color:Colors.white))
         ),
         Text(
           title,
+          softWrap: false,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(color: Colors.white),
         )
       ],
@@ -93,11 +95,11 @@ Text('更多',style: TextStyle(color:Colors.white))
   /*功能按钮-container*/
   Widget gridContainer() {
     menus = _profile.user.roleNames.contains('超级管理员')?MenuValue.TEACHER_VALUE:MenuValue.PARENT_VALUE;
-    double _width_Item =
-        (MediaQuery.of(context).size.width) / GRID_VIEW_ITEM_COUNT;
+    double _widthItem =
+        (MediaQuery.of(context).size.width) / gridVIEWITEMCOUNT;
     // print(_width);
     int lenth = menus.length;
-    double _height = ((lenth - 1) / GRID_VIEW_ITEM_COUNT + 1) * _width_Item;
+    double _height = ((lenth - 1) / gridVIEWITEMCOUNT + 1) * _widthItem;
 
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -111,7 +113,7 @@ Text('更多',style: TextStyle(color:Colors.white))
     return GridView.builder(
         physics: NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: GRID_VIEW_ITEM_COUNT),
+            crossAxisCount: gridVIEWITEMCOUNT),
         itemCount: menus.length,
         itemBuilder: (_, index) {
           return FlatButton(
@@ -125,7 +127,10 @@ Text('更多',style: TextStyle(color:Colors.white))
                   CircleAvatar(
                       backgroundColor: Colors.transparent,
                       child: Image.asset(menus[index]['picUrl'])),
-                  Text(menus[index]['title'])
+                  Text(
+                    menus[index]['title'],
+                    overflow: TextOverflow.ellipsis,
+                  )
                 ],
               ));
         });
