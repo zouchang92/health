@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health/model/global.dart';
 import 'package:health/model/profile.dart';
 import 'package:health/store/profileNotify.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +38,7 @@ class _PersonState extends State<Person> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
           child: RaisedButton(
             onPressed: () {
+              Global.quit();
               Navigator.of(context).pushNamed('/login');
             },
             shape: RoundedRectangleBorder(
@@ -93,7 +95,7 @@ class _PersonState extends State<Person> {
                         TextStyle(fontSize: 18.0, color: Color(0xff888888)))),
             Expanded(
               // flex: 1,
-              child: Text(value,
+              child: Text(value??'',
                   textAlign: TextAlign.right, style: TextStyle(fontSize: 16.0)),
             )
           ]),

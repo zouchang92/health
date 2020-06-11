@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:health/model/global.dart';
 import 'package:health/model/profile.dart';
@@ -29,7 +28,7 @@ class _LoginState extends State<Login> {
   }
 
   Widget form(BuildContext context, ProfileNotify profileNotify) {
-     _profile = profileNotify.value;
+    _profile = profileNotify.value;
     TextEditingController _userController = new TextEditingController();
     TextEditingController _passwordController = new TextEditingController();
     _userController.text = _profile.lastLoginAcount ?? '';
@@ -99,8 +98,10 @@ class _LoginState extends State<Login> {
                   vertical: LoginStyle.loginButtonVertical,
                   horizontal: LoginStyle.containerHorizontal),
               child: RaisedButton(
-                onPressed: (){
-                  _formSubmit(loginName: _userController.text,password: _passwordController.text);
+                onPressed: () {
+                  _formSubmit(
+                      loginName: _userController.text,
+                      password: _passwordController.text);
                 },
                 child: Row(
                     children: <Widget>[Text(LoginValue.submitText)],
@@ -113,23 +114,26 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void _formSubmit({String loginName,String password}){
+  void _formSubmit({String loginName, String password}) {
     var _form = _formKey.currentState;
-    if(_form.validate()){
+    if (_form.validate()) {
       // print('$loginName,$password');
-      _login(loginName: loginName,password: password);
-     
-      
+      _login(loginName: loginName, password: password);
     }
   }
 
-  Future _login({String loginName,String password}) async{
-    var res =  await login(loginName: loginName,password: password);
+  Future _login({String loginName, String password}) async {
+    var res = await login(loginName: loginName, password: password);
     // print('res$res');
-    _profile.isLogin = true;
-    _profile.token = res['token'];
-    _profile.user =new User.fromJson(res);
-    Global.save();
-    Navigator.of(context).pushNamed('/');
+    if (res != null) {
+      _profile.isLogin = true;
+      _profile.token = res['token'];
+      _profile.user = new User.fromJson(res);
+      Global.save();
+      var dics = await getDicts();
+      print('dics$dics');
+      
+      Navigator.of(context).pushNamed('/');
+    }
   }
 }

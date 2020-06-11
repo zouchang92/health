@@ -19,6 +19,7 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
     lastLoginAcount: json['lastLoginAcount'] as String,
     lastLoginPassword: json['lastLoginPassword'] as String,
     token: json['token'] as String,
+    dictionary: json['dictionary'] as List,
   );
 }
 
@@ -30,4 +31,5 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'lastLoginAcount': instance.lastLoginAcount,
       'lastLoginPassword': instance.lastLoginPassword,
       'token': instance.token,
+      'dictionary': instance.dictionary,
     };

@@ -1,10 +1,13 @@
 import 'package:date_format/date_format.dart';
+import 'package:dio/dio.dart';
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:health/model/dictionary.dart';
 import 'package:health/model/global.dart';
 import 'package:health/model/health.dart';
 import 'package:health/model/profile.dart';
+import 'package:health/service/index.dart';
 import 'package:health/widget/index.dart';
 
 class HealthReport extends StatefulWidget {
@@ -82,13 +85,20 @@ class _HealthReportState extends State<HealthReport> {
           Divider(height: 1),
           FLListTile(
             title: Text('登记类型'),
-            trailing: choiceOpt(),
+            trailing: ChoiceChipOptions(
+              data: Dictionary.healthRegisterType,
+              onValueChange: (int _index){
+                this.setState(() {
+                  _health.type = Dictionary.healthRegisterType[_index];
+                });
+              },
+            ),
             // onTap: openSearch,
           ),
           Divider(height: 1),
           FLListTile(
             title: Text('上报类型'),
-            trailing: ChoiceChipOptions(data: ['类型3', '类型4']),
+            trailing: ChoiceChipOptions(data: Dictionary.reportType),
             // onTap: openSearch,
           ),
           Divider(height: 1),
@@ -97,7 +107,7 @@ class _HealthReportState extends State<HealthReport> {
             trailing:  Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: <Widget>[
-                  Text(_health.approveTime ?? ''),
+                  Text(_health.illDate ?? ''),
                   Icon(Icons.calendar_today)
                 ]),
             onTap: () {
@@ -108,7 +118,7 @@ class _HealthReportState extends State<HealthReport> {
                       new DateTime.now().subtract(new Duration(days: 30)),
                   lastDate: new DateTime.now().add(new Duration(days: 30))).then((value) => {
                     this.setState(() {
-                      this._health.approveTime = formatDate(value, [yyyy, '-', mm, '-', dd]);
+                      this._health.illDate = formatDate(value, [yyyy, '-', mm, '-', dd]);
                     })
                   });
             },
@@ -120,25 +130,21 @@ class _HealthReportState extends State<HealthReport> {
             // onTap: openSearch,
           ),
           infoTitle('症状信息'),
-          TextFormField(
-              // expands: true,
-              // readOnly: true,
-              // enabled: false,
-              // autofocus: true,
-
-              textAlign: TextAlign.right,
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                  prefixIcon: Padding(
-                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                      child: Text('学生症状:')),
-                  prefixIconConstraints: BoxConstraints())),
+         FLListTile(
+            title: Text('学生症状'),
+            trailing: Icon(Icons.navigate_next),
+            // onTap: ,
+          ),
+          Divider(height: 1),
           ListTile(
               title: Text('是否就诊'), trailing: RadioOptions(data: ['是', '否'])),
+          Divider(height: 1),
           ListTile(title: Text('病例类型')),
+          Divider(height: 1),
           ListTile(title: Text('确诊详情')),
+          Divider(height: 1),
           ListTile(title: Text('就诊日期')),
+          Divider(height: 1),
           TextFormField(
               // expands: true,
               // readOnly: true,
@@ -152,6 +158,7 @@ class _HealthReportState extends State<HealthReport> {
                       padding: EdgeInsets.only(left: 10.0, right: 10.0),
                       child: Text('就诊医院:')),
                   prefixIconConstraints: BoxConstraints())),
+          Divider(height: 1),
           TextFormField(
               // expands: true,
               // readOnly: true,
@@ -165,9 +172,12 @@ class _HealthReportState extends State<HealthReport> {
                       padding: EdgeInsets.only(left: 10.0, right: 10.0),
                       child: Text('采取措施:')),
                   prefixIconConstraints: BoxConstraints())),
+          Divider(height: 1),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
-            child: RaisedButton(onPressed: () {}, child: Text('提交')),
+            child: RaisedButton(onPressed: () {
+              _healthReport();
+            }, child: Text('提交')),
           )
         ],
       ),
@@ -181,7 +191,7 @@ class _HealthReportState extends State<HealthReport> {
         padding: EdgeInsets.symmetric(vertical: 5.0),
         child: Text(title));
   }
-
+/*选择列表*/ 
   showPicker() {
     List<PickerItem> _picerItem =
         _bindClass.map((e) => PickerItem(text: Text(e['name']))).toList();
@@ -189,9 +199,10 @@ class _HealthReportState extends State<HealthReport> {
       adapter: PickerDataAdapter(data: _picerItem),
       title: Text('选择班级'),
       onConfirm: (picker, selecteds) {
-        print(selecteds);
+        // print(selecteds);
         this.setState(() {
           _health.className = _bindClass[selecteds[0]]['name'];
+          _health.classId = _bindClass[selecteds[0]]['id'];
         });
       },
     );
@@ -202,9 +213,13 @@ class _HealthReportState extends State<HealthReport> {
     Navigator.of(context).pushNamed('/searchStudent');
   }
 
-  Widget choiceOpt() {
-    return ChoiceChipOptions(
-      data: ['类型1', '类型2'],
-    );
+  Future _healthReport() async{
+    var res = await healthReport(_health);
+    // print('healthReport$res');
   }
+
+  
+  
+
+  
 }

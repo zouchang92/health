@@ -1,3 +1,4 @@
+
 import 'package:health/model/health.dart';
 
 import './instance.dart';
@@ -10,5 +11,10 @@ login({String loginName, String password}){
 }
 
 healthReport(Health health){
+  print(health.toJson());
   return DioManager().post(Api.heaInfoDailyInsert,data:health.toJson());
+}
+
+getDicts(){
+  return DioManager().post(Api.getDics);
 }

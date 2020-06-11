@@ -53,6 +53,9 @@ Health _$HealthFromJson(Map<String, dynamic> json) {
     illDate: json['illDate'] as String,
     illType: json['illType'] as String,
     isHealed: json['isHealed'] as String,
+    leaveDate: json['leaveDate'] as String,
+    memo: json['memo'] as String,
+    type: json['type'] as String,
   );
 }
 
@@ -102,4 +105,7 @@ Map<String, dynamic> _$HealthToJson(Health instance) => <String, dynamic>{
       'isHealed': instance.isHealed,
       'healDate': instance.healDate,
       'healHospital': instance.healHospital,
+      'memo': instance.memo,
+      'type': instance.type,
+      'leaveDate': instance.leaveDate,
     };

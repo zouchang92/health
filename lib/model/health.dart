@@ -93,6 +93,14 @@ class Health{
 
   String healHospital;
 
+  /*采取措施*/ 
+  String memo;
+  /*登记类型*/
+  String type; 
+  /*离校日期*/ 
+  String leaveDate;
+  
+  
   Health({this.address,this.approveTime,this.checkPersonType,this.checkResult,this.checkType,
     this.city,this.cityName,this.classId,this.className,this.confirmTime,this.county,this.countyName,
     this.createOrgId,this.createUserId,this.department,this.departmentName,this.discomfortDesp,
@@ -100,7 +108,7 @@ class Health{
     this.ids,this.illStatus,this.isContactSuspect,this.isDiscomfort,this.isDiscomfortHome,
     this.isDiscomfortPart,this.isQuarantine,this.jobNum,this.name,this.personType,this.phone,
     this.province,this.provinceName,this.reportTime,this.schoolName,this.stuNum,this.healDate,
-    this.healHospital,this.illDate,this.illType,this.isHealed
+    this.healHospital,this.illDate,this.illType,this.isHealed,this.leaveDate,this.memo,this.type
   });
   factory Health.fromJson(Map<String,dynamic> json)=>_$HealthFromJson(json);
   Map<String, dynamic> toJson()=>_$HealthToJson(this);

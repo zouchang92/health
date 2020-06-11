@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health/model/global.dart';
 import 'package:health/views/home/menu.dart';
 import 'package:health/views/home/person.dart';
 
@@ -22,6 +23,7 @@ class _HomeState extends State<Home> {
   int index = 0;
   @override
   Widget build(BuildContext context) {
+    Global.appContext = context;
     List<BottomNavigationBarItem> _bottomItems = bottom.map((e) => BottomNavigationBarItem(icon: e['icon'],title: Text(e['name']))).toList();
     return Scaffold(
       // appBar: AppBar(

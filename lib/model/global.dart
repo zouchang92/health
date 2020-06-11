@@ -1,19 +1,23 @@
 
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'profile.dart';
 
 class Global{
+  static BuildContext appContext;
   static SharedPreferences prefs;
   static String token;
+  static List dictionary;
   static Profile profile = Profile();
   static save() async{
     prefs.setString('profile', json.encode(profile.toJson()));
   }
   static Future quit() async{
      prefs = await SharedPreferences.getInstance();
+     prefs.clear();
      profile.isLogin = false;
      save();
   }
