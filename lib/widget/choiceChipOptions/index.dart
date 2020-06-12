@@ -31,14 +31,16 @@ class _ChoiceChipOptionsState extends State<ChoiceChipOptions> {
       children: List.generate(
           _length,
           (index) =>Padding(padding: EdgeInsets.only(left:10.0),child:  ChoiceChip(
+                
                 label:
                     Text(_label != null ? _data[index][_label] : _data[index]),
                 selected: this._selectedIndex == index,
                 onSelected: (bool status) {
                   this.setState(() {
-                    this._selectedIndex = status ? index : null;
-                    print('_selectedIndex$_selectedIndex');
-                    // widget.selectIndex = _selectedIndex;
+                    // this._selectedIndex = status ? index : null;
+                    if(status){
+                      this._selectedIndex = index;
+                    }
                   });
                   widget.onValueChange?.call(this._selectedIndex);
                   

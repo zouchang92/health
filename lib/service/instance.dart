@@ -52,7 +52,8 @@ class DioManager {
         BaseEntity entity = BaseEntity<T>.fromJson(response.data);
         print(response.toString());
         if (entity.code == 0) {
-          FLToast.showSuccess(text: entity.message);
+          // text: entity.message
+          FLToast.showSuccess();
           return entity.data;
         } else {
           //消息提示
@@ -114,7 +115,36 @@ class DioManager {
       }
     } on DioError catch (e) {
       //消息提示
-      // return createErrorEntity(e);
+      //消息提示
+      ErrorEntity er = createErrorEntity(e);
+      // dismiss();
+      dismiss();
+      // print('post${er.toJson()}');
+      
+      /*token失效*/ 
+      if(er.code == -15){
+        showDialog(
+          context: Global.appContext,
+          builder: (BuildContext context){
+            return AlertDialog(
+              title: Text('提示'),
+              content: Text('${er.message},是否重新登录?'),
+              actions: <Widget>[
+                 FlatButton(onPressed: (){
+                   Navigator.of(context).pop();
+                }, child: Text('取消')),
+                FlatButton(onPressed: (){
+                  Global.quit();
+                  Navigator.of(context).pushNamed('/login');
+                }, child: Text('确认')),
+               
+              ],
+            );
+          }
+        );
+      }else{
+        FLToast.error(text: er.message);
+      }
     }
   }
 

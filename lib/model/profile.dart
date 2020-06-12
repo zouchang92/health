@@ -18,7 +18,8 @@ class Profile{
   /*token*/ 
   String token;
   /*原始字典数据*/
-  List dictionary; 
+  List dictionary;
+  
   Profile({this.user,this.lastLoginTime,this.isLogin,this.isChecked,
     this.lastLoginAcount,this.lastLoginPassword,this.token,this.dictionary});
   factory Profile.fromJson(Map<String,dynamic> json)=>_$ProfileFromJson(json);

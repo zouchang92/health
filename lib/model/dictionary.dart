@@ -1,6 +1,32 @@
+import 'global.dart';
+
 class Dictionary {
   static List healthRegisterType = [HealthTypeValues[HEALTH_TYPE.ILLNESS],HealthTypeValues[HEALTH_TYPE.INJURY]];
   static List reportType = [CheckTypeValues[CHECK_TYPE.MORENING],CheckTypeValues[CHECK_TYPE.AFTERNOON]];
+  static List getByUniqueName(String uniqueName){
+    List _dics = Global.profile.dictionary;
+    // print('_Dictionary__dics:$_dics');
+    if(_dics==null){
+      return [];
+    }
+    List _filterdics = _dics.where((element) => element['uniqueName'] == uniqueName).toList();
+    _filterdics.sort((a,b)=>a['sort'].compareTo(b['sort']));
+    // print('_filterdics:$_filterdics');
+    return _filterdics;
+  }
+  static Map getItemById(String id){
+    List _dics = Global.profile.dictionary;
+    if(_dics==null){
+      return {};
+    }
+    Map item = _dics.firstWhere((element) => element['id']==id) as Map;
+    return item;
+  }
+}
+
+enum UNIQUE_NAME{
+  SYMPTOMTYPE,REGISTERTYPE,MEASURE,CHECKTYPE,ILLTYPE,
+  ILLCODE,HURTTYPE,INFECTIONTYPE,HURTSITE
 }
 
 
@@ -9,6 +35,17 @@ enum CHECK_TYPE { MORENING, AFTERNOON }
 
 enum YES_OR_NO { YES, NO }
 
+const UniqueNameValues = {
+  UNIQUE_NAME.MEASURE:'measure',
+  UNIQUE_NAME.REGISTERTYPE:'registerType',
+  UNIQUE_NAME.SYMPTOMTYPE:'symptomType',
+  UNIQUE_NAME.CHECKTYPE:'checkType',
+  UNIQUE_NAME.ILLTYPE:'illType',
+  UNIQUE_NAME.ILLCODE:'illCode',
+  UNIQUE_NAME.HURTTYPE:'hurtType',
+  UNIQUE_NAME.INFECTIONTYPE:'infectionType',
+  UNIQUE_NAME.HURTSITE:'hurtSite'
+};
 
 const HealthTypeValues = {
  HEALTH_TYPE.ILLNESS:'因病缺课',

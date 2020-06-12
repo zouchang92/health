@@ -41,6 +41,7 @@ dependencies:
   flutter_picker: ^1.1.5
   grouped_checkbox: ^1.0.0
   date_format: ^1.0.8
+  check_radio_group: ^2.0.2
 
 
 dev_dependencies:

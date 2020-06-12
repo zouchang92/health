@@ -80,7 +80,7 @@ class Health{
   String reportTime;
 
   String schoolName;
-
+  /*学号*/ 
   String stuNum;
 
   String illDate;
@@ -93,13 +93,25 @@ class Health{
 
   String healHospital;
 
-  /*采取措施*/ 
+  /*采取措施-名称*/ 
   String memo;
   /*登记类型*/
   String type; 
   /*离校日期*/ 
   String leaveDate;
-  
+  /*采取措施-id*/
+  String measure; 
+  /*伤害地点-键*/
+  String hurtSite; 
+  /*伤害地点-值*/ 
+  String hurtSiteValue;
+  /*学生姓名-值*/
+  String stuNumValue;
+  /*症状-键*/
+  String symptomType; 
+  /*症状-值*/
+  String symptomTypeValue;
+
   
   Health({this.address,this.approveTime,this.checkPersonType,this.checkResult,this.checkType,
     this.city,this.cityName,this.classId,this.className,this.confirmTime,this.county,this.countyName,
@@ -108,7 +120,8 @@ class Health{
     this.ids,this.illStatus,this.isContactSuspect,this.isDiscomfort,this.isDiscomfortHome,
     this.isDiscomfortPart,this.isQuarantine,this.jobNum,this.name,this.personType,this.phone,
     this.province,this.provinceName,this.reportTime,this.schoolName,this.stuNum,this.healDate,
-    this.healHospital,this.illDate,this.illType,this.isHealed,this.leaveDate,this.memo,this.type
+    this.healHospital,this.illDate,this.illType,this.isHealed,this.leaveDate,this.memo,this.type,
+    this.measure,this.hurtSite,this.hurtSiteValue,this.stuNumValue,this.symptomType,this.symptomTypeValue
   });
   factory Health.fromJson(Map<String,dynamic> json)=>_$HealthFromJson(json);
   Map<String, dynamic> toJson()=>_$HealthToJson(this);

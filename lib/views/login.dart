@@ -84,7 +84,10 @@ class _LoginState extends State<Login> {
                 Checkbox(
                     value: this.check,
                     onChanged: (bool val) {
-                      this.check = val;
+                      // this.check = val;
+                      this.setState(() {
+                        this.check = val;
+                       });
                       _profile.isChecked = val;
                       _profile.lastLoginAcount = _userController.text;
                       _profile.lastLoginPassword = _passwordController.text;
@@ -131,8 +134,9 @@ class _LoginState extends State<Login> {
       _profile.user = new User.fromJson(res);
       Global.save();
       var dics = await getDicts();
-      print('dics$dics');
       
+      _profile.dictionary = dics as List;
+      Global.save();
       Navigator.of(context).pushNamed('/');
     }
   }

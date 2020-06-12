@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import 'package:health/views/index.dart';
 import 'model/global.dart';
+import 'model/profile.dart';
 import 'routes/index.dart';
 
 // import 'package:flui/widgets/toast.dart';
@@ -20,8 +21,8 @@ void main() {
   // requestPermission();
   final _profileNotify = ProfileNotify();
 
-  Global.init().then((e) => runApp(Provider<bool>.value(
-        value: true,
+  Global.init().then((e) => runApp(Provider<Profile>.value(
+        value: Global.profile,
         child: ChangeNotifierProvider.value(
           value: _profileNotify,
           child: MyApp(),

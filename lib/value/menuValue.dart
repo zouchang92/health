@@ -10,15 +10,15 @@ class MenuValue{
       "picUrl":'images/icon/menu_icon_2.png'
     },{
       "title":'晨午检查询',
-      "path":'',
+      "path":'/healthList',
       "picUrl":'images/icon/menu_icon_3.png'
     },{
       "title":'学生请假',
-      "path":'',
+      "path":'/leaveList',
       "picUrl":'images/icon/menu_icon_4.png'
     },{
       "title":'学生健康卡',
-      "path":'',
+      "path":'/healthCardList',
       "picUrl":'images/icon/menu_icon_5.png'
     }
   ];

@@ -56,6 +56,12 @@ Health _$HealthFromJson(Map<String, dynamic> json) {
     leaveDate: json['leaveDate'] as String,
     memo: json['memo'] as String,
     type: json['type'] as String,
+    measure: json['measure'] as String,
+    hurtSite: json['hurtSite'] as String,
+    hurtSiteValue: json['hurtSiteValue'] as String,
+    stuNumValue: json['stuNumValue'] as String,
+    symptomType: json['symptomType'] as String,
+    symptomTypeValue: json['symptomTypeValue'] as String,
   );
 }
 
@@ -108,4 +114,10 @@ Map<String, dynamic> _$HealthToJson(Health instance) => <String, dynamic>{
       'memo': instance.memo,
       'type': instance.type,
       'leaveDate': instance.leaveDate,
+      'measure': instance.measure,
+      'hurtSite': instance.hurtSite,
+      'hurtSiteValue': instance.hurtSiteValue,
+      'stuNumValue': instance.stuNumValue,
+      'symptomType': instance.symptomType,
+      'symptomTypeValue': instance.symptomTypeValue,
     };

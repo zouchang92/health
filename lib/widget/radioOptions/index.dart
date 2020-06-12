@@ -40,8 +40,9 @@ class _RadioOptionsState extends State<RadioOptions> {
 
   Widget radioItem({value,groupValue,onChanged,String label}) {
     return Padding(
-      padding: EdgeInsets.only(left: 10.0),
+      padding: EdgeInsets.only(left: 0),
       child: Wrap(
+        alignment: WrapAlignment.start,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
           Radio(value: value, groupValue: groupValue, onChanged: onChanged),
