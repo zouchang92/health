@@ -50,9 +50,15 @@ class _HealthReportState extends State<HealthReport> {
 
   Map amap(Map a, Map b) {
     a.forEach((key, _) {
-      if (a[key] == null && b[key] != null) {
+      if(b[key]!=null){
         a[key] = b[key];
       }
+      // if (a[key] == null && b[key] != null) {
+      //   a[key] = b[key];
+      // }
+      // if(a[key]!=null&&b[key]!=null){
+      //   a[key] = b[key]
+      // }
     });
     // print('a$a');
     return a;

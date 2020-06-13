@@ -1,5 +1,7 @@
 
 import 'package:health/model/health.dart';
+import 'package:health/model/pagination.dart';
+import 'package:health/model/student.dart';
 
 import './instance.dart';
 import './api.dart';
@@ -17,4 +19,10 @@ healthReport(Health health){
 
 getDicts(){
   return DioManager().post(Api.getDics);
+}
+
+getStudentList({Student stu,Pagination pagination}){
+  Map a = stu.toJson();
+  a.addAll(pagination.toJson());
+  return DioManager().post(Api.getStuList,data:a,loading: false);
 }

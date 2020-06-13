@@ -7,6 +7,7 @@ final routes = {
   '/safetyReport':(context)=>SafetyReport(),
   '/healthReport':(context)=>HealthReport(),
   '/searchStudent':(context)=>ContactList(),
+  
   '/healthSelect':(context)=>HealthSelect(),
   '/healthSelectSym':(context)=>SelectSym(),
   '/healthSelectIll':(context)=>SelectIll(),

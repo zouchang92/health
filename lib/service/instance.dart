@@ -33,27 +33,29 @@ class DioManager {
     }
   }
 
-  Future post<T>(
-    String path, {
-    dynamic data,
-    Map<String, dynamic> params,
-    
-  }) async {
+  Future post<T>(String path,
+      {dynamic data, Map<String, dynamic> params, bool loading = true}) async {
     try {
-      print('token${Global.profile.token}');
-      dismiss = FLToast.showLoading();
+      // print('token${Global.profile.token}');
+      if (loading) {
+        dismiss = FLToast.showLoading();
+      }
       Response response = await dio.post(path,
           data: data,
           queryParameters: params,
           options: Options(headers: {"token": Global.profile.token}));
 
       if (response != null) {
-        dismiss();
+        if (loading) {
+          dismiss();
+        }
         BaseEntity entity = BaseEntity<T>.fromJson(response.data);
-        print(response.toString());
+        // print(response.toString());
         if (entity.code == 0) {
           // text: entity.message
-          FLToast.showSuccess();
+          if (loading) {
+            FLToast.showSuccess();
+          }
           return entity.data;
         } else {
           //消息提示
@@ -62,35 +64,36 @@ class DioManager {
         }
       }
     } on DioError catch (e) {
-      
+      if (loading) {
+        dismiss();
+      }
       //消息提示
       ErrorEntity er = createErrorEntity(e);
-      // dismiss();
-      dismiss();
-      // print('post${er.toJson()}');
-      
-      /*token失效*/ 
-      if(er.code == -15){
+
+      /*token失效*/
+      if (er.code == -15) {
         showDialog(
-          context: Global.appContext,
-          builder: (BuildContext context){
-            return AlertDialog(
-              title: Text('提示'),
-              content: Text('${er.message},是否重新登录?'),
-              actions: <Widget>[
-                 FlatButton(onPressed: (){
-                   Navigator.of(context).pop();
-                }, child: Text('取消')),
-                FlatButton(onPressed: (){
-                  Global.quit();
-                  Navigator.of(context).pushNamed('/login');
-                }, child: Text('确认')),
-               
-              ],
-            );
-          }
-        );
-      }else{
+            context: Global.appContext,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('提示'),
+                content: Text('${er.message},是否重新登录?'),
+                actions: <Widget>[
+                  FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('取消')),
+                  FlatButton(
+                      onPressed: () {
+                        Global.quit();
+                        Navigator.of(context).pushNamed('/login');
+                      },
+                      child: Text('确认')),
+                ],
+              );
+            });
+      } else {
         FLToast.error(text: er.message);
       }
 
@@ -99,113 +102,67 @@ class DioManager {
     }
   }
 
-  Future get<T>(String path, {Map<String, dynamic> params}) async {
+  Future get<T>(String path,
+      {Map<String, dynamic> params, bool loading = true}) async {
     try {
+      if (loading) {
+        dismiss = FLToast.showLoading();
+      }
       Response response = await dio.get(path,
           queryParameters: params,
           options: Options(headers: {"token": Global.profile.token}));
       if (response != null) {
+        if (loading) {
+          dismiss();
+        }
         BaseEntity entity = BaseEntity<T>.fromJson(response.data);
         if (entity.code == 0) {
           return entity.data;
         } else {
           //消息提示
+          if (loading) {
+            FLToast.showSuccess();
+          }
           // return ErrorEntity(code: entity.code, message: entity.message);
         }
       }
     } on DioError catch (e) {
-      //消息提示
-      //消息提示
       ErrorEntity er = createErrorEntity(e);
-      // dismiss();
-      dismiss();
+      if (loading) {
+        dismiss();
+      }
       // print('post${er.toJson()}');
-      
-      /*token失效*/ 
-      if(er.code == -15){
+
+      /*token失效*/
+      if (er.code == -15) {
         showDialog(
-          context: Global.appContext,
-          builder: (BuildContext context){
-            return AlertDialog(
-              title: Text('提示'),
-              content: Text('${er.message},是否重新登录?'),
-              actions: <Widget>[
-                 FlatButton(onPressed: (){
-                   Navigator.of(context).pop();
-                }, child: Text('取消')),
-                FlatButton(onPressed: (){
-                  Global.quit();
-                  Navigator.of(context).pushNamed('/login');
-                }, child: Text('确认')),
-               
-              ],
-            );
-          }
-        );
-      }else{
+            context: Global.appContext,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('提示'),
+                content: Text('${er.message},是否重新登录?'),
+                actions: <Widget>[
+                  FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('取消')),
+                  FlatButton(
+                      onPressed: () {
+                        Global.quit();
+                        Navigator.of(context).pushNamed('/login');
+                      },
+                      child: Text('确认')),
+                ],
+              );
+            });
+      } else {
         FLToast.error(text: er.message);
       }
     }
   }
 
-  // data 类型 {}
-  // Future request<T>(NWMethod method, String path,
-  //     {dynamic data,
-  //     Map<String, dynamic> params,
-  //     Function(T) success,
-  //     Function(ErrorEntity) error}) async {
-  //   try {
-  //     Response response = await dio.request(path,
-  //         data: data,
-  //         queryParameters: params,
-  //         options: Options(method: NWMethodValues[method]));
-  //     if (response != null) {
-  //       BaseEntity entity = BaseEntity<T>.fromJson(response.data);
-  //       if (entity.code == 0) {
-  //         // success(entity.data);
-  //         return entity.data;
-  //       } else {
-  //         // error(ErrorEntity(code: entity.code, message: entity.message));
-  //         return ErrorEntity(code: entity.code, message: entity.message);
-  //       }
-  //     } else {
-  //       // error(ErrorEntity(code: -1, message: "未知错误"));
-  //       return ErrorEntity(code: -1, message: "未知错误");
-  //     }
-  //   } on DioError catch (e) {
-  //     return createErrorEntity(e);
-  //     // error(createErrorEntity(e));
-  //   }
-  // }
-
-  // 回调data 数组结构
-  // Future requestList<T>(NWMethod method, String path,
-  //     {dynamic data,
-  //     Map<String, dynamic> params,
-  //     Function(List<T>) success,
-  //     Function(ErrorEntity) error}) async {
-  //   try {
-  //     Response response = await dio.request(path,
-  //         data: data,
-  //         queryParameters: params,
-  //         options: Options(method: NWMethodValues[method]));
-  //     if (response != null) {
-  //       BaseListEntity entity = BaseListEntity<T>.fromJson(response.data);
-  //       if (entity.code == 0) {
-  //         success(entity.data);
-  //       } else {
-  //         error(ErrorEntity(code: entity.code, message: entity.message));
-  //       }
-  //     } else {
-  //       error(ErrorEntity(code: -1, message: "未知错误"));
-  //     }
-  //   } on DioError catch (e) {
-  //     error(createErrorEntity(e));
-  //   }
-  // }
-
   ErrorEntity createErrorEntity(DioError error) {
-   
     switch (error.type) {
       case DioErrorType.CANCEL:
         {
@@ -230,11 +187,10 @@ class DioManager {
       case DioErrorType.RESPONSE:
         {
           try {
-            
             // int errCode = error.response.statusCode;
             // String errMsg = error.response.statusMessage;
-            
-            var eresponse =json.decode(error.response.toString());
+
+            var eresponse = json.decode(error.response.toString());
             // print('error.response${eresponse['message']}');
             String errMsg = eresponse['message'];
             int errCode = eresponse['status'];
