@@ -2,6 +2,7 @@ import 'package:date_format/date_format.dart';
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:health/model/argument.dart';
 // import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
 import 'package:health/model/global.dart';
@@ -23,10 +24,7 @@ class _HealthReportState extends State<HealthReport> {
   final _formKey = GlobalKey<FormState>();
   Profile _profile = Global.profile;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  List _bindClass = [
-    {"name": '高一班', "id": 'RSFUBDUHPHCKPWXANVMWJHPTRXCYAWZC'},
-    {"name": '高三班', "id": 'RSFUBDUHPHCKPWXANVMWJHPTRXCYAWZB'}
-  ];
+  List _bindClass = [];
   List registerTypeList =
       Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.REGISTERTYPE]);
   List checkTypeList =
@@ -36,7 +34,13 @@ class _HealthReportState extends State<HealthReport> {
   List isHealList = ['是', '否'];
   Health _health = new Health();
   bool visible = false;
-
+  @override
+  void initState() {
+    
+    super.initState();
+    _bindClass = _profile.user.classIdAndNames??[];
+    // print('_bindClass:$_bindClass');
+  }
   @override
   Widget build(BuildContext context) {
     // print('_health$_health');
@@ -82,31 +86,31 @@ class _HealthReportState extends State<HealthReport> {
       child: ListView(
         children: <Widget>[
           infoTitle('基本信息'),
-          TextFormField(
-              // expands: true,
-              readOnly: true,
-              enabled: false,
-              initialValue: _profile.user.organName,
-              textAlign: TextAlign.right,
-              decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                  prefixIcon: Padding(
-                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                      child: Text('所属地区:')),
-                  prefixIconConstraints: BoxConstraints())),
-          TextFormField(
-              // autofocus: false,
+          // TextFormField(
+          //     // expands: true,
+          //     readOnly: true,
+          //     enabled: false,
+          //     initialValue: _profile.user.organName,
+          //     textAlign: TextAlign.right,
+          //     decoration: InputDecoration(
+          //         contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+          //         prefixIcon: Padding(
+          //             padding: EdgeInsets.only(left: 10.0, right: 10.0),
+          //             child: Text('所属地区:')),
+          //         prefixIconConstraints: BoxConstraints())),
+          // TextFormField(
+          //     // autofocus: false,
 
-              readOnly: true,
-              enabled: false,
-              initialValue: _profile.user.schName,
-              textAlign: TextAlign.right,
-              decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                  prefixIcon: Padding(
-                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                      child: Text('学校名称:')),
-                  prefixIconConstraints: BoxConstraints())),
+          //     readOnly: true,
+          //     enabled: false,
+          //     initialValue: _profile.user.schName,
+          //     textAlign: TextAlign.right,
+          //     decoration: InputDecoration(
+          //         contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+          //         prefixIcon: Padding(
+          //             padding: EdgeInsets.only(left: 10.0, right: 10.0),
+          //             child: Text('学校名称:')),
+          //         prefixIconConstraints: BoxConstraints())),
           FLListTile(
             title: Text('所属班级'),
             /*Icon(Icons.navigate_next)*/
@@ -130,6 +134,16 @@ class _HealthReportState extends State<HealthReport> {
             onTap: openSearch,
           ),
           Divider(height: 1),
+          ListTile(
+            title: Text('所属地区:'),
+            trailing: Text(_health.provinceName??''),
+          ),
+          Divider(height: 1),
+          ListTile(
+            title: Text('学校名称:'),
+            trailing: Text(_health.schoolName??''),
+          ),
+          Divider(height: 1),
           FLListTile(
             title: Text('登记类型'),
             trailing: ChoiceChipOptions(
@@ -137,7 +151,7 @@ class _HealthReportState extends State<HealthReport> {
               label: 'name',
               onValueChange: (int _index) {
                 this.setState(() {
-                  _health.type = registerTypeList[_index]['code'];
+                  _health.registerType = registerTypeList[_index]['code'];
                 });
               },
             ),
@@ -329,8 +343,8 @@ class _HealthReportState extends State<HealthReport> {
             padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
             child: RaisedButton(
                 onPressed: () {
-                  if (_health.type == null) {
-                    _health.type = registerTypeList[0]['code'];
+                  if (_health.registerType == null) {
+                    _health.registerType= registerTypeList[0]['code'];
                   }
                   if (_health.checkType == null) {
                     _health.checkType = registerTypeList[0]['code'];
@@ -340,6 +354,10 @@ class _HealthReportState extends State<HealthReport> {
                   }
                   if (_health.isHealed == null) {
                     _health.isHealed = isHealList[0];
+                  }
+                  if(_health.personType == null){
+                    /*Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.PERSONTYPE])[0]['code']*/ 
+                     _health.personType = '1';
                   }
                   var _form = _formKey.currentState;
                   if (_form.validate()) {
@@ -365,15 +383,15 @@ class _HealthReportState extends State<HealthReport> {
 /*选择列表*/
   showPicker() {
     List<PickerItem> _picerItem =
-        _bindClass.map((e) => PickerItem(text: Text(e['name']))).toList();
+        _bindClass.map((e) => PickerItem(text: Text(e['className']))).toList();
     Picker picker = Picker(
       adapter: PickerDataAdapter(data: _picerItem),
       title: Text('选择班级'),
       onConfirm: (picker, selecteds) {
         // print(selecteds);
         this.setState(() {
-          _health.className = _bindClass[selecteds[0]]['name'];
-          _health.classId = _bindClass[selecteds[0]]['id'];
+          _health.className = _bindClass[selecteds[0]]['className'];
+          _health.classId = _bindClass[selecteds[0]]['classId'];
         });
       },
     );
@@ -381,10 +399,20 @@ class _HealthReportState extends State<HealthReport> {
   }
 
   void openSearch() {
-    Navigator.of(context).pushNamed('/searchStudent');
+    if(_health.className!=null){
+      // print('params:${_health.classId}');
+      Navigator.of(context).pushNamed('/searchStudent',arguments: Argument(params:_health.classId));
+
+    }else{
+      FLToast.info(text:'请选择班级');
+    }
   }
 
   Future _healthReport() async {
-    await healthReport(_health);
+   var res = await healthReport(_health);
+   
+   if(res==null){
+     Navigator.of(context).pop();
+   }
   }
 }

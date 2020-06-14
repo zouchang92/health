@@ -36,7 +36,7 @@ class _HealthSelectState extends State<HealthSelect> {
     // print(_test);
     args = new Argument();
     health.hurtSite = hurtSiteList[0]['code'];
-    health.measure = hurtTypeList[0]['code'];
+    health.hurtType = hurtTypeList[0]['code'];
     health.memo = hurtTypeList[0]['name'];
     // health.hurt
     super.initState();
@@ -55,8 +55,9 @@ class _HealthSelectState extends State<HealthSelect> {
             label: 'name',
             onValueChange: (_index) {
               this.setState(() {
-                health.measure = hurtTypeList[_index]['code'];
-                health.memo = hurtTypeList[_index]['code'];
+                // print(hurtTypeList[_index]['code']);
+                health.hurtType = hurtTypeList[_index]['code'];
+                health.memo = hurtTypeList[_index]['name'];
               });
             },
           ),

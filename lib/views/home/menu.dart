@@ -94,7 +94,16 @@ Text('更多',style: TextStyle(color:Colors.white))
 
   /*功能按钮-container*/
   Widget gridContainer() {
-    menus = _profile.user.roleNames.contains('超级管理员')?MenuValue.TEACHER_VALUE:MenuValue.PARENT_VALUE;
+    // print('profile${_profile.user.personType}');
+    if((_profile.user.personType!=null)&&(_profile.user.personType=='parentDuty')){
+         menus = MenuValue.PARENT_VALUE;
+    }else{
+      menus = MenuValue.TEACHER_VALUE;
+    }
+    print('menus:$menus');
+    //  menus = _profile.user.personType=='teacherDuty'?MenuValue.TEACHER_VALUE:MenuValue.PARENT_VALUE;
+   
+
     double _widthItem =
         (MediaQuery.of(context).size.width) / gridVIEWITEMCOUNT;
     // print(_width);

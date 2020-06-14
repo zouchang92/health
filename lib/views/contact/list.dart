@@ -1,4 +1,3 @@
-import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:health/model/argument.dart';
 import 'package:health/model/health.dart';
@@ -7,32 +6,36 @@ import 'package:health/model/student.dart';
 import 'package:health/service/index.dart';
 import 'package:health/store/profileNotify.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_search_bar/simple_search_bar.dart';
 
 class ContactList extends StatefulWidget {
   final String title = '选择学生';
+  final Argument argument;
+  ContactList({this.argument});
   @override
   _ContactListState createState() => _ContactListState();
 }
 
 class _ContactListState extends State<ContactList> {
+  final AppBarController appBarController = AppBarController();
   List studentList = [];
   Widget stuWidgetList;
   int selected;
   bool showFloatButton = false;
   Argument args;
   Health health = new Health();
-  Student stu = Student(organId: 'RSFUBDUHPHCKPWXANVMWJHPTRXCYAWZC');
+  Student stu;
   Pagination pagination = Pagination(page: 1, rows: 10);
   ScrollController scrollController = ScrollController();
   bool firstLoading = true;
   bool loading = true;
-  
+
   @override
   void initState() {
     super.initState();
     selected = 0;
-    args = new Argument();
-
+    // print('widget:${widget.argument}');
+    stu = Student(organId: widget.argument.params);
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
@@ -40,7 +43,7 @@ class _ContactListState extends State<ContactList> {
         pullPagination();
       }
     });
-    
+
     _getStudentList();
   }
 
@@ -49,24 +52,52 @@ class _ContactListState extends State<ContactList> {
     super.dispose();
     scrollController.dispose();
   }
-  
-  
+
   @override
   Widget build(BuildContext context) {
-    // RefreshIndicator(child: list(context), onRefresh: _push)
-    
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () {})
-        ],
-      ),
-      body: firstLoading?loadingWidget():RefreshIndicator(child: list(context), onRefresh: _push),
+      appBar: SearchAppBar(
+          appBarController: appBarController,
+          primary: Theme.of(context).primaryColor,
+          searchHint: '输入姓名',
+          onChange: (String value) {
+            if (value != '') {
+              //  print(value == '');
+              this.setState(() {
+                health.name = value;
+                pagination.page = 1;
+                studentList = [];
+              });
+              _getStudentList();
+            }
+          },
+          mainAppBar: AppBar(
+            title: Text(widget.title),
+            actions: <Widget>[
+              InkWell(
+                  child: Icon(Icons.search),
+                  onTap: () {
+                    appBarController.stream.add(true);
+                  })
+            ],
+          )),
+      body: content(),
       floatingActionButton:
           FloatingActionButton(onPressed: _onpress, child: Text('确认')),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  Widget content() {
+    if (firstLoading == true) {
+      return Center(child: Text('加载中...'));
+    } else {
+      if (studentList.length == 0) {
+        return Center(child: Text('--没有数据--'));
+      } else {
+        return RefreshIndicator(child: list(context), onRefresh: _push);
+      }
+    }
   }
 
   Widget loadingWidget() {
@@ -98,6 +129,12 @@ class _ContactListState extends State<ContactList> {
                   this.selected = _index;
                   health.stuNum = studentList[_index]['studentNum'];
                   health.stuNumValue = studentList[_index]['studentName'];
+                  health.schoolName = studentList[_index]['schoolName'];
+                  health.school = studentList[_index]['school'];
+                  health.province = studentList[_index]['province'];
+                  health.provinceName = studentList[_index]['provinceName'];
+                  health.name = studentList[_index]['studentName'];
+                  // health.personType = studentList[0]['personType'];
                 });
               },
             ),
@@ -132,36 +169,50 @@ class _ContactListState extends State<ContactList> {
     });
     var res = await getStudentList(stu: stu, pagination: pagination);
     this.setState(() {
-      studentList = res['list'];
-      if (studentList.length > 0) {
-        health.stuNum = studentList[0]['studentNum'];
-        health.stuNumValue = studentList[0]['studentName'];
+      if (res != null) {
+        studentList = res['list'];
+
+        if (studentList.length > 0) {
+          health.stuNum = studentList[0]['studentNum'];
+          health.stuNumValue = studentList[0]['studentName'];
+          health.schoolName = studentList[0]['schoolName'];
+          health.school = studentList[0]['school'];
+          health.province = studentList[0]['province'];
+          health.provinceName = studentList[0]['provinceName'];
+          health.name = studentList[0]['studentName'];
+          // health.personType = studentList[0]['personType'];
+        }
+        pagination.totalCount = res['totalCount'];
+        pagination.pageSize = res['totalCount'];
       }
-      pagination.totalCount = res['totalCount'];
-      pagination.pageSize = res['totalCount'];
     });
   }
 
   Future _getStudentList() async {
     //  Student stu = Student(organId:'RSFUBDUHPHCKPWXANVMWJHPTRXCYAWZC');
-    
+
     var res = await getStudentList(stu: stu, pagination: pagination);
-    //  print('res$res');
-    
+    print('res$res');
+
     this.setState(() {
-      
       this.firstLoading = false;
       // studentList = res['list'];
-      studentList.addAll(res['list']);
-      // print('studentList:$studentList');
-      if (studentList.length > 0) {
-        health.stuNum = studentList[0]['studentNum'];
-        health.stuNumValue = studentList[0]['studentName'];
+      if (res != null) {
+        studentList.addAll(res['list']);
+        // print('studentList:$studentList');
+        if (studentList.length > 0) {
+          health.stuNum = studentList[0]['studentNum'];
+          health.stuNumValue = studentList[0]['studentName'];
+          health.schoolName = studentList[0]['schoolName'];
+          health.school = studentList[0]['school'];
+          health.province = studentList[0]['province'];
+          health.provinceName = studentList[0]['provinceName'];
+          health.name = studentList[0]['studentName'];
+          // health.personType = studentList[0]['personType'];
+        }
+        pagination.totalCount = res['totalCount'];
+        pagination.pageSize = res['totalCount'];
       }
-      pagination.totalCount = res['totalCount'];
-      pagination.pageSize = res['totalCount'];
-
-      // this.stuWidgetList = list(context,stuList: res['list']);
     });
   }
 }

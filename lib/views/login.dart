@@ -127,7 +127,7 @@ class _LoginState extends State<Login> {
 
   Future _login({String loginName, String password}) async {
     var res = await login(loginName: loginName, password: password);
-    // print('res$res');
+    print('res$res');
     if (res != null) {
       _profile.isLogin = true;
       _profile.token = res['token'];

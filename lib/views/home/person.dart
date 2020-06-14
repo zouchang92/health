@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:health/model/dictionary.dart';
 import 'package:health/model/global.dart';
 import 'package:health/model/profile.dart';
-import 'package:health/store/profileNotify.dart';
-import 'package:provider/provider.dart';
+
 
 class Person extends StatefulWidget {
   @override
@@ -10,17 +10,15 @@ class Person extends StatefulWidget {
 }
 
 class _PersonState extends State<Person> {
-  Profile _profile;
+  Profile _profile = Global.profile;
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProfileNotify>(
-        builder: (context, ProfileNotify profileNotify, _) =>
-            listview(profileNotify));
+    return listview();
   }
 
-  Widget listview(ProfileNotify profileNotify) {
-    _profile = profileNotify.value;
-    print('222${_profile.user.userName}');
+  Widget listview() {
+    // _profile = profileNotify.value;
+    print('222${_profile.user.userName}'); 
     return ListView(
       padding: EdgeInsets.all(0),
       physics: NeverScrollableScrollPhysics(),
@@ -28,7 +26,7 @@ class _PersonState extends State<Person> {
         infoCard(),
         listTile(title: '手机号码', value: _profile.user.phone),
         Divider(height: 1),
-        listTile(title: '性别', value: _profile.user.gender),
+        listTile(title: '性别', value:Dictionary.getNameByUniqueNameAndCode(code:_profile.user.gender,uniqueName: UniqueNameValues[UNIQUE_NAME.GENDER])),
         Divider(height: 1),
         listTile(title: '所属机构', value: _profile.user.organName),
         Divider(height: 1),

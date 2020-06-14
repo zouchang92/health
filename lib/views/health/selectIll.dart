@@ -24,7 +24,7 @@ class _SelectIllState extends State<SelectIll> {
   void initState() {
     args = new Argument();
     // temArg[UNIQUE_NAME.INFECTIONTYPE] = infectionList[0];
-    _health.measure = infectionList[0]['code'];
+    _health.infectionType = infectionList[0]['code'];
     _health.memo = infectionList[0]['name'];
     super.initState();
   }
@@ -42,7 +42,7 @@ class _SelectIllState extends State<SelectIll> {
             onValueChange: (_index) {
               this.setState(() {
                 // temArg[UNIQUE_NAME.INFECTIONTYPE] = infectionList[_index];
-                _health.measure = infectionList[_index]['code'];
+                _health.infectionType = infectionList[_index]['code'];
                 _health.memo = infectionList[_index]['name'];
               });
             },

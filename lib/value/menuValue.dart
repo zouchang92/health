@@ -22,7 +22,7 @@ class MenuValue{
       "picUrl":'images/icon/menu_icon_5.png'
     }
   ];
-  static List PARENT_VALUE = [{
+  static List PARENT_VALUE = [
     {
       "title":'学生请假',
       "path":'',
@@ -33,5 +33,5 @@ class MenuValue{
       "path":'',
       "picUrl":'images/icon/menu_icon_5.png'
     }
-  }];
+  ];
 }

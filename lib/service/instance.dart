@@ -19,6 +19,7 @@ class DioManager {
   factory DioManager() => _shared;
   // BuildContext context;
   Dio dio;
+
   DioManager._internal() {
     if (dio == null) {
       BaseOptions opt = BaseOptions(
@@ -44,7 +45,7 @@ class DioManager {
           data: data,
           queryParameters: params,
           options: Options(headers: {"token": Global.profile.token}));
-
+      print('response:$response');
       if (response != null) {
         if (loading) {
           dismiss();
@@ -59,7 +60,10 @@ class DioManager {
           return entity.data;
         } else {
           //消息提示
-          FLToast.error(text: entity.message);
+          // print('response:$response');
+          if (loading) {
+            FLToast.error(text: entity.message);
+          }
           // return ErrorEntity(code: entity.code, message: entity.message);
         }
       }

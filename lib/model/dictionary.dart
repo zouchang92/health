@@ -22,11 +22,24 @@ class Dictionary {
     Map item = _dics.firstWhere((element) => element['id']==id) as Map;
     return item;
   }
+  static String getNameByUniqueNameAndCode({String uniqueName,String code}){
+     
+     if(code==null){
+       return '';
+     }
+     List ulist = getByUniqueName(uniqueName);
+     Map item = ulist.firstWhere((element) => element['code'] == code);
+    if(uniqueName == 'hurtType'){
+        print('code:$item');
+     }
+     return item['name']??'';
+  }
 }
 
 enum UNIQUE_NAME{
   SYMPTOMTYPE,REGISTERTYPE,MEASURE,CHECKTYPE,ILLTYPE,
-  ILLCODE,HURTTYPE,INFECTIONTYPE,HURTSITE
+  ILLCODE,HURTTYPE,INFECTIONTYPE,HURTSITE,CLASSSTATUS,
+  PERSONTYPE,GENDER
 }
 
 
@@ -44,7 +57,10 @@ const UniqueNameValues = {
   UNIQUE_NAME.ILLCODE:'illCode',
   UNIQUE_NAME.HURTTYPE:'hurtType',
   UNIQUE_NAME.INFECTIONTYPE:'infectionType',
-  UNIQUE_NAME.HURTSITE:'hurtSite'
+  UNIQUE_NAME.HURTSITE:'hurtSite',
+  UNIQUE_NAME.CLASSSTATUS:'class_status',
+  UNIQUE_NAME.PERSONTYPE:'yqfkPersonType',
+  UNIQUE_NAME.GENDER:'gender'
 };
 
 const HealthTypeValues = {

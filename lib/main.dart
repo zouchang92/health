@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
         // print('routeSetting$routeSetting');
         String routeName = routeSetting.name;
 
-        print('${Global.profile.isLogin}');
+        // print('${Global.profile.isLogin}');
         if (Global.profile.isLogin != null && Global.profile.isLogin == true) {
           if (routes[routeName] != null) {
             return MaterialPageRoute(
