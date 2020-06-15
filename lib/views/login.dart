@@ -87,7 +87,7 @@ class _LoginState extends State<Login> {
                       // this.check = val;
                       this.setState(() {
                         this.check = val;
-                       });
+                      });
                       _profile.isChecked = val;
                       _profile.lastLoginAcount = _userController.text;
                       _profile.lastLoginPassword = _passwordController.text;
@@ -125,19 +125,29 @@ class _LoginState extends State<Login> {
     }
   }
 
-  Future _login({String loginName, String password}) async {
-    var res = await login(loginName: loginName, password: password);
-    print('res$res');
-    if (res != null) {
-      _profile.isLogin = true;
-      _profile.token = res['token'];
-      _profile.user = new User.fromJson(res);
-      Global.save();
-      var dics = await getDicts();
-      
-      _profile.dictionary = dics as List;
-      Global.save();
-      Navigator.of(context).pushNamed('/');
-    }
+  _login({String loginName, String password}) {
+    login(loginName: loginName, password: password).then((res) => {
+          if (res != null)
+            {
+              _profile.isLogin = true,
+              _profile.token = res['token'],
+              _profile.user = new User.fromJson(res),
+              Global.save(),
+              getDicts().then((dics) => {
+                    _profile.dictionary = dics as List,
+                    if (_profile.isChecked)
+                      {
+                        _profile.lastLoginAcount = loginName,
+                        _profile.lastLoginPassword = password,
+                      }else{
+                        _profile.lastLoginAcount = '',
+                        _profile.lastLoginPassword = ''
+
+                      },
+                    Global.save(),
+                    Navigator.of(context).pushNamed('/')
+                  })
+            }
+        });
   }
 }

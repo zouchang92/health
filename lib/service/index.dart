@@ -1,7 +1,10 @@
 
+import 'package:health/model/heaSafety.dart';
 import 'package:health/model/health.dart';
+import 'package:health/model/leaveForm.dart';
 import 'package:health/model/pagination.dart';
 import 'package:health/model/student.dart';
+import 'package:health/model/user.dart';
 
 import './instance.dart';
 import './api.dart';
@@ -10,6 +13,10 @@ login({String loginName, String password}){
     'loginName':loginName,
     'password':password
   });
+}
+
+loginOut(){
+  return DioManager().post(Api.loginOut);
 }
 
 healthReport(Health health){
@@ -37,6 +44,26 @@ healthList({Health health,Pagination pagination}){
 healthDelete(String id){
    return DioManager().post(Api.heaInfoDailyDelete,data: {"id":id});
 }
+
+
+/*平安上报-添加*/
+safetyReport(HeaSafety heaSafety){
+  return DioManager().post(Api.insertHeaDaily,data: filterEmpty(heaSafety.toJson()));
+}
+
+/*请假-列表*/
+getLeaveList({Pagination pagination,User user}){
+  Map a = user.toJson();
+  a.addAll(pagination.toJson());
+  return DioManager().post(Api.leaveList,data:filterEmpty(a),loading: false);
+} 
+
+/*请假申请*/ 
+applyLeave(LeaveForm leaveForm){
+  return DioManager().post(Api.applicationLeave,data: filterEmpty(leaveForm.toJson()));
+}
+
+
 
 Map filterEmpty(Map s){
   Map t = {};

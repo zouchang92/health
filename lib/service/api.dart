@@ -1,6 +1,8 @@
 // 接口注册
 class Api {
   static String login = '/account/login';
+
+  static String loginOut = '/account/logout';
   /*字典*/ 
   static String getDics = '/dict/listAllDictItem';
   
@@ -42,5 +44,10 @@ class Api {
   /*健康卡-更新*/ 
   static String heaInfoCardUpdate = '/heaInfo/update';
   
+  /*申请请假*/
+  static String applicationLeave = '/qj/request';
+
+  /*请假列表*/ 
+  static String leaveList = '/qj/listMy';
 
 }
