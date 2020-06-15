@@ -43,7 +43,9 @@ class _SafetyReportState extends State<SafetyReport> {
         actions: <Widget>[
           InkWell(
             child: Icon(Icons.list),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed('/safetyList');
+            },
           )
         ],
       ),
