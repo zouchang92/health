@@ -1,6 +1,9 @@
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:health/model/dictionary.dart';
+import 'package:health/model/global.dart';
+import 'package:health/model/heaSafety.dart';
+import 'package:health/service/index.dart';
 import 'package:health/widget/index.dart';
 
 class SafetyReport extends StatefulWidget {
@@ -11,21 +14,23 @@ class SafetyReport extends StatefulWidget {
 }
 
 class _SafetyReportState extends State<SafetyReport> {
-  
-  List bindClass = [
-    {"name": '高三（2）班', "picUrl": 'images/icon/menu_icon_3.png'},
-    {"name": '高三（2）班', "picUrl": 'images/icon/menu_icon_3.png'},
-    // {"name": '高三（2）班', "picUrl": 'images/icon/menu_icon_3.png'},
-    // {"name": '高三（2）班', "picUrl": 'images/icon/menu_icon_3.png'}
-  ];
-  List classStatus = Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.CLASSSTATUS]);
+  HeaSafety heaSafety = new HeaSafety();
+  List bindClass = Global.profile.user.classIdAndNames ?? [];
+  List classStatus =
+      Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.CLASSSTATUS]);
   // GlobalKey _tabKey = new GlobalKey();
   GlobalKey _formKey = new GlobalKey();
   @override
   void initState() {
-    
     super.initState();
-    
+    print('classStatus:$classStatus');
+    heaSafety.classId = bindClass.length > 0 ? bindClass[0]['classId'] : '';
+    heaSafety.className = bindClass.length > 0 ? bindClass[0]['className'] : '';
+    //  bindClass[0]['stuNum']
+    heaSafety.total =
+        bindClass.length > 0 ? bindClass[0]['stuNum'] ?? null : null;
+
+    heaSafety.status = int.parse(classStatus[0]['code']);
   }
 
   @override
@@ -35,26 +40,56 @@ class _SafetyReportState extends State<SafetyReport> {
       backgroundColor: Color(0xffeeeeee),
       appBar: AppBar(
         title: Text(widget.title),
-        actions: <Widget>[Icon(Icons.refresh)],
+        actions: <Widget>[
+          InkWell(
+            child: Icon(Icons.list),
+            onTap: () {
+              Navigator.of(context).pushNamed('/safetyList');
+            },
+          )
+        ],
       ),
       body: Column(children: <Widget>[
         tabbar(),
+        // ListView(children: <Widget>[form()])
         Flexible(
             flex: 1,
             child: Container(
               margin: EdgeInsets.only(top: 20.0),
               color: Colors.white,
-              child: ListView(children: <Widget>[form()]),
+              child:todayIsSub()?hasSubmit():ListView(children: <Widget>[form()]),
             )),
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
-          child: RaisedButton(
-            onPressed: () {},
-            child: Text('立即提交'),
+        Offstage(
+          offstage: todayIsSub(),
+          child: Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
+            child: RaisedButton(
+              onPressed: () {
+                _safetyReport();
+              },
+              child: Text('立即提交'),
+            ),
           ),
-        )
+        ),
       ]),
+    );
+  }
+
+  Widget hasSubmit() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          CircleAvatar(
+            radius: 60,
+            backgroundColor: Color(0xffeceaf2),
+            child: Icon(Icons.check, size: 80, color: Color(0xffae96bc)),
+          ),
+          Text('今日已提交',
+              style: TextStyle(fontSize: 20, color: Color(0xff666666)))
+        ],
+      ),
     );
   }
 
@@ -62,7 +97,7 @@ class _SafetyReportState extends State<SafetyReport> {
   Widget tabbar() {
     // _tabController = TabController(length: bindClass.length, vsync: this);
     List<Widget> _bindClass =
-        bindClass.map((e) => tabbarItem(title: e['name'])).toList();
+        bindClass.map((e) => tabbarItem(title: e['className'])).toList();
     return DefaultTabController(
         length: bindClass.length,
         initialIndex: 0,
@@ -75,6 +110,13 @@ class _SafetyReportState extends State<SafetyReport> {
               labelStyle: TextStyle(color: Colors.blue),
               tabs: _bindClass,
               isScrollable: true,
+              onTap: (int val) {
+                this.setState(() {
+                  heaSafety.total = bindClass[val]['stuNum'];
+                  heaSafety.classId = bindClass[val]['classId'];
+                  heaSafety.className = bindClass[val]['className'];
+                });
+              },
             )));
   }
 
@@ -82,8 +124,7 @@ class _SafetyReportState extends State<SafetyReport> {
   Widget tabbarItem({String title}) {
     return Tab(
       // padding: EdgeInsets.symmetric(vertical: 10.0),
-      text: title,
-      icon: Image.asset('images/icon/menu_icon_3.png'),
+      text: title ?? '',
     );
   }
 
@@ -94,54 +135,95 @@ class _SafetyReportState extends State<SafetyReport> {
       child: Column(children: <Widget>[
         ListTile(
           title: Text('总人数'),
-          trailing: Text('2',style: TextStyle(color:Color(0xff666666))),
+          trailing: Text(heaSafety.total.toString() ?? '',
+              style: TextStyle(color: Color(0xff666666))),
         ),
         Divider(height: 1),
-        stepper(title: '出勤人数:',onChanged: (val){
-          print(val);
-        }),
+        stepper(
+            title: '出勤人数:',
+            onChanged: (val) {
+              // print(val);
+              heaSafety.cqTotal = val;
+            }),
         Divider(height: 1),
-        stepper(title: '体温正常人数:',onChanged: (val){
-          print(val);
-        }),
+        stepper(
+            title: '体温正常人数:',
+            onChanged: (val) {
+              // print(val);
+              heaSafety.zcTotal = val;
+            }),
         Divider(height: 1),
-        stepper(title: '发热人数:',onChanged: (val){
-          print(val);
-        }),
+        stepper(
+            title: '发热人数:',
+            onChanged: (val) {
+              // print(val);
+              heaSafety.frTotal = val;
+            }),
         Divider(height: 1),
-        stepper(title: '伤害人数:',onChanged: (val){
-          print(val);
-        }),
+        stepper(
+            title: '伤害人数:',
+            onChanged: (val) {
+              // print(val);
+              heaSafety.shTotal = val;
+            }),
         Divider(height: 1),
-        stepper(title: '病假人数:',onChanged: (val){
-          print(val);
-        }),
-        Divider(height:1),
+        stepper(
+            title: '病假人数:',
+            onChanged: (val) {
+              // print(val);
+              heaSafety.qjTotal = val;
+            }),
+        Divider(height: 1),
         ListTile(
           title: Text('班级状态:'),
           trailing: RadioOptions(
             data: classStatus,
             label: 'name',
-            onValueChange:(value){
-
+            onValueChange: (value) {
+              heaSafety.status = int.parse(classStatus[value]['stuNum']);
             },
-            
           ),
         )
-
       ]),
     );
   }
 
-  Widget stepper({String title,Function onChanged}){
-   final FLCountStepperController _controller = FLCountStepperController(max: 10);
-   return ListTile(
-     title: Text(title),
-     trailing: FLCountStepper(
-       disableInput: false,
-       controller: _controller,
-       onChanged:onChanged,
-    ),
-   );
+  Widget stepper({String title, Function onChanged}) {
+    final FLCountStepperController _controller =
+        FLCountStepperController(max: 10);
+    return ListTile(
+      title: Text(title),
+      trailing: FLCountStepper(
+        disableInput: false,
+        controller: _controller,
+        onChanged: onChanged,
+      ),
+    );
+  }
+
+  Future _safetyReport() async {
+    
+
+    await safetyReport(heaSafety);
+    Global.profile.heaSafetySubTime = DateTime.now();
+    Global.save();
+  }
+
+  /*true时表示已提交*/
+  bool todayIsSub() {
+    DateTime markTime = Global.profile.heaSafetySubTime;
+    if (markTime == null) {
+      return false;
+    } else {
+      DateTime now = DateTime.now();
+      DateTime nowStart = DateTime(now.year, now.month, now.day);
+      DateTime nowEnd = DateTime(now.year, now.month, now.day, 24, 00);
+      if (markTime.isAfter(nowStart) && markTime.isBefore(nowEnd)) {
+        return true;
+      } else {
+        return false;
+      }
+      // now.isAtSameMomentAs(markTime);
+    }
   }
 }

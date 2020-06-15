@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:health/service/config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'profile.dart';
@@ -20,6 +21,12 @@ class Global{
      prefs.clear();
      profile.isLogin = false;
      save();
+  }
+  static String getHttpPicUrl(String url){
+    // let http = 
+    String http = Config.baseApi.replaceAllMapped('zhxyx/', (match) => '');
+    // print('http:$http');
+    return http+url;
   }
   static Future init() async {
     prefs = await SharedPreferences.getInstance();

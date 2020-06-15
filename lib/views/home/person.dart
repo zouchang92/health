@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:health/model/dictionary.dart';
 import 'package:health/model/global.dart';
 import 'package:health/model/profile.dart';
+import 'package:health/service/config.dart';
 
 
 class Person extends StatefulWidget {
@@ -18,7 +19,8 @@ class _PersonState extends State<Person> {
 
   Widget listview() {
     // _profile = profileNotify.value;
-    print('222${_profile.user.userName}'); 
+    print('222${_profile.user.schLogo}'); 
+    print('${Global.getHttpPicUrl(_profile.user.schLogo)}');
     return ListView(
       padding: EdgeInsets.all(0),
       physics: NeverScrollableScrollPhysics(),
@@ -64,7 +66,10 @@ class _PersonState extends State<Person> {
               child: CircleAvatar(
                   radius: 35.0,
                   backgroundColor: Color(0xffe3dfeb),
-                  backgroundImage: AssetImage('images/upload_bg.png')),
+                  // backgroundImage: AssetImage('images/upload_bg.png')
+                  backgroundImage:_profile.user.photo==''?AssetImage('images/upload_bg.png'):NetworkImage(Global.getHttpPicUrl(_profile.user.photo)),
+                  
+                ),
             ),
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

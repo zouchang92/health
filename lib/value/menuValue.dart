@@ -25,7 +25,7 @@ class MenuValue{
   static List PARENT_VALUE = [
     {
       "title":'学生请假',
-      "path":'',
+      "path":'/leaveApply',
       "picUrl":'images/icon/menu_icon_4.png'
     },
     {

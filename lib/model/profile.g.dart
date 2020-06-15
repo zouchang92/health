@@ -20,6 +20,9 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
     lastLoginPassword: json['lastLoginPassword'] as String,
     token: json['token'] as String,
     dictionary: json['dictionary'] as List,
+    heaSafetySubTime: json['heaSafetySubTime'] == null
+        ? null
+        : DateTime.parse(json['heaSafetySubTime'] as String),
   );
 }
 
@@ -32,4 +35,5 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'lastLoginPassword': instance.lastLoginPassword,
       'token': instance.token,
       'dictionary': instance.dictionary,
+      'heaSafetySubTime': instance.heaSafetySubTime?.toIso8601String(),
     };
