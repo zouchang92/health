@@ -14,7 +14,7 @@ import 'config.dart';
 var dismiss;
 
 class DioManager {
-  static final baseApi = Config.baseApi_1;
+  static final baseApi = Config.baseApi;
   static final DioManager _shared = DioManager._internal();
   factory DioManager() => _shared;
   // BuildContext context;

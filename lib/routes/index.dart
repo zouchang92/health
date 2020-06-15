@@ -16,5 +16,6 @@ final routes = {
   '/healthList':(context)=>HealthList(),
   '/leaveList':(context)=>LeaveList(),
   '/healthCardList':(context)=>HealthCardList(),
-  '/healthDetail':(context)=>HealthDetail()
+  '/healthDetail':(context)=>HealthDetail(),
+  '/healthCardReport':(context)=>HealthCardReport()
 };

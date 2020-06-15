@@ -30,7 +30,7 @@ class MenuValue{
     },
     {
       "title":'学生健康卡',
-      "path":'',
+      "path":'/healthCardReport',
       "picUrl":'images/icon/menu_icon_5.png'
     }
   ];

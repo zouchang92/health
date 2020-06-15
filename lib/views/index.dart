@@ -11,3 +11,4 @@ export './health/list.dart';
 export './leave/list.dart';
 export './healthcard/list.dart';
 export './health/detail.dart';
+export './healthcard/report.dart';

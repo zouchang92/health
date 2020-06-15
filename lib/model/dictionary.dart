@@ -29,8 +29,8 @@ class Dictionary {
      }
      List ulist = getByUniqueName(uniqueName);
      Map item = ulist.firstWhere((element) => element['code'] == code);
-    if(uniqueName == 'hurtType'){
-        print('code:$item');
+     if(item==null){
+       return '';
      }
      return item['name']??'';
   }

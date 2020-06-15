@@ -17,6 +17,7 @@ class _LeaveListState extends State<LeaveList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(title:Text(widget.title)),
       body: Column(
         children: <Widget>[

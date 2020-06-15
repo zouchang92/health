@@ -26,6 +26,7 @@ class _PersonState extends State<Person> {
         infoCard(),
         listTile(title: '手机号码', value: _profile.user.phone),
         Divider(height: 1),
+        // Dictionary.getNameByUniqueNameAndCode(code:_profile.user.gender,uniqueName: UniqueNameValues[UNIQUE_NAME.GENDER])
         listTile(title: '性别', value:Dictionary.getNameByUniqueNameAndCode(code:_profile.user.gender,uniqueName: UniqueNameValues[UNIQUE_NAME.GENDER])),
         Divider(height: 1),
         listTile(title: '所属机构', value: _profile.user.organName),

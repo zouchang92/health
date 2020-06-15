@@ -1,6 +1,7 @@
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:simple_search_bar/simple_search_bar.dart';
 
 class HealthCardList extends StatefulWidget {
   final String title = '学生健康卡';
@@ -10,6 +11,7 @@ class HealthCardList extends StatefulWidget {
 
 class _HealthCardListState extends State<HealthCardList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final AppBarController appBarController = AppBarController();
   List _bindClass = [
     {"name": '高一班', "id": '1'},
     {"name": '高三班', "id": '2'}
@@ -17,11 +19,29 @@ class _HealthCardListState extends State<HealthCardList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:Text(widget.title)),
+      appBar: SearchAppBar(
+        appBarController: appBarController,
+        searchHint: '搜索',
+        mainAppBar: AppBar(
+          title:Text(widget.title),
+          actions: <Widget>[
+            InkWell(
+              child: Icon(Icons.search),
+              onTap: (){
+                appBarController.stream.add(true);
+              },
+            )
+          ],
+        ),
+        primary: Theme.of(context).primaryColor,
+        onChange: (val){
+
+        },
+      ),
       body:Column(
         children: <Widget>[
           FLListTile(
-            title: Text('所属班级'),
+            title: Text('班级信息:'),
             /*Icon(Icons.navigate_next)*/
             trailing: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
@@ -31,6 +51,7 @@ class _HealthCardListState extends State<HealthCardList> {
                 ]),
             onTap: showPicker,
           ),
+          Divider(height:1)
         ],
       ) ,
     );
