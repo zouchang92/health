@@ -54,6 +54,7 @@ class _LeaveListState extends State<LeaveList> {
               pagination.page = 1;
               dataList = [];
             });
+            return _getLeaveList();
           }),
     );
   }

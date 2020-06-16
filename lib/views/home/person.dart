@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:health/model/dictionary.dart';
 import 'package:health/model/global.dart';
 import 'package:health/model/profile.dart';
-import 'package:health/service/config.dart';
+// import 'package:health/service/config.dart';
 
 
 class Person extends StatefulWidget {

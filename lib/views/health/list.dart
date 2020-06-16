@@ -102,6 +102,7 @@ class _HealthListState extends State<HealthList> {
             onRefresh: _push);
       }
     }
+    return Container();
   }
 
   Widget listItem(Map item) {
@@ -274,12 +275,12 @@ class _HealthListState extends State<HealthList> {
     });
   }
 
-  Future _healthDelete(String id) async {
-    await healthDelete(id);
-    this.setState(() {
-      dataList = dataList.where((element) => element['id'] != id).toList();
-    });
-  }
+  // Future _healthDelete(String id) async {
+  //   await healthDelete(id);
+  //   this.setState(() {
+  //     dataList = dataList.where((element) => element['id'] != id).toList();
+  //   });
+  // }
 
   void _checkDetail(Map item) {
     // print('item$item');
