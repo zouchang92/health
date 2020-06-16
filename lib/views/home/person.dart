@@ -21,12 +21,15 @@ class _PersonState extends State<Person> {
     // _profile = profileNotify.value;
     print('222${_profile.user.schLogo}'); 
     print('${Global.getHttpPicUrl(_profile.user.schLogo)}');
-    return ListView(
+    return SingleChildScrollView(
       padding: EdgeInsets.all(0),
-      physics: NeverScrollableScrollPhysics(),
-      children: <Widget>[
+      
+      child: Column(
+        children:<Widget>[
         infoCard(),
         listTile(title: '手机号码', value: _profile.user.phone),
+        Divider(height: 1),
+        listTile(title: '证件号码',value: _profile.user.credNum),
         Divider(height: 1),
         // Dictionary.getNameByUniqueNameAndCode(code:_profile.user.gender,uniqueName: UniqueNameValues[UNIQUE_NAME.GENDER])
         listTile(title: '性别', value:Dictionary.getNameByUniqueNameAndCode(code:_profile.user.gender,uniqueName: UniqueNameValues[UNIQUE_NAME.GENDER])),
@@ -35,7 +38,8 @@ class _PersonState extends State<Person> {
         Divider(height: 1),
         listTile(title: '所在校区', value: _profile.user.schName),
         Divider(height: 1),
-        Padding(
+        Container(
+          width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
           child: RaisedButton(
             onPressed: () {
@@ -48,6 +52,7 @@ class _PersonState extends State<Person> {
           ),
         ),
       ],
+      ),
     );
   }
 

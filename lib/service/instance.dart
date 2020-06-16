@@ -14,7 +14,7 @@ import 'config.dart';
 var dismiss;
 
 class DioManager {
-  static final baseApi = Config.baseApi;
+  static final baseApi = Config.baseApi_1;
   static final DioManager _shared = DioManager._internal();
   factory DioManager() => _shared;
   // BuildContext context;
@@ -68,6 +68,7 @@ class DioManager {
         }
       }
     } on DioError catch (e) {
+      
       if (loading) {
         dismiss();
       }
@@ -98,9 +99,10 @@ class DioManager {
               );
             });
       } else {
-        FLToast.error(text: er.message);
+        print(er.message);
+        FLToast.error(text: '网络异常!');
       }
-
+      dio.close();
       // print(er.code);
       // return er;
     }
@@ -161,8 +163,10 @@ class DioManager {
               );
             });
       } else {
-        FLToast.error(text: er.message);
+        FLToast.error(text:'网络异常!');
+        
       }
+      dio.close();
     }
   }
 

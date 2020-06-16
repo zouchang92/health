@@ -1,6 +1,4 @@
-import 'package:json_annotation/json_annotation.dart';
-part 'leaveForm.g.dart';
-@JsonSerializable()
+import 'dart:io';
 class LeaveForm{
   String startTime;
   String endTime;
@@ -10,10 +8,10 @@ class LeaveForm{
   String userNum;
   String reason;
   String password;
-  // StringBuffer file;
-  LeaveForm({this.startTime,this.endTime,this.orgId,this.password,this.reason,
-    this.userId,this.userName,this.userNum
-  });
-  factory LeaveForm.fromJson(Map<String,dynamic> json)=>_$LeaveFormFromJson(json);
-  Map<String,dynamic> toJson()=> _$LeaveFormToJson(this);
+  // List<MultipartFile> file;
+  List<File> file;
+  // LeaveForm({this.startTime,this.endTime,this.orgId,this.password,this.reason,
+  //   this.userId,this.userName,this.userNum,this.file
+  // });
+  
 }

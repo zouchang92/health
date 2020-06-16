@@ -18,7 +18,7 @@ import 'routes/index.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  // requestPermission();
+  requestPermission();
   final _profileNotify = ProfileNotify();
 
   Global.init().then((e) => runApp(Provider<Profile>.value(
@@ -36,7 +36,7 @@ void main() {
 }
 
 Future requestPermission() async {
-  PermissionHandler().requestPermissions([PermissionGroup.photos]);
+  PermissionHandler().requestPermissions([PermissionGroup.photos,PermissionGroup.camera]);
 }
 
 class MyApp extends StatelessWidget {
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: [
         const Locale('zh', 'CH'),
-        const Locale('en', 'US'),
+        // const Locale('en', 'US'),
       ],
       theme: ThemeData(
           primarySwatch: Colors.blue,

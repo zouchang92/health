@@ -93,7 +93,7 @@ class _LoginState extends State<Login> {
                       _profile.isChecked = val;
                       _profile.lastLoginAcount = _userController.text;
                       _profile.lastLoginPassword = _passwordController.text;
-                      // Global.save();
+                      Global.save();
                     }),
                 Text(LoginValue.checkBoxText)
               ]),

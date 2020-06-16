@@ -16,6 +16,7 @@ class HealthList extends StatefulWidget {
 
 class _HealthListState extends State<HealthList> {
   final AppBarController appBarController = AppBarController();
+  ScrollController scrollController = ScrollController();
   Health health = new Health(personType: '1');
   Pagination pagination = new Pagination(page: 1, rows: 10);
   List dataList = [];
@@ -24,7 +25,22 @@ class _HealthListState extends State<HealthList> {
   @override
   void initState() {
     super.initState();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        // print('滑动到了最底部${scrollController.position.pixels}');
+        if(pagination.pageSize == pagination.totalCount){
+          _healthList();
+        }
+      }
+    });
     _healthList();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
   }
 
   @override
@@ -80,8 +96,9 @@ class _HealthListState extends State<HealthList> {
         return Center(child: Text('--没有数据--'));
       } else {
         return RefreshIndicator(
-            child:
-                ListView(children: dataList.map((e) => listItem(e)).toList()),
+            child: ListView(
+                controller: scrollController,
+                children: dataList.map((e) => listItem(e)).toList()),
             onRefresh: _push);
       }
     }
@@ -89,18 +106,18 @@ class _HealthListState extends State<HealthList> {
 
   Widget listItem(Map item) {
     return GestureDetector(
-        child: Card(
-      color: Color(0xffae96bc),
-      margin: EdgeInsets.all(15.0),
-      clipBehavior: Clip.antiAlias,
-      elevation: 5.0,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15.0))),
-      child: cardContent(item),
-    ),
-    onTap: (){
-      _checkDetail(item);
-    },
+      child: Card(
+        color: Color(0xffae96bc),
+        margin: EdgeInsets.all(15.0),
+        clipBehavior: Clip.antiAlias,
+        elevation: 5.0,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15.0))),
+        child: cardContent(item),
+      ),
+      onTap: () {
+        _checkDetail(item);
+      },
     );
   }
 
@@ -126,10 +143,10 @@ class _HealthListState extends State<HealthList> {
                           child: Text(item['name'] ?? '',
                               style: TextStyle(color: Colors.white))),
                     ]),
-                    Chip(
-                        backgroundColor: Color(0xffff0079),
-                        label:
-                            Text('未复课', style: TextStyle(color: Colors.white)))
+                    // Chip(
+                    //     backgroundColor: Color(0xffff0079),
+                    //     label:
+                    //         Text('未复课', style: TextStyle(color: Colors.white)))
                   ],
                 ),
               ),
@@ -189,13 +206,13 @@ class _HealthListState extends State<HealthList> {
                       Text(item['healDate'] ?? '',
                           style: TextStyle(color: Colors.white))
                     ]),
-                Chip(
-                  backgroundColor: Color(0xff0099db),
-                  label: Text('复课', style: TextStyle(color: Colors.white)),
-                  // onDeleted: () {
-                  //   _healthDelete(item['id']);
-                  // },
-                )
+                // Chip(
+                //   backgroundColor: Color(0xff0099db),
+                //   label: Text('复课', style: TextStyle(color: Colors.white)),
+                //   // onDeleted: () {
+                //   //   _healthDelete(item['id']);
+                //   // },
+                // )
               ]),
         )
       ],
@@ -264,8 +281,9 @@ class _HealthListState extends State<HealthList> {
     });
   }
 
-  void _checkDetail(Map item){
+  void _checkDetail(Map item) {
     // print('item$item');
-    Navigator.of(context).pushNamed('/healthDetail',arguments: Argument(params: item));
+    Navigator.of(context)
+        .pushNamed('/healthDetail', arguments: Argument(params: item));
   }
 }

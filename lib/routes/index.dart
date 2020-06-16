@@ -19,5 +19,6 @@ final routes = {
   '/healthDetail':(context)=>HealthDetail(),
   '/healthCardReport':(context)=>HealthCardReport(),
   '/safetyList':(context)=>SafetyList(),
-  '/leaveApply':(context)=>LeaveApply()
+  '/leaveApply':(context)=>LeaveApply(),
+  '/healthCardDetail':(context)=>HealthCardDetail(argument: ModalRoute.of(context).settings.arguments)
 };

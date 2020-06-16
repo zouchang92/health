@@ -14,3 +14,4 @@ export './healthcard/report.dart';
 export './safetyReport/list.dart';
 export './leave/list.dart';
 export './leave/apply.dart';
+export './healthcard/detail.dart';

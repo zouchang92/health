@@ -1,4 +1,4 @@
-
+import 'package:health/model/heaCard.dart';
 import 'package:health/model/heaSafety.dart';
 import 'package:health/model/health.dart';
 import 'package:health/model/leaveForm.dart';
@@ -6,6 +6,7 @@ import 'package:health/model/news.dart';
 import 'package:health/model/pagination.dart';
 import 'package:health/model/student.dart';
 import 'package:health/model/user.dart';
+
 
 import './instance.dart';
 import './api.dart';
@@ -66,9 +67,9 @@ getLeaveList({Pagination pagination,User user}){
 } 
 
 /*请假申请*/ 
-applyLeave(LeaveForm leaveForm){
-  return DioManager().post(Api.applicationLeave,data: filterEmpty(leaveForm.toJson()));
-}
+// applyLeave(LeaveForm leaveForm){
+//   return DioManager().post(Api.applicationLeave,data: filterEmpty(leaveForm.toJson()));
+// }
 
 /*通知列表*/
 getNewsList({News news,Pagination pagination}){
@@ -76,6 +77,25 @@ getNewsList({News news,Pagination pagination}){
   a.addAll(pagination.toJson());
   return DioManager().post(Api.newsList,data:filterEmpty(a));
 } 
+/*健康卡-提交*/ 
+heaCardAdd(HealthCard healthCard){
+  return DioManager().post(Api.heaInfoCardInsert,data:filterEmpty(healthCard.toJson()));
+}
+
+/*健康卡列表*/ 
+heaCardList({HealthCard healthCard,Pagination pagination}){
+  Map a = healthCard.toJson();
+  a.addAll(pagination.toJson());
+  return DioManager().post(Api.heaInfoCardList,data: filterEmpty(a),loading: false);
+}
+/*文件上传*/ 
+// _uploadFile(File file){
+//   String path = file.path;
+//   String name = path.substring(path.lastIndexOf("/") + 1, path.length);
+//   String suffix = path.substring(path.lastIndexOf(".") + 1, path.length);
+//   FormData formData = new FormData(file:);
+//   return DioManager().post(Api.uploadFile);
+// }
 
 
 

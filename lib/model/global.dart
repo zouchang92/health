@@ -24,7 +24,7 @@ class Global{
   }
   static String getHttpPicUrl(String url){
     // let http = 
-    String http = Config.baseApi.replaceAllMapped('zhxyx/', (match) => '');
+    String http = Config.baseApi_1.replaceAllMapped('zhxyx/', (match) => '');
     // print('http:$http');
     return http+url;
   }

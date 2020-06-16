@@ -52,4 +52,7 @@ class Api {
   
   /*通知列表*/
   static String newsList = '/schNews/getList';
+
+  /*文件上传-通用*/ 
+  static String uploadFile = '/upload/publicUpload';
 }

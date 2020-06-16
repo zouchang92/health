@@ -44,6 +44,7 @@ dependencies:
   check_radio_group: ^2.0.2
   search_app_bar: ^1.0.2+2
   simple_search_bar: ^0.1.7
+  image_picker: ^0.6.7+2
 
 
 dev_dependencies:

@@ -43,7 +43,7 @@ class _MenuState extends State<Menu> {
       elevation: 5.0,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(15.0))),
-      child:images.length>0?swiper():swiperItem(imageUrl:defalutBanner,title:'暂无通知'),
+      child:images.length>0?swiper():swiperItem(imageUrl:null,title:'暂无通知'),
     );
   }
 
@@ -60,7 +60,7 @@ Text('更多',style: TextStyle(color:Colors.white))
           itemBuilder: (_, index) {
             // print(images[index]);
             return swiperItem(
-                imageUrl: images[index]['cover'],
+                imageUrl: images[index]['cover']??null,
                 title: images[index]['title']);
           },
           autoplay: true,
