@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health/model/global.dart';
+import 'package:health/model/news.dart';
+import 'package:health/model/pagination.dart';
 import 'package:health/model/profile.dart';
 import 'package:health/model/user.dart';
 import 'package:health/service/index.dart';
@@ -145,7 +147,12 @@ class _LoginState extends State<Login> {
 
                       },
                     Global.save(),
-                    Navigator.of(context).pushNamed('/')
+                    // Navigator.of(context).pushNamed('/')
+                    getNewsList(news: News(),pagination: Pagination(page: 1,rows:3)).then((news)=>{
+                      _profile.news = news['list'],
+                      Global.save(),
+                      Navigator.of(context).pushNamed('/')
+                    })
                   })
             }
         });

@@ -49,5 +49,7 @@ class Api {
 
   /*请假列表*/ 
   static String leaveList = '/qj/listMy';
-
+  
+  /*通知列表*/
+  static String newsList = '/schNews/getList';
 }

@@ -2,6 +2,7 @@
 import 'package:health/model/heaSafety.dart';
 import 'package:health/model/health.dart';
 import 'package:health/model/leaveForm.dart';
+import 'package:health/model/news.dart';
 import 'package:health/model/pagination.dart';
 import 'package:health/model/student.dart';
 import 'package:health/model/user.dart';
@@ -25,7 +26,7 @@ healthReport(Health health){
 }
 
 getDicts(){
-  return DioManager().post(Api.getDics,loading: false);
+  return DioManager().post(Api.getDics);
 }
 
 getStudentList({Student stu,Pagination pagination}){
@@ -51,6 +52,12 @@ safetyReport(HeaSafety heaSafety){
   return DioManager().post(Api.insertHeaDaily,data: filterEmpty(heaSafety.toJson()));
 }
 
+safetyList(String checkDate){
+  
+  
+ return DioManager().post(Api.listHeaDaily,data:{"checkDate":checkDate},loading: false);
+}
+
 /*请假-列表*/
 getLeaveList({Pagination pagination,User user}){
   Map a = user.toJson();
@@ -62,6 +69,14 @@ getLeaveList({Pagination pagination,User user}){
 applyLeave(LeaveForm leaveForm){
   return DioManager().post(Api.applicationLeave,data: filterEmpty(leaveForm.toJson()));
 }
+
+/*通知列表*/
+getNewsList({News news,Pagination pagination}){
+  Map a = news.toJson();
+  a.addAll(pagination.toJson());
+  return DioManager().post(Api.newsList,data:filterEmpty(a));
+} 
+
 
 
 

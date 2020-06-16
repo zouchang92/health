@@ -21,7 +21,10 @@ class Profile{
   List dictionary;
   /*平安上报-提交标记-时间*/ 
   DateTime heaSafetySubTime;
-  Profile({this.user,this.lastLoginTime,this.isLogin,this.isChecked,
+
+  /*首页通知*/
+  List news; 
+  Profile({this.user,this.lastLoginTime,this.isLogin,this.isChecked,this.news,
     this.lastLoginAcount,this.lastLoginPassword,this.token,this.dictionary,this.heaSafetySubTime});
   factory Profile.fromJson(Map<String,dynamic> json)=>_$ProfileFromJson(json);
    Map<String, dynamic> toJson()=> _$ProfileToJson(this);

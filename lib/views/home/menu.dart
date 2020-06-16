@@ -11,14 +11,21 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   final int gridVIEWITEMCOUNT = 3;
+  final String defalutBanner = 'images/banner.png';
   /*轮播-通知-数据*/
   List images = [
-    {"picUrl": 'images/upload_bg.png', "title": '通知标题'},
-    {"picUrl": 'images/upload_bg.png', "title": '通知标题2'}
+    // {"picUrl": 'images/upload_bg.png', "title": '通知标题'},
+    // {"picUrl": 'images/upload_bg.png', "title": '通知标题2'}
   ];
   Profile _profile = Global.profile;
   /*菜单-教师*/
   List menus ;
+  @override
+  void initState() {
+    print(_profile.news);
+    images = _profile.news??[];
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
    
@@ -36,7 +43,7 @@ class _MenuState extends State<Menu> {
       elevation: 5.0,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(15.0))),
-      child: swiper(),
+      child:images.length>0?swiper():swiperItem(imageUrl:'images/banner.png',title:'暂无通知'),
     );
   }
 
@@ -53,7 +60,7 @@ Text('更多',style: TextStyle(color:Colors.white))
           itemBuilder: (_, index) {
             // print(images[index]);
             return swiperItem(
-                imageUrl: images[index]['picUrl'],
+                imageUrl: images[index]['cover']??defalutBanner,
                 title: images[index]['title']);
           },
           autoplay: true,
@@ -75,7 +82,7 @@ Text('更多',style: TextStyle(color:Colors.white))
   /*轮播-项*/
   Widget swiperItem({String imageUrl, String title}) {
     return Stack(
-      alignment: FractionalOffset(0.1, 0.8),
+      alignment: FractionalOffset(0.1, 0.2),
       children: <Widget>[
         Image.asset(
           imageUrl,
