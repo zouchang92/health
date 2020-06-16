@@ -43,7 +43,7 @@ class _MenuState extends State<Menu> {
       elevation: 5.0,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(15.0))),
-      child:images.length>0?swiper():swiperItem(imageUrl:'images/banner.png',title:'暂无通知'),
+      child:images.length>0?swiper():swiperItem(imageUrl:defalutBanner,title:'暂无通知'),
     );
   }
 
@@ -60,7 +60,7 @@ Text('更多',style: TextStyle(color:Colors.white))
           itemBuilder: (_, index) {
             // print(images[index]);
             return swiperItem(
-                imageUrl: images[index]['cover']??defalutBanner,
+                imageUrl: images[index]['cover'],
                 title: images[index]['title']);
           },
           autoplay: true,
@@ -84,11 +84,12 @@ Text('更多',style: TextStyle(color:Colors.white))
     return Stack(
       alignment: FractionalOffset(0.1, 0.2),
       children: <Widget>[
-        Image.asset(
-          imageUrl,
-          height: 200.0,
-          fit: BoxFit.cover,
-        ),
+        // Image.asset(
+        //   imageUrl,
+        //   height: 200.0,
+        //   fit: BoxFit.cover,
+        // ),
+        imageUrl!=null?Image.network(Global.getHttpPicUrl(imageUrl),height: 200,fit: BoxFit.cover):Image.asset(defalutBanner,height: 200,fit: BoxFit.cover),
         Text(
           title,
           softWrap: false,
@@ -102,7 +103,7 @@ Text('更多',style: TextStyle(color:Colors.white))
   /*功能按钮-container*/
   Widget gridContainer() {
     // print('profile${_profile.user.personType}');
-    if((_profile.user.personType!=null)&&(_profile.user.personType=='parentDuty')){
+    if((_profile.user.personType!=null)&&(_profile.user.personType=='studentDuty')){
          menus = MenuValue.PARENT_VALUE;
     }else{
       menus = MenuValue.TEACHER_VALUE;
