@@ -46,7 +46,8 @@ class Api {
   
   /*申请请假*/
   static String applicationLeave = '/qj/request';
-
+  /*请假审批*/
+  static String leaveApproval = '/qj/update'; 
   /*请假列表*/ 
   static String leaveList = '/qj/listMy';
   

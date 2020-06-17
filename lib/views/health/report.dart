@@ -31,7 +31,7 @@ class _HealthReportState extends State<HealthReport> {
       Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.CHECKTYPE]);
   List illTypeList =
       Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.ILLTYPE]);
-  List isHealList = ['是', '否'];
+  List isHealList = Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.BOOLEAN]);
   Health _health = new Health();
   bool visible = false;
   @override
@@ -57,12 +57,7 @@ class _HealthReportState extends State<HealthReport> {
       if(b[key]!=null){
         a[key] = b[key];
       }
-      // if (a[key] == null && b[key] != null) {
-      //   a[key] = b[key];
-      // }
-      // if(a[key]!=null&&b[key]!=null){
-      //   a[key] = b[key]
-      // }
+     
     });
     // print('a$a');
     return a;
@@ -245,7 +240,7 @@ class _HealthReportState extends State<HealthReport> {
               trailing: RadioOptions(
                 data: isHealList,
                 onValueChange: (int _index) {
-                  _health.isHealed = isHealList[_index];
+                  _health.isHealed = isHealList[_index]['code'];
                 },
               )),
           Divider(height: 1),

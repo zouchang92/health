@@ -15,3 +15,8 @@ export './safetyReport/list.dart';
 export './leave/list.dart';
 export './leave/apply.dart';
 export './healthcard/detail.dart';
+export './leave/aprovalList.dart';
+export './leave/detail.dart';
+export './leave/applyForStu.dart';
+export './news/list.dart';
+export './news/newsDateil.dart';

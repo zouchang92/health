@@ -1,8 +1,8 @@
-import 'dart:io';
+
 
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:health/store/profileNotify.dart';
@@ -28,11 +28,11 @@ void main() {
           child: MyApp(),
         ),
       )));
-  if (Platform.isAndroid) {
-    SystemUiOverlayStyle systemUiOverlayStyle =
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-  }
+  // if (Platform.isAndroid) {
+  //   SystemUiOverlayStyle systemUiOverlayStyle =
+  //       SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+  //   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  // }
 }
 
 Future requestPermission() async {
@@ -68,13 +68,13 @@ class MyApp extends StatelessWidget {
         // print('${Global.profile.isLogin}');
         if (Global.profile.isLogin != null && Global.profile.isLogin == true) {
           if (routes[routeName] != null) {
-            return MaterialPageRoute(
+            return MaterialPageRoute(maintainState: false,
                 builder: routes[routeName], settings: routeSetting);
           } else {
-            return MaterialPageRoute(builder: (context) => NotFound());
+            return MaterialPageRoute(builder: (context) => NotFound(),maintainState: false);
           }
         } else {
-          return MaterialPageRoute(builder: routes['/login']);
+          return MaterialPageRoute(builder: routes['/login'],maintainState: false);
         }
       },
       builder: (context, child) {

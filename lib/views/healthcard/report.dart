@@ -20,6 +20,7 @@ class _HealthCardReportState extends State<HealthCardReport> {
   @override
   void initState() {
     super.initState();
+    print(Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.PERSONTYPE]));
     healthCard = HealthCard(
       isDiscomfort: yn[0]['code'],
       isSuspected: yn[0]['code'],
@@ -28,7 +29,7 @@ class _HealthCardReportState extends State<HealthCardReport> {
       name: user.userName,
       idCard: user.id,
       phone: user.phone,
-      personType: user.personType
+      personType: Dictionary.getNameByUniqueNameAndCode(uniqueName:UniqueNameValues[UNIQUE_NAME.ORGTYPE] ,code:user.personType)
     );
   }
   @override

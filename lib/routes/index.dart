@@ -20,5 +20,10 @@ final routes = {
   '/healthCardReport':(context)=>HealthCardReport(),
   '/safetyList':(context)=>SafetyList(),
   '/leaveApply':(context)=>LeaveApply(),
-  '/healthCardDetail':(context)=>HealthCardDetail(argument: ModalRoute.of(context).settings.arguments)
+  '/healthCardDetail':(context)=>HealthCardDetail(argument: ModalRoute.of(context).settings.arguments),
+  '/approvalLeaveList':(context)=>LeaveApprovalList(),
+  '/leaveDateil':(context)=>LeaveDetail(arg:ModalRoute.of(context).settings.arguments),
+  '/LeaveApplyForStudent':(context)=>LeaveApplyForStudent(args: ModalRoute.of(context).settings.arguments),
+  '/newsList':(context)=>NewsList(),
+  '/newsDetail':(context)=>NewsDetail(args: ModalRoute.of(context).settings.arguments)
 };

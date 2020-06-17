@@ -1,14 +1,13 @@
+
 import 'package:dio/dio.dart';
 import 'package:health/model/heaCard.dart';
 import 'package:health/model/heaSafety.dart';
 import 'package:health/model/health.dart';
+import 'package:health/model/leaveForm.dart';
 // import 'package:health/model/leaveForm.dart';
 import 'package:health/model/news.dart';
 import 'package:health/model/pagination.dart';
 import 'package:health/model/student.dart';
-import 'package:health/model/user.dart';
-
-
 import './instance.dart';
 import './api.dart';
 login({String loginName, String password}){
@@ -61,31 +60,49 @@ safetyList(String checkDate){
 }
 
 /*请假-列表*/
-getLeaveList({Pagination pagination,User user}){
-  Map a = user.toJson();
-  a.addAll(pagination.toJson());
-  return DioManager().post(Api.leaveList,data:filterEmpty(a),loading: false);
+getLeaveList({Pagination pagination,String createUserId,String personType,String status}){
+  Map a = pagination.toJson();
+  Map<String,dynamic> b = {
+    "createUserId":createUserId,
+    "personType":personType,
+    "status":status
+  };
+  a.addAll(b);
+  
+  return DioManager().post(Api.leaveList,data:a,loading: false);
+} 
+/*请假-审批*/
+approvalLeave({String id,String status}){
+  return DioManager().post(Api.leaveApproval,data:{
+    'id':id,
+    'status':status
+  });
 } 
 
-/*请假申请*/ 
-//  applyLeave({String startTime,String endTime,String userName,String userId,String userNum,String reason,String filePath}){
-//    FormData formData = FormData.fromMap({
-//      "startTime":startTime,
-//      "endTime":endTime,
-//      "userName":userName,
-//      "userId":userId,
-//      "userNum":userNum,
-//      "reason":reason,
-//      "file":await MultipartFile.fromFile(filePath)
-//    });
-   
-//  }
+/*请假申请*/
+leaveApply(LeaveForm leaveForm) {
+  FormData formData ;
+  Map a = leaveForm.toJson();
+  if(leaveForm.filePaths!=null&&leaveForm.filePaths.length>0){
+    // Map b = a.addAll(other)
+     formData = FormData.fromMap(
+       {
+         ...a,
+         "file":leaveForm.filePaths.map((e) async => await MultipartFile.fromFile(e) ).toList()
+       }
+     );
+  }else{
+    formData = FormData.fromMap(leaveForm.toJson());
+  }
+  return DioManager().post(Api.applicationLeave,data:formData);
+} 
+
 
 /*通知列表*/
 getNewsList({News news,Pagination pagination}){
   Map a = news.toJson();
   a.addAll(pagination.toJson());
-  return DioManager().post(Api.newsList,data:filterEmpty(a));
+  return DioManager().post(Api.newsList,data:filterEmpty(a),loading: false);
 } 
 /*健康卡-提交*/ 
 heaCardAdd(HealthCard healthCard){

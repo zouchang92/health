@@ -19,7 +19,7 @@ class Dictionary {
     if(_dics==null){
       return {};
     }
-    Map item = _dics.firstWhere((element) => element['id']==id) as Map;
+    Map item = _dics.firstWhere((element) => element['id']==id,orElse: (){return null;});
     return item;
   }
   static String getNameByUniqueNameAndCode({String uniqueName,String code}){
@@ -28,18 +28,24 @@ class Dictionary {
        return '';
      }
      List ulist = getByUniqueName(uniqueName);
-     Map item = ulist.firstWhere((element) => element['code'] == code);
-     if(item==null){
-       return '';
-     }
+     Map item = ulist.firstWhere((element) => element['code'] == code,orElse: () {
+       print('eee');
+       return {"name":code};
+     });
+     
+
      return item['name']??'';
+     
+    
   }
+  // static String getCodeByUniqueNameAndName
 }
 
 enum UNIQUE_NAME{
   SYMPTOMTYPE,REGISTERTYPE,MEASURE,CHECKTYPE,ILLTYPE,
   ILLCODE,HURTTYPE,INFECTIONTYPE,HURTSITE,CLASSSTATUS,
-  PERSONTYPE,GENDER,LEAVETYPE,BOOLEAN
+  PERSONTYPE,GENDER,LEAVETYPE,BOOLEAN,ORGTYPE,DEALCODE,
+  JUDGESTATUS,TASKSTATUS,FLOWSTATUS
 }
 
 
@@ -47,7 +53,7 @@ enum HEALTH_TYPE { ILLNESS, INJURY }
 enum CHECK_TYPE { MORENING, AFTERNOON }
 
 enum YES_OR_NO { YES, NO }
-
+// judgestatus taskStatus flowStatus
 const UniqueNameValues = {
   UNIQUE_NAME.MEASURE:'measure',
   UNIQUE_NAME.REGISTERTYPE:'registerType',
@@ -62,7 +68,13 @@ const UniqueNameValues = {
   UNIQUE_NAME.PERSONTYPE:'yqfkPersonType',
   UNIQUE_NAME.GENDER:'gender',
   UNIQUE_NAME.LEAVETYPE:'leaveType',
-  UNIQUE_NAME.BOOLEAN:'boolean'
+  UNIQUE_NAME.BOOLEAN:'boolean',
+  UNIQUE_NAME.ORGTYPE:'orgType',
+  UNIQUE_NAME.DEALCODE:'dealCode',
+  UNIQUE_NAME.JUDGESTATUS:'judgestatus',
+  UNIQUE_NAME.TASKSTATUS:'taskStatus',
+  UNIQUE_NAME.FLOWSTATUS:'flowStatus'
+
 };
 
 const HealthTypeValues = {

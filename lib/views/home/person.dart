@@ -19,7 +19,7 @@ class _PersonState extends State<Person> {
 
   Widget listview() {
     // _profile = profileNotify.value;
-    print('222${_profile.user.schLogo}'); 
+    print('222${_profile.user.gender}'); 
     print('${Global.getHttpPicUrl(_profile.user.schLogo)}');
     return SingleChildScrollView(
       padding: EdgeInsets.all(0),
@@ -71,8 +71,11 @@ class _PersonState extends State<Person> {
               child: CircleAvatar(
                   radius: 35.0,
                   backgroundColor: Color(0xffe3dfeb),
-                  // backgroundImage: AssetImage('images/upload_bg.png')
-                  backgroundImage:_profile.user.photo==''?AssetImage('images/upload_bg.png'):NetworkImage(Global.getHttpPicUrl(_profile.user.photo)),
+                  // backgroundImage: AssetImage('images/upload_bg.png')_profile.user.photo==''||
+                  backgroundImage:(_profile.user.photo == null)?AssetImage('images/upload_bg.png'):NetworkImage(
+                    Global.getHttpPicUrl(_profile.user.photo),
+
+                  ),
                   
                 ),
             ),

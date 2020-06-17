@@ -35,7 +35,7 @@ class _ImagePickerState extends State<ImagePickerWidget> {
   Widget build(BuildContext context) {
     List<Widget> imageListwidget = [];
     imageListwidget
-        .add(Text('图片:', style: Theme.of(context).textTheme.subtitle1));
+        .add(Padding(padding: EdgeInsets.symmetric(vertical: 5.0),child:Text('图片:', style: Theme.of(context).textTheme.subtitle1)));
     if (_imageList.length > 0) {
       // imageListwidget.insert()
       // imageListwidget.add(imageListWrapWidget());
@@ -71,6 +71,7 @@ class _ImagePickerState extends State<ImagePickerWidget> {
       child: Stack(
         children: <Widget>[
           CircleAvatar(
+            backgroundColor: Color(0xffe4e4e4),
             radius: width != null ? 0.5 * width : 0.5 * defaultWidth,
             backgroundImage: FileImage(File(file.path)),
           ),

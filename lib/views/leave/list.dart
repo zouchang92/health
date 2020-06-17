@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:health/model/dictionary.dart';
+
 import 'package:health/model/global.dart';
 import 'package:health/model/pagination.dart';
 import 'package:health/service/index.dart';
@@ -121,7 +121,7 @@ class _LeaveListState extends State<LeaveList> {
     return Column(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
           child: Column(
             children: <Widget>[
               Padding(
@@ -133,10 +133,10 @@ class _LeaveListState extends State<LeaveList> {
                       CircleAvatar(
                           // radius: 35.0,
                           backgroundColor: Color(0xffe3dfeb),
-                          backgroundImage: AssetImage('images/upload_bg.png')),
+                          backgroundImage: NetworkImage(Global.getHttpPicUrl(item['avater']))),
                       Padding(
                           padding: EdgeInsets.only(left: 10.0),
-                          child: Text(item['name'] ?? '',
+                          child: Text(item['userName'] ?? '',
                               style: TextStyle(color: Colors.white))),
                     ]),
                     // Chip(
@@ -159,25 +159,18 @@ class _LeaveListState extends State<LeaveList> {
                       ),
                     ]),
                     Row(children: <Widget>[
-                      Text('离校日期:', style: TextStyle(color: Colors.white)),
+                      Text('请假开始日期:', style: TextStyle(color: Colors.white)),
                       Padding(
                         padding: EdgeInsets.only(left: 10.0),
-                        child: Text(item['leaveDate'] ?? '',
+                        child: Text(item['startTime'] ?? '',
                             style: TextStyle(color: Colors.white)),
                       ),
                     ]),
                     Row(children: <Widget>[
-                      Text('登记类型:', style: TextStyle(color: Colors.white)),
+                      Text('结束时间:', style: TextStyle(color: Colors.white)),
                       Padding(
                         padding: EdgeInsets.only(left: 10.0),
-                        child: Chip(
-                            backgroundColor: Color(0xffff6000),
-                            label: Text(
-                                Dictionary.getNameByUniqueNameAndCode(
-                                    uniqueName: UniqueNameValues[
-                                        UNIQUE_NAME.REGISTERTYPE],
-                                    code: item['registerType']),
-                                style: TextStyle(color: Colors.white))),
+                        child:Text(item['endTime'],style: TextStyle(color: Colors.white)),
                       ),
                     ])
                   ],
@@ -186,31 +179,7 @@ class _LeaveListState extends State<LeaveList> {
             ],
           ),
         ),
-        Divider(
-          height: 1,
-          color: Colors.white,
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: <Widget>[
-                      Text('复课时间:', style: TextStyle(color: Colors.white)),
-                      Text(item['healDate'] ?? '',
-                          style: TextStyle(color: Colors.white))
-                    ]),
-                // Chip(
-                //   backgroundColor: Color(0xff0099db),
-                //   label: Text('复课', style: TextStyle(color: Colors.white)),
-                //   // onDeleted: () {
-                //   //   _healthDelete(item['id']);
-                //   // },
-                // )
-              ]),
-        )
+       
       ],
     );
   }
@@ -219,7 +188,12 @@ class _LeaveListState extends State<LeaveList> {
   // }
   Future _getLeaveList() async {
     var res =
-        await getLeaveList(pagination: pagination, user: Global.profile.user);
+        await getLeaveList(
+          pagination: pagination,
+          createUserId: Global.profile.user.id,
+          personType: Global.profile.user.personType,
+          status: ''
+        );
     print('res:$res');
     this.setState(() {
       loading = false;

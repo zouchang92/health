@@ -14,7 +14,7 @@ class MenuValue{
       "picUrl":'images/icon/menu_icon_3.png'
     },{
       "title":'学生请假',
-      "path":'/leaveList',
+      "path":'/approvalLeaveList',
       "picUrl":'images/icon/menu_icon_4.png'
     },{
       "title":'学生健康卡',

@@ -1,54 +1,87 @@
 import 'dart:io';
 
 import 'package:date_format/date_format.dart';
+import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
-import 'package:health/model/global.dart';
+import 'package:health/model/argument.dart';
+
+import 'package:health/model/health.dart';
 import 'package:health/model/leaveForm.dart';
 import 'package:health/service/index.dart';
-import 'package:health/widget/index.dart';
+import 'package:health/store/profileNotify.dart';
+import 'package:health/widget/imagePicker/imagePicker.dart';
+import 'package:provider/provider.dart';
 
-class LeaveApply extends StatefulWidget {
-  final String title = '学生请假';
+class LeaveApplyForStudent extends StatefulWidget {
+  final String title = '学生请假申请-代请';
+  final Argument args;
+  LeaveApplyForStudent({this.args});
   @override
-  _LeaveApplyState createState() => _LeaveApplyState();
+  _LeaveApplyForStudentState createState() => _LeaveApplyForStudentState();
 }
 
-class _LeaveApplyState extends State<LeaveApply> {
+class _LeaveApplyForStudentState extends State<LeaveApplyForStudent> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> formKey = new GlobalKey();
   LeaveForm leaveForm = new LeaveForm();
+  Health _health = new Health();
+  // Global.profile.user.classIdAndNames??
+  List _bindClass = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          InkWell(
-            child: Icon(Icons.menu),
-            onTap: () {
-              Navigator.of(context).pushNamed('/leaveList');
-            },
-          )
-        ],
+        title:Text(widget.title),
+        
       ),
       body: SingleChildScrollView(
         child: form(),
       ),
     );
   }
-
   Widget form() {
+    final _arg = Provider.of<ProfileNotify>(context).argValue;
+    // print('arg:$_arg');
+    if (_arg != null) {
+      Health _thealth = _arg.params as Health;
+      // print('_thealth:${_thealth.toJson()}');
+      this.setState(() {
+        // _health = Object;
+        _health = Health.fromJson(amap(_health.toJson(), _thealth.toJson()));
+        // print('_health:${_health.toJson()}');
+        // leaveForm.userId = Global.profile.user.id;
+      // leaveForm.orgId = Global.profile.user.organId;
+      // leaveForm.userName = Global.profile.user.userName;
+      // leaveForm.userNum = Global.profile.user.loginName;
+        leaveForm.userNum = _health.stuNum;
+        leaveForm.orgId = _health.classId;
+        // leaveForm.userId = _health
+      });
+    }
     return Form(
         key: formKey,
         child: Column(
           children: <Widget>[
-            // ListTile(
-            //   title: Text('请假类型'),
-            //   // trailing: ,
-            //   onTap: _showPicker,
-            // ),
+            ListTile(
+              title: Text('班级选择'),
+              trailing: Text(_health.className??''),
+              onTap: showClassPicker,
+            ),
+            Divider(height: 1),
+            ListTile(
+              title: Text('学生选择'),
+              trailing:  Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: <Widget>[
+                  Text(_health.stuNumValue ?? ''),
+                  Icon(Icons.navigate_next)
+                ]),
+              onTap: openSearch,
+
+            ),
+            Divider(height: 1),
             ListTile(
               title: Text('开始时间:'),
               trailing: Text(leaveForm.startTime ?? ''),
@@ -133,6 +166,16 @@ class _LeaveApplyState extends State<LeaveApply> {
           ],
         ));
   }
+  Map amap(Map a, Map b) {
+    a.forEach((key, _) {
+      if(b[key]!=null){
+        a[key] = b[key];
+      }
+     
+    });
+    // print('a$a');
+    return a;
+  }
 
   String pickerValueFormat(List<int> values, {int start}) {
     String one = values[0].toString();
@@ -162,11 +205,9 @@ class _LeaveApplyState extends State<LeaveApply> {
   Future _applicationLeave() async {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
-      leaveForm.userId = Global.profile.user.id;
-      leaveForm.orgId = Global.profile.user.organId;
-      leaveForm.userName = Global.profile.user.userName;
-      leaveForm.userNum = Global.profile.user.loginName;
-      print('leaveForm:${leaveForm.toJson()}');
+      
+      leaveForm.status = '3';
+      // print('leaveForm:${leaveForm.toJson()}');
       leaveApply(leaveForm);
     }
   }
@@ -189,5 +230,31 @@ class _LeaveApplyState extends State<LeaveApply> {
       },
     );
     picker.show(_scaffoldKey.currentState);
+  }
+
+   showClassPicker() {
+    List<PickerItem> _picerItem =
+        _bindClass.map((e) => PickerItem(text: Text(e['className']))).toList();
+    Picker picker = Picker(
+      adapter: PickerDataAdapter(data: _picerItem),
+      title: Text('选择班级'),
+      onConfirm: (picker, selecteds) {
+        // print(selecteds);
+        this.setState(() {
+         _health.className = _bindClass[selecteds[0]]['className'];
+          _health.classId = _bindClass[selecteds[0]]['classId'];
+        });
+      },
+    );
+    picker.show(_scaffoldKey.currentState);
+  }
+  void openSearch() {
+    if(_health.className!=null){
+      // print('params:${_health.classId}');
+      Navigator.of(context).pushNamed('/searchStudent',arguments: Argument(params:_health.classId));
+
+    }else{
+      FLToast.info(text:'请选择班级');
+    }
   }
 }

@@ -68,7 +68,9 @@ Text('更多',style: TextStyle(color:Colors.white))
         ),
       ),
       FlatButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed('/newsList');
+          },
           child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),

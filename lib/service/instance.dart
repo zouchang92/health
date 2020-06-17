@@ -24,7 +24,7 @@ class DioManager {
     if (dio == null) {
       BaseOptions opt = BaseOptions(
         baseUrl: baseApi,
-        contentType: Headers.jsonContentType,
+        // contentType: Headers.jsonContentType,
         responseType: ResponseType.json,
         receiveDataWhenStatusError: true,
         connectTimeout: 5000,
@@ -69,7 +69,7 @@ class DioManager {
         }
       }
     } on DioError catch (e) {
-      
+      // print('e:$e');
       if (loading) {
         dismiss();
       }
@@ -103,7 +103,7 @@ class DioManager {
         print(er.message);
         FLToast.error(text: '网络异常!');
       }
-      dio.close();
+      // dio.close();
       // print(er.code);
       // return er;
     }
@@ -164,10 +164,11 @@ class DioManager {
               );
             });
       } else {
+        print('e:$e');
         FLToast.error(text:'网络异常!');
         
       }
-      dio.close();
+      // dio.close();
     }
   }
 
