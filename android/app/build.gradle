@@ -52,6 +52,31 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+//    configurations.all {
+//        resolutionStrategy {
+//            resolutionStrategy.eachDependency { details ->
+//                if (details.requested.group == 'androidx.core') {
+//                    details.useVersion "1.0.2"
+//                }
+//                if (details.requested.group == 'androidx.lifecycle') {
+//                    details.useVersion "2.0.0"
+//                }
+//                if (details.requested.group == 'androidx.versionedparcelable') {
+//                    details.useVersion "1.0.0"
+//                }
+//                if (details.requested.group == 'androidx.fragment') {
+//                    details.useVersion "1.0.0"
+//                }
+//                if (details.requested.group == 'androidx.appcompat') {
+//                    details.useVersion "1.0.1"
+//                }
+//            }
+//        }
+//    }
+
+
+
+    
 }
 
 flutter {
@@ -60,4 +85,25 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//    project.configurations.all {
+//        resolutionStrategy {
+//            resolutionStrategy.eachDependency { details ->
+//                if (details.requested.group == 'androidx.core') {
+//                    details.useVersion "1.0.2"
+//                }
+//                if (details.requested.group == 'androidx.lifecycle') {
+//                    details.useVersion "2.0.0"
+//                }
+//                if (details.requested.group == 'androidx.versionedparcelable') {
+//                    details.useVersion "1.0.0"
+//                }
+//                if (details.requested.group == 'androidx.fragment') {
+//                    details.useVersion "1.0.0"
+//                }
+//                if (details.requested.group == 'androidx.appcompat') {
+//                    details.useVersion "1.0.1"
+//                }
+//            }
+//        }
+//    }
 }

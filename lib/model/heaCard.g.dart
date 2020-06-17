@@ -23,6 +23,7 @@ HealthCard _$HealthCardFromJson(Map<String, dynamic> json) {
     status: json['status'] as String,
     stuNum: json['stuNum'] as String,
     createTime: json['createTime'] as String,
+    personType: json['personType'] as String,
   );
 }
 
@@ -43,4 +44,5 @@ Map<String, dynamic> _$HealthCardToJson(HealthCard instance) =>
       'stuNum': instance.stuNum,
       'status': instance.status,
       'createTime': instance.createTime,
+      'personType': instance.personType,
     };

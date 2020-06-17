@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:date_format/date_format.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:health/model/global.dart';
 import 'package:health/model/leaveForm.dart';
@@ -112,10 +113,10 @@ class _LeaveApplyState extends State<LeaveApply> {
               color: Color(0xffe4e4e4),
             ),
             ImagePickerWidget(
-              onValueChange: (File file) {
-                print('file:${file.path}');
+              onValueChange: (List<File> files) {
+                // print('file:${file.path}');
                 this.setState(() {
-                  leaveForm.file = [file];
+                  // leaveForm.file = [file];
                  });
               },
             ),
@@ -143,9 +144,33 @@ class _LeaveApplyState extends State<LeaveApply> {
       leaveForm.orgId = Global.profile.user.organId;
       leaveForm.userName = Global.profile.user.userName;
       leaveForm.userNum = '2433';
-      // print('leaveForm:${leaveForm.toJson()}');
-      // await applyLeave(leaveForm);
+      print('leaveForm:${leaveForm.toJson()}');
+      await _test();
       
     }
+  }
+  Future _test() async{
+    Dio dio = new Dio();
+    FormData formData = FormData.fromMap({
+     "startTime":leaveForm.startTime,
+     "endTime":leaveForm.endTime,
+     "userName":leaveForm.userName,
+     "userId":leaveForm.userId,
+     "userNum":leaveForm.userNum,
+     "reason":leaveForm.reason,
+    //  "file":await MultipartFile.fromFile(leaveForm.filePaths)
+   });
+   try{
+     var res = await dio.post(
+     'http://115.223.19.233:9886/zhxyx//qj/request',
+      data: formData,
+      options: Options(headers: {"token": Global.profile.token})
+     );
+     print('res:$res');
+
+   }catch(exception){
+     print('exception:$exception');
+   }
+   
   }
 }

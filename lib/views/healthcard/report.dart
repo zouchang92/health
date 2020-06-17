@@ -28,7 +28,7 @@ class _HealthCardReportState extends State<HealthCardReport> {
       name: user.userName,
       idCard: user.id,
       phone: user.phone,
-
+      personType: user.personType
     );
   }
   @override

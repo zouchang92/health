@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:health/model/heaCard.dart';
 import 'package:health/model/heaSafety.dart';
 import 'package:health/model/health.dart';
@@ -67,9 +68,18 @@ getLeaveList({Pagination pagination,User user}){
 } 
 
 /*请假申请*/ 
-// applyLeave(LeaveForm leaveForm){
-//   return DioManager().post(Api.applicationLeave,data: filterEmpty(leaveForm.toJson()));
-// }
+//  applyLeave({String startTime,String endTime,String userName,String userId,String userNum,String reason,String filePath}){
+//    FormData formData = FormData.fromMap({
+//      "startTime":startTime,
+//      "endTime":endTime,
+//      "userName":userName,
+//      "userId":userId,
+//      "userNum":userNum,
+//      "reason":reason,
+//      "file":await MultipartFile.fromFile(filePath)
+//    });
+   
+//  }
 
 /*通知列表*/
 getNewsList({News news,Pagination pagination}){

@@ -33,6 +33,7 @@ class DioManager {
       dio = Dio(opt);
     }
   }
+  
 
   Future post<T>(String path,
       {dynamic data, Map<String, dynamic> params, bool loading = true}) async {

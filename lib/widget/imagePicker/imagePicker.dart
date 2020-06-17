@@ -9,7 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 class ImagePickerWidget extends StatefulWidget {
   final int maxNum;
   final double size;
-  final ValueChanged<File> onValueChange;
+  final ValueChanged<List<File>> onValueChange;
   ImagePickerWidget({this.maxNum, this.size, this.onValueChange});
   @override
   _ImagePickerState createState() => _ImagePickerState();
@@ -83,6 +83,9 @@ class _ImagePickerState extends State<ImagePickerWidget> {
                     this.setState(() {
                       _imageList.removeWhere((element) => element == file);
                     });
+                    List<File> filePaths =
+                        _imageList.map((e) => File(e.path)).toList();
+                    widget.onValueChange.call(filePaths);
                   })),
         ],
       ),
@@ -157,7 +160,9 @@ class _ImagePickerState extends State<ImagePickerWidget> {
         this.setState(() {
           _imageList.add(image);
         });
-        widget.onValueChange.call(File(image.path));
+        // widget.onValueChange.call(File(image.path));
+        List<File> filePaths = _imageList.map((e) => File(e.path)).toList();
+        widget.onValueChange.call(filePaths);
       }
     } catch (exception) {
       print('exception:$exception');
@@ -174,7 +179,8 @@ class _ImagePickerState extends State<ImagePickerWidget> {
         this.setState(() {
           _imageList.add(image);
         });
-        widget.onValueChange.call(File(image.path));
+        List<File> filePaths = _imageList.map((e) => File(e.path)).toList();
+        widget.onValueChange.call(filePaths);
       }
     } catch (exception) {
       print('exception:$exception');

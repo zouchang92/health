@@ -26,6 +26,8 @@ class HealthCard{
   String status;
 
   String createTime;
+
+  String personType;
   HealthCard({
     this.address,
     this.userNum,
@@ -40,7 +42,8 @@ class HealthCard{
     this.faceUrl,
     this.status,
     this.stuNum,
-    this.createTime
+    this.createTime,
+    this.personType
   });
   factory HealthCard.fromJson(Map<String,dynamic> json)=>_$HealthCardFromJson(json);
   Map<String,dynamic> toJson()=>_$HealthCardToJson(this);

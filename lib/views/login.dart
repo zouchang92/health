@@ -51,6 +51,7 @@ class _LoginState extends State<Login> {
                   horizontal: LoginStyle.containerHorizontal),
               child: TextFormField(
                 controller: _userController,
+                autofocus: false,
                 decoration: new InputDecoration(
                     hintText: LoginValue.userTextFormhintText,
                     prefixIcon: Icon(Icons.person)),
@@ -66,6 +67,7 @@ class _LoginState extends State<Login> {
               padding: EdgeInsets.symmetric(
                   horizontal: LoginStyle.containerHorizontal),
               child: TextFormField(
+                autofocus: false,
                 controller: _passwordController,
                 obscureText: viewPwd,
                 decoration: new InputDecoration(
@@ -137,7 +139,7 @@ class _LoginState extends State<Login> {
               Global.save(),
               getDicts().then((dics) => {
                     _profile.dictionary = dics as List,
-                    if (_profile.isChecked)
+                    if (check)
                       {
                         _profile.lastLoginAcount = loginName,
                         _profile.lastLoginPassword = password,
