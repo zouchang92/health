@@ -4,6 +4,8 @@ import 'package:health/model/dictionary.dart';
 import 'package:health/model/health.dart';
 class HealthDetail extends StatefulWidget {
   final String title = '晨午检详情';
+  final Argument arg;
+  HealthDetail({this.arg});
   @override
   _HealthDetailState createState() => _HealthDetailState();
 }

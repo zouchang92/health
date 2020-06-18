@@ -1,7 +1,10 @@
 
 
+import 'dart:io';
+
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_picker/flutter_picker.dart';
@@ -28,11 +31,11 @@ void main() {
           child: MyApp(),
         ),
       )));
-  // if (Platform.isAndroid) {
-  //   SystemUiOverlayStyle systemUiOverlayStyle =
-  //       SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-  //   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-  // }
+  if (Platform.isAndroid) {
+    SystemUiOverlayStyle systemUiOverlayStyle =
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
 }
 
 Future requestPermission() async {

@@ -1,7 +1,9 @@
+import 'package:date_format/date_format.dart';
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:health/model/argument.dart';
+import 'package:health/model/dictionary.dart';
 import 'package:health/model/global.dart';
 import 'package:health/model/heaCard.dart';
 import 'package:health/model/pagination.dart';
@@ -17,12 +19,14 @@ class HealthCardList extends StatefulWidget {
 class _HealthCardListState extends State<HealthCardList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final AppBarController appBarController = AppBarController();
-  final defaultImage = '/images/banner.png';
+  final defaultImage = 'images/upload_bg.png';
   ScrollController scrollController = ScrollController();
   List _bindClass = [];
-  HealthCard healthCard = new HealthCard();
+  HealthCard healthCard = new HealthCard(
+      userNum: Global.profile.user.loginName,
+      personType: Global.profile.user.personType == 'studentDuty' ? '1' : '0');
   Pagination pagination = new Pagination(page: 1, rows: 10);
-  
+
   bool loading = true;
   List dataList = [];
   @override
@@ -48,6 +52,7 @@ class _HealthCardListState extends State<HealthCardList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: SearchAppBar(
         appBarController: appBarController,
         searchHint: '搜索',
@@ -66,6 +71,7 @@ class _HealthCardListState extends State<HealthCardList> {
         onChange: (val) {
           if (val != '') {
             this.setState(() {
+              dataList = [];
               pagination.page = 1;
               healthCard.name = val;
             });
@@ -104,38 +110,91 @@ class _HealthCardListState extends State<HealthCardList> {
         return ListView.builder(
           controller: scrollController,
           itemBuilder: (context, _index) {
-            return ListTile(
-              title: Column(
-                children: <Widget>[
-                  CircleAvatar(
-                    backgroundImage: 
-                    dataList[_index]['fileUrl']!=null?
-                    NetworkImage(Global.getHttpPicUrl(dataList[_index]['fileUrl'])):AssetImage(defaultImage),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left:10),
-                    child: Stack(
-                      children: <Widget>[
-                        Column(
+            return Column(
+              children: <Widget>[
+                ListTile(
+                  title: Row(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      CircleAvatar(
+                        backgroundImage: dataList[_index]['fileUrl'] != null
+                            ? NetworkImage(Global.getHttpPicUrl(
+                                dataList[_index]['fileUrl']))
+                            : AssetImage(defaultImage),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(dataList[_index]['name']??''),
-                            Text(dataList[_index]['createTime']??''),
+                            Text(dataList[_index]['name'] ?? ''),
+                            Text(dataList[_index]['createTime'] != null
+                                ? formatTime(dataList[_index]['createTime'])
+                                : ''),
                           ],
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              trailing: Icon(Icons.navigate_next),
-              onTap: (){
-                Navigator.pushNamed(context, '/healthCardDetail',arguments: Argument(params:HealthCard.fromJson(dataList[_index])));
-              },
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child:Chip(
+                        label: Text(statusLabel(dataList[_index]['status']),style: TextStyle(color: Colors.white)),
+                        backgroundColor:
+                            statusColor(dataList[_index]['status']),
+                      ) ,
+                      ),
+                      
+                    ],
+                  ),
+                  trailing: Icon(Icons.navigate_next),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/healthCardReport',
+                        arguments: Argument(
+                            params: HealthCard.fromJson(dataList[_index])));
+                  },
+                ),
+                Offstage(
+                  offstage: _index != dataList.length - 1,
+                  child: Divider(height: 1),
+                )
+              ],
             );
           },
           itemCount: dataList.length,
         );
       }
+    }
+  }
+
+  String formatTime(String str) {
+    return formatDate(
+        DateTime.parse(str), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+  }
+
+  String statusLabel(String code) {
+    return Dictionary.getNameByUniqueNameAndCode(
+        uniqueName: UniqueNameValues[UNIQUE_NAME.HEASTATUS], code: code);
+  }
+
+  // 64a247 a26b47 4747a2 47a25d 5c47a2
+  Color statusColor(String status) {
+    switch (status) {
+      case '1':
+        return Color(0xffff0079);
+      case '2':
+        return Color(0xff64a247);
+      case '3':
+        return Color(0xffa26b47);
+      case '4':
+        return Color(0xff4747a2);
+      case '5':
+        return Color(0xff47a25d);
+      case '6':
+        return Color(0xff3ab25d);
+      case '7':
+        return Color(0xff5c47a2);
+      default:
+        return Colors.grey;
     }
   }
 
@@ -151,10 +210,14 @@ class _HealthCardListState extends State<HealthCardList> {
         title: Text('选择班级'),
         onConfirm: (picker, selecteds) {
           // print(selecteds);
-          // this.setState(() {
-          //   _health.className = _bindClass[selecteds[0]]['name'];
-          //   _health.classId = _bindClass[selecteds[0]]['id'];
-          // });
+          this.setState(() {
+            healthCard.className = _bindClass[selecteds[0]]['name'];
+            healthCard.classId = _bindClass[selecteds[0]]['id'];
+            dataList = [];
+            pagination.page = 1;
+          });
+          _heaCardList();
+
         },
       );
       picker.show(_scaffoldKey.currentState);
@@ -163,7 +226,7 @@ class _HealthCardListState extends State<HealthCardList> {
 
   Future _heaCardList() async {
     var res = await heaCardList(healthCard: healthCard, pagination: pagination);
-    print('_heaCardList:$res');
+    print('_heaCardList:${res['list'][0]}');
     this.setState(() {
       loading = false;
     });

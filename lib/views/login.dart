@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:health/model/global.dart';
-import 'package:health/model/news.dart';
+
 import 'package:health/model/pagination.dart';
 import 'package:health/model/profile.dart';
 import 'package:health/model/user.dart';
 import 'package:health/service/index.dart';
-import 'package:health/store/profileNotify.dart';
+
 import 'package:health/styles/loginStyle.dart';
 import 'package:health/value/loginValue.dart';
-import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -17,25 +16,27 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  Profile _profile;
+  Profile _profile = Global.profile;
   bool check = false;
   bool viewPwd = true;
+  TextEditingController _userController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Consumer<ProfileNotify>(
-          builder: (context, ProfileNotify profileNotify, _) =>
-              form(context, profileNotify)),
-    );
+  void initState() {
+    super.initState();
+    if (_profile.isChecked) {
+      _userController.text = _profile.lastLoginAcount ?? '';
+      _passwordController.text = _profile.lastLoginPassword ?? '';
+      check = _profile.isChecked ?? false;
+    }
   }
 
-  Widget form(BuildContext context, ProfileNotify profileNotify) {
-    _profile = profileNotify.value;
-    TextEditingController _userController = new TextEditingController();
-    TextEditingController _passwordController = new TextEditingController();
-    _userController.text = _profile.lastLoginAcount ?? '';
-    _passwordController.text = _profile.lastLoginPassword ?? '';
-    check = _profile.isChecked ?? false;
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: form());
+  }
+
+  Widget form() {
     return Form(
       key: _formKey,
       autovalidate: true,
@@ -89,12 +90,12 @@ class _LoginState extends State<Login> {
                     value: this.check,
                     onChanged: (bool val) {
                       // this.check = val;
+                      // print('check:$val');
                       this.setState(() {
                         this.check = val;
                       });
-                      // _profile.isChecked = val;
-                      // _profile.lastLoginAcount = _userController.text;
-                      // _profile.lastLoginPassword = _passwordController.text;
+                      _profile.isChecked = val;
+
                       // Global.save();
                     }),
                 Text(LoginValue.checkBoxText)
@@ -129,34 +130,34 @@ class _LoginState extends State<Login> {
     }
   }
 
-  _login({String loginName, String password}) {
-    login(loginName: loginName, password: password).then((res) => {
-          if (res != null)
-            {
-              _profile.isLogin = true,
-              _profile.token = res['token'],
-              _profile.user = new User.fromJson(res),
-              Global.save(),
-              getDicts().then((dics) => {
-                    _profile.dictionary = dics as List,
-                    if (check)
-                      {
-                        _profile.lastLoginAcount = loginName,
-                        _profile.lastLoginPassword = password,
-                      }else{
-                        _profile.lastLoginAcount = '',
-                        _profile.lastLoginPassword = ''
+  _login({String loginName, String password}) async {
+    if (check) {
+      _profile.isChecked = check;
+      _profile.lastLoginAcount = loginName;
+      _profile.lastLoginPassword = password;
+    } else {
+      _profile.isChecked = false;
+      _profile.lastLoginAcount = '';
+      _profile.lastLoginPassword = '';
+    }
+    Global.save();
+    var res = await login(loginName: loginName, password: password);
+    print('loginRes:$res');
 
-                      },
-                    Global.save(),
-                    // Navigator.of(context).pushNamed('/')
-                    getNewsList(news: News(),pagination: Pagination(page: 1,rows:3)).then((news)=>{
-                      _profile.news = news['list'],
-                      Global.save(),
-                      Navigator.of(context).pushNamed('/')
-                    })
-                  })
-            }
-        });
+    if (res != null) {
+      _profile.token = res['token'];
+
+      _profile.user = User.fromJson(res);
+      var dics = await getDicts();
+      if (dics != null) {
+        _profile.dictionary = dics;
+        var newsList =
+            await getNewsList(pagination: Pagination(page: 1, rows: 3));
+        if (newsList != null) {
+          _profile.isLogin = true;
+          Navigator.of(context).pushNamed('/');
+        }
+      }
+    }
   }
 }

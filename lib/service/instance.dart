@@ -11,7 +11,7 @@ import './base.dart';
 import 'config.dart';
 
 /*提示*/
-var dismiss;
+
 
 class DioManager {
   static final baseApi = Config.baseApi;
@@ -19,7 +19,8 @@ class DioManager {
   factory DioManager() => _shared;
   // BuildContext context;
   Dio dio;
-
+  var dismiss;
+  bool start = false;
   DioManager._internal() {
     if (dio == null) {
       BaseOptions opt = BaseOptions(
@@ -38,15 +39,16 @@ class DioManager {
   Future post<T>(String path,
       {dynamic data, Map<String, dynamic> params, bool loading = true}) async {
     try {
-      // print('token${Global.profile.token}');
+      // print('loading$loading');
       if (loading) {
         dismiss = FLToast.showLoading();
+        start = true;
       }
       Response response = await dio.post(path,
           data: data,
           queryParameters: params,
           options: Options(headers: {"token": Global.profile.token}));
-      print('response:$response');
+      // print('response:${response.request.uri}');
       if (response != null) {
         if (loading) {
           dismiss();
@@ -61,17 +63,21 @@ class DioManager {
           return entity.data;
         } else {
           //消息提示
-          // print('response:$response');
-          if (loading) {
+          print('response:${entity.message}');
+          if (loading&&start) {
             FLToast.error(text: entity.message);
           }
           // return ErrorEntity(code: entity.code, message: entity.message);
         }
       }
     } on DioError catch (e) {
-      // print('e:$e');
-      if (loading) {
-        dismiss();
+      print('e:${e.request.uri}');
+      if (loading&&start) {
+        // print('消失');
+        if(dismiss!=null){
+          dismiss();
+          start = false;
+        }
       }
       //消息提示
       ErrorEntity er = createErrorEntity(e);
@@ -100,8 +106,8 @@ class DioManager {
               );
             });
       } else {
-        print(er.message);
-        FLToast.error(text: '网络异常!');
+        // print(er);
+        FLToast.error(text: er.message);
       }
       // dio.close();
       // print(er.code);
@@ -213,8 +219,8 @@ class DioManager {
         break;
       default:
         {
-          print('error.default');
-          return ErrorEntity(code: -1, message: error.message);
+          print('error.default:$error');
+          return ErrorEntity(code: -1, message: '网络异常');
         }
     }
   }

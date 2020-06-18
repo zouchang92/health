@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
 import 'package:health/model/global.dart';
 import 'package:health/model/heaCard.dart';
 import 'package:health/model/user.dart';
-import 'package:health/service/index.dart';
-import 'package:health/widget/index.dart';
+
+
 
 class HealthCardReport extends StatefulWidget {
-  final String title = '学生健康卡';
+  final String title = '健康卡详情';
+  final Argument args;
+  HealthCardReport({this.args});
   @override
   _HealthCardReportState createState() => _HealthCardReportState();
 }
@@ -20,18 +23,10 @@ class _HealthCardReportState extends State<HealthCardReport> {
   @override
   void initState() {
     super.initState();
-    print(Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.PERSONTYPE]));
-    healthCard = HealthCard(
-      isDiscomfort: yn[0]['code'],
-      isSuspected: yn[0]['code'],
-      isPyrexia: yn[0]['code'],
-      isQuarantine: yn[0]['code'],
-      name: user.userName,
-      idCard: user.id,
-      phone: user.phone,
-      personType: Dictionary.getNameByUniqueNameAndCode(uniqueName:UniqueNameValues[UNIQUE_NAME.ORGTYPE] ,code:user.personType)
-    );
+    // print(widget.args.params);
+    healthCard = widget.args.params;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,18 +35,7 @@ class _HealthCardReportState extends State<HealthCardReport> {
         child: Column(children: <Widget>[
           cardInfo(),
           form(),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-            child: RaisedButton(
-              onPressed: () {
-                _submit();
-              },
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(15.0))),
-              child: Text('提交'),
-            ),
-          ),
+          
         ]),
       ),
     );
@@ -71,7 +55,8 @@ class _HealthCardReportState extends State<HealthCardReport> {
                 children: <Widget>[
                   CircleAvatar(
                       backgroundColor: Color(0xffe3dfeb),
-                      backgroundImage: user.photo != null
+                      backgroundImage: (healthCard.faceUrl != null &&
+                              healthCard.faceUrl != '')
                           ? NetworkImage(Global.getHttpPicUrl(user.photo))
                           : AssetImage('images/upload_bg.png')),
                   Padding(
@@ -79,7 +64,7 @@ class _HealthCardReportState extends State<HealthCardReport> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(user.userName ?? '',
+                          Text(healthCard.name ?? '',
                               style: TextStyle(color: Colors.white)),
                           Text('', style: TextStyle(color: Colors.white))
                         ],
@@ -87,13 +72,13 @@ class _HealthCardReportState extends State<HealthCardReport> {
                 ],
               ),
             ),
-            // Chip(
-            //   label: Text(
-            //     '待确认',
-            //     style: TextStyle(color: Colors.white),
-            //   ),
-            //   backgroundColor: Color(0xffff0079),
-            // )
+            Chip(
+              label: Text(
+                statusLabel(healthCard.status),
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: statusColor(healthCard.status),
+            )
           ]),
           Divider(height: 1),
           Padding(
@@ -166,6 +151,33 @@ class _HealthCardReportState extends State<HealthCardReport> {
     );
   }
 
+  String statusLabel(String code) {
+    return Dictionary.getNameByUniqueNameAndCode(
+        uniqueName: UniqueNameValues[UNIQUE_NAME.HEASTATUS], code: code);
+  }
+
+  // 64a247 a26b47 4747a2 47a25d 5c47a2
+  Color statusColor(String status) {
+    switch (status) {
+      case '1':
+        return Color(0xffff0079);
+      case '2':
+        return Color(0xff64a247);
+      case '3':
+        return Color(0xffa26b47);
+      case '4':
+        return Color(0xff4747a2);
+      case '5':
+        return Color(0xff47a25d);
+      case '6':
+        return Color(0xff3ab25d);
+      case '7':
+        return Color(0xff5c47a2);
+      default:
+        return Colors.grey;
+    }
+  }
+
   Widget form() {
     return Form(
         key: _formKey,
@@ -173,45 +185,27 @@ class _HealthCardReportState extends State<HealthCardReport> {
           children: <Widget>[
             ListTile(
                 title: Text('是否发热:'),
-                trailing: RadioOptions(
-                    data: yn, label: 'name', onValueChange: (int _index) {
-                      this.setState(() { 
-                         healthCard.isPyrexia = yn[_index]['code'];
-                      });
-                    })),
+                trailing: Chip(label: Text(ynLabel(healthCard.isPyrexia)))),
             Divider(height: 1),
             ListTile(
                 title: Text('是否接触疑似人员:'),
-                trailing: RadioOptions(
-                    data: yn, label: 'name', onValueChange: (_index) {
-                      this.setState(() { 
-                        healthCard.isSuspected = yn[_index]['code'];
-                      });
-                    })),
+                trailing: Chip(label: Text(ynLabel(healthCard.isSuspected)))
+                    ),
             Divider(height: 1),
             ListTile(
                 title: Text('是否有不适应症状:'),
-                trailing: RadioOptions(
-                    data: yn, label: 'name', onValueChange: (_index) {
-                      this.setState(() { 
-                        healthCard.isDiscomfort = yn[_index]['code'];
-                      });
-                    })),
+                trailing: Chip(label: Text(ynLabel(healthCard.isDiscomfort)))),
             Divider(height: 1),
             ListTile(
                 title: Text('是否有居家或集中隔离:'),
-                trailing: RadioOptions(
-                    data: yn, label: 'name', onValueChange: (_index) {
-                      this.setState(() {
-                        healthCard.isQuarantine = yn[_index]['code'];
-                       });
-                    }))
+                trailing: Chip(label: Text(ynLabel(healthCard.isQuarantine))))
           ],
         ));
   }
-
-  Future _submit() async{
-    print(healthCard.toJson());
-    await heaCardAdd(healthCard);
+  String ynLabel(String code) {
+    return Dictionary.getNameByUniqueNameAndCode(
+        uniqueName: UniqueNameValues[UNIQUE_NAME.BOOLEAN], code: code);
   }
+
+  
 }

@@ -14,8 +14,7 @@ class _MenuState extends State<Menu> {
   final String defalutBanner = 'images/banner.png';
   /*轮播-通知-数据*/
   List images = [
-    // {"picUrl": 'images/upload_bg.png', "title": '通知标题'},
-    // {"picUrl": 'images/upload_bg.png', "title": '通知标题2'}
+    
   ];
   Profile _profile = Global.profile;
   /*菜单-教师*/
@@ -110,7 +109,7 @@ Text('更多',style: TextStyle(color:Colors.white))
     }else{
       menus = MenuValue.TEACHER_VALUE;
     }
-    print('menus:$menus');
+    // print('menus:$menus');
     //  menus = _profile.user.personType=='teacherDuty'?MenuValue.TEACHER_VALUE:MenuValue.PARENT_VALUE;
    
 

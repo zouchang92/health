@@ -40,7 +40,7 @@ class Api {
   /*健康卡-新增*/ 
   static String heaInfoCardInsert = '/heaInfo/insert';
   /*健康卡-查询*/
-  static String heaInfoCardList = '/heaInfo/list'; 
+  static String heaInfoCardList = '/heaInfo/listMobile'; 
   /*健康卡-更新*/ 
   static String heaInfoCardUpdate = '/heaInfo/update';
   

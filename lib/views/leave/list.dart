@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 
 import 'package:health/model/global.dart';
@@ -162,7 +163,7 @@ class _LeaveListState extends State<LeaveList> {
                       Text('请假开始日期:', style: TextStyle(color: Colors.white)),
                       Padding(
                         padding: EdgeInsets.only(left: 10.0),
-                        child: Text(item['startTime'] ?? '',
+                        child: Text(item['startTime'] ? formatTime(item['startTime']):'',
                             style: TextStyle(color: Colors.white)),
                       ),
                     ]),
@@ -170,7 +171,7 @@ class _LeaveListState extends State<LeaveList> {
                       Text('结束时间:', style: TextStyle(color: Colors.white)),
                       Padding(
                         padding: EdgeInsets.only(left: 10.0),
-                        child:Text(item['endTime'],style: TextStyle(color: Colors.white)),
+                        child:Text(item['endTime']?formatTime(item['endTime']):'',style: TextStyle(color: Colors.white)),
                       ),
                     ])
                   ],
@@ -183,9 +184,10 @@ class _LeaveListState extends State<LeaveList> {
       ],
     );
   }
-  // Future _refresh() async{
-
-  // }
+  String formatTime(String str) {
+    return formatDate(
+        DateTime.parse(str), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+  }
   Future _getLeaveList() async {
     var res =
         await getLeaveList(
@@ -194,7 +196,7 @@ class _LeaveListState extends State<LeaveList> {
           personType: Global.profile.user.personType,
           status: ''
         );
-    print('res:$res');
+    // print('res:$res');
     this.setState(() {
       loading = false;
     });

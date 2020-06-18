@@ -95,7 +95,7 @@ class _SafetyReportState extends State<SafetyReport> {
 
   /*班级列表*/
   Widget tabbar() {
-    // _tabController = TabController(length: bindClass.length, vsync: this);
+    
     List<Widget> _bindClass =
         bindClass.map((e) => tabbarItem(title: e['className'])).toList();
     return DefaultTabController(

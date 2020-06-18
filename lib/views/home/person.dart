@@ -72,7 +72,7 @@ class _PersonState extends State<Person> {
                   radius: 35.0,
                   backgroundColor: Color(0xffe3dfeb),
                   // backgroundImage: AssetImage('images/upload_bg.png')_profile.user.photo==''||
-                  backgroundImage:(_profile.user.photo == null)?AssetImage('images/upload_bg.png'):NetworkImage(
+                  backgroundImage:(_profile.user.photo == null || _profile.user.photo=='')?AssetImage('images/upload_bg.png'):NetworkImage(
                     Global.getHttpPicUrl(_profile.user.photo),
 
                   ),
@@ -87,7 +87,7 @@ class _PersonState extends State<Person> {
                       style: TextStyle(color: Colors.white, fontSize: 20.0)),
                   Text(_profile.user.schName,
                       style: TextStyle(color: Colors.white)),
-                  Text('角色:${_profile.user.roleNames}',
+                  Text('角色:${Dictionary.getNameByUniqueNameAndCode(uniqueName:UniqueNameValues[UNIQUE_NAME.ORGTYPE],code:_profile.user.personType)}',
                       style: TextStyle(color: Colors.white))
                 ])
           ])),

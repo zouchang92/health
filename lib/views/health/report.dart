@@ -239,6 +239,7 @@ class _HealthReportState extends State<HealthReport> {
               title: Text('是否就诊'),
               trailing: RadioOptions(
                 data: isHealList,
+                label: 'name',
                 onValueChange: (int _index) {
                   _health.isHealed = isHealList[_index]['code'];
                 },
