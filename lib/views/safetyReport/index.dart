@@ -20,10 +20,12 @@ class _SafetyReportState extends State<SafetyReport> {
       Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.CLASSSTATUS]);
   // GlobalKey _tabKey = new GlobalKey();
   GlobalKey _formKey = new GlobalKey();
+  bool selfHasSubmit = false;
   @override
   void initState() {
     super.initState();
-    print('classStatus:$classStatus');
+    print('classStatus:${todayIsSub()}');
+    selfHasSubmit = todayIsSub();
     heaSafety.classId = bindClass.length > 0 ? bindClass[0]['classId'] : '';
     heaSafety.className = bindClass.length > 0 ? bindClass[0]['className'] : '';
     //  bindClass[0]['stuNum']
@@ -57,10 +59,10 @@ class _SafetyReportState extends State<SafetyReport> {
             child: Container(
               margin: EdgeInsets.only(top: 20.0),
               color: Colors.white,
-              child:todayIsSub()?hasSubmit():ListView(children: <Widget>[form()]),
+              child:selfHasSubmit?hasSubmit():ListView(children: <Widget>[form()]),
             )),
         Offstage(
-          offstage: todayIsSub(),
+          offstage: selfHasSubmit,
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
@@ -207,6 +209,9 @@ class _SafetyReportState extends State<SafetyReport> {
     await safetyReport(heaSafety);
     Global.profile.heaSafetySubTime = DateTime.now();
     Global.save();
+    this.setState(() { 
+      selfHasSubmit = todayIsSub();
+    });
   }
 
   /*true时表示已提交*/

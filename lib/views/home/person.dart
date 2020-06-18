@@ -85,7 +85,7 @@ class _PersonState extends State<Person> {
                   /*姓名*/
                   Text(_profile.user.userName,
                       style: TextStyle(color: Colors.white, fontSize: 20.0)),
-                  Text(_profile.user.schName,
+                  Text(_profile.user.className??'',
                       style: TextStyle(color: Colors.white)),
                   Text('角色:${Dictionary.getNameByUniqueNameAndCode(uniqueName:UniqueNameValues[UNIQUE_NAME.ORGTYPE],code:_profile.user.personType)}',
                       style: TextStyle(color: Colors.white))

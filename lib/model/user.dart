@@ -29,12 +29,13 @@ class User{
   List roleNames;
   /*账号*/
   String loginName;
+  String className;
 
   List classIdAndNames;  
   User({
     this.id,this.userName,this.gender,this.photo,this.phone,this.credNum,
     this.organId,this.organName,this.personType,this.roleNames,this.schLogo,
-    this.schName,this.loginName,this.classIdAndNames
+    this.schName,this.loginName,this.classIdAndNames,this.className
   });
   factory User.fromJson(Map<String,dynamic> json)=>_$UserFromJson(json);
   Map<String, dynamic> toJson()=>_$UserToJson(this);
