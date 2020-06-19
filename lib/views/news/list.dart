@@ -100,7 +100,7 @@ class _NewsListState extends State<NewsList> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('发布者:${item['approverUserName'] ?? ''}',
+              Text('发布者:${item['createUserName'] ?? ''}',
                   style: TextStyle(color: Colors.white)),
               Text(
                   item['publishTime'] != null

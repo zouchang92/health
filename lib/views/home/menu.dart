@@ -23,6 +23,7 @@ class _MenuState extends State<Menu> {
   void initState() {
     print(_profile.news);
     images = _profile.news??[];
+    print('images:${images[2]}');
     super.initState();
   }
   @override
@@ -82,6 +83,7 @@ Text('更多',style: TextStyle(color:Colors.white))
 
   /*轮播-项*/
   Widget swiperItem({String imageUrl, String title}) {
+    double _width = MediaQuery.of(context).size.width;
     return Stack(
       alignment: FractionalOffset(0.1, 0.2),
       children: <Widget>[
@@ -90,7 +92,14 @@ Text('更多',style: TextStyle(color:Colors.white))
         //   height: 200.0,
         //   fit: BoxFit.cover,
         // ),
-        imageUrl!=null?Image.network(Global.getHttpPicUrl(imageUrl),height: 200,fit: BoxFit.cover):Image.asset(defalutBanner,height: 200,fit: BoxFit.cover),
+        imageUrl!=null?Image.network(Global.getHttpPicUrl(imageUrl),
+        fit: BoxFit.contain,
+        gaplessPlayback:true,
+        errorBuilder: (context,obj,stack){
+
+          return Image.asset(defalutBanner,height: 200,fit: BoxFit.cover);
+        },
+        ):Image.asset(defalutBanner,height: 200,width: _width,fit: BoxFit.cover,alignment: Alignment.center,),
         Text(
           title,
           softWrap: false,
