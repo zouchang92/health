@@ -24,7 +24,9 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
     heaSafetySubTime: json['heaSafetySubTime'] == null
         ? null
         : DateTime.parse(json['heaSafetySubTime'] as String),
-  );
+  )..heaSafetySubList = (json['heaSafetySubList'] as List)
+      ?.map((e) => e as Map<String, dynamic>)
+      ?.toList();
 }
 
 Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
@@ -37,5 +39,6 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'token': instance.token,
       'dictionary': instance.dictionary,
       'heaSafetySubTime': instance.heaSafetySubTime?.toIso8601String(),
+      'heaSafetySubList': instance.heaSafetySubList,
       'news': instance.news,
     };

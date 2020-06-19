@@ -154,7 +154,7 @@ class _HealthCardListState extends State<HealthCardList> {
                   },
                 ),
                 Offstage(
-                  offstage: _index != dataList.length - 1,
+                  offstage: _index == dataList.length - 1,
                   child: Divider(height: 1),
                 )
               ],

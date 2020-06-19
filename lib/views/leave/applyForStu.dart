@@ -25,10 +25,19 @@ class LeaveApplyForStudent extends StatefulWidget {
 class _LeaveApplyForStudentState extends State<LeaveApplyForStudent> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> formKey = new GlobalKey();
+  
   LeaveForm leaveForm = new LeaveForm();
   Health _health = new Health();
   // Global.profile.user.classIdAndNames??
   List _bindClass = Global.profile.user.classIdAndNames??[];
+  @override
+  void dispose() {
+    print('dd');
+    
+    // _profileNotify.dispose();
+    super.dispose();
+    
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,18 +53,14 @@ class _LeaveApplyForStudentState extends State<LeaveApplyForStudent> {
   }
   Widget form() {
     final _arg = Provider.of<ProfileNotify>(context).argValue;
-    // print('arg:$_arg');
+    print('arg1:${_arg.params.toJson()}');
     if (_arg != null) {
       Health _thealth = _arg.params as Health;
       // print('_thealth:${_thealth.toJson()}');
       this.setState(() {
         // _health = Object;
         _health = Health.fromJson(amap(_health.toJson(), _thealth.toJson()));
-        // print('_health:${_health.toJson()}');
-        // leaveForm.userId = Global.profile.user.id;
-      // leaveForm.orgId = Global.profile.user.organId;
-      // leaveForm.userName = Global.profile.user.userName;
-      // leaveForm.userNum = Global.profile.user.loginName;
+       
         leaveForm.userNum = _health.stuNum;
         leaveForm.orgId = _health.classId;
         // leaveForm.userId = _health

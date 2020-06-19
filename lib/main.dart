@@ -65,16 +65,16 @@ class MyApp extends StatelessWidget {
           buttonColor: Colors.blue,
           buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary)),
       onGenerateRoute: (RouteSettings routeSetting) {
-        // print('routeSetting$routeSetting');
+        print('routeSetting${routeSetting.arguments}');
         String routeName = routeSetting.name;
 
         // print('${Global.profile.isLogin}');
         if (Global.profile.isLogin != null && Global.profile.isLogin == true) {
           if (routes[routeName] != null) {
-            return MaterialPageRoute(maintainState: false,
+            return MaterialPageRoute(maintainState: true,
                 builder: routes[routeName], settings: routeSetting);
           } else {
-            return MaterialPageRoute(builder: (context) => NotFound(),maintainState: false);
+            return MaterialPageRoute(builder: (context) => NotFound(),maintainState: routeSetting.arguments==null?false:true);
           }
         } else {
           return MaterialPageRoute(builder: routes['/login'],maintainState: false);

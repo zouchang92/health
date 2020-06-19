@@ -21,18 +21,22 @@ class _SafetyReportState extends State<SafetyReport> {
   // GlobalKey _tabKey = new GlobalKey();
   GlobalKey _formKey = new GlobalKey();
   bool selfHasSubmit = false;
+  final String noClassTip = '未选择班级';
+  final String noBindTip = '没有绑定班级';
   @override
   void initState() {
     super.initState();
-    print('classStatus:${todayIsSub()}');
-    selfHasSubmit = todayIsSub();
+    print('classStatus:${bindClass[0]['classId']}');
+    
     heaSafety.classId = bindClass.length > 0 ? bindClass[0]['classId'] : '';
     heaSafety.className = bindClass.length > 0 ? bindClass[0]['className'] : '';
     //  bindClass[0]['stuNum']
-    heaSafety.total =
-        bindClass.length > 0 ? int.parse(bindClass[0]['totalNum'])  ?? null : null;
+    heaSafety.total = bindClass.length > 0
+        ? int.parse(bindClass[0]['totalNum']) ?? null
+        : null;
 
     heaSafety.status = int.parse(classStatus[0]['code']);
+    selfHasSubmit = todayIsSub();
   }
 
   @override
@@ -59,7 +63,9 @@ class _SafetyReportState extends State<SafetyReport> {
             child: Container(
               margin: EdgeInsets.only(top: 20.0),
               color: Colors.white,
-              child:selfHasSubmit?hasSubmit():ListView(children: <Widget>[form()]),
+              child: selfHasSubmit
+                  ? hasSubmit()
+                  : ListView(children: <Widget>[form()]),
             )),
         Offstage(
           offstage: selfHasSubmit,
@@ -68,7 +74,11 @@ class _SafetyReportState extends State<SafetyReport> {
             padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
             child: RaisedButton(
               onPressed: () {
-                _safetyReport();
+                if (heaSafety.classId == null || heaSafety.classId == '') {
+                  FLToast.info(text: noClassTip);
+                } else {
+                  _safetyReport();
+                }
               },
               child: Text('立即提交'),
             ),
@@ -97,9 +107,13 @@ class _SafetyReportState extends State<SafetyReport> {
 
   /*班级列表*/
   Widget tabbar() {
-    
-    List<Widget> _bindClass =
-        bindClass.map((e) => tabbarItem(title: e['className'])).toList();
+    List<Widget> _bindClass;
+    if (bindClass.length == 0) {
+      _bindClass = [tabbarItem(title: noBindTip)];
+    } else {
+      _bindClass =
+          bindClass.map((e) => tabbarItem(title: e['className'])).toList();
+    }
     return DefaultTabController(
         length: bindClass.length,
         initialIndex: 0,
@@ -114,9 +128,11 @@ class _SafetyReportState extends State<SafetyReport> {
               isScrollable: true,
               onTap: (int val) {
                 this.setState(() {
-                  heaSafety.total = bindClass[val]['stuNum'];
+                  print(bindClass[val]);
+                  heaSafety.total = int.parse(bindClass[val]['totalNum']);
                   heaSafety.classId = bindClass[val]['classId'];
                   heaSafety.className = bindClass[val]['className'];
+                  selfHasSubmit = todayIsSub();
                 });
               },
             )));
@@ -204,30 +220,68 @@ class _SafetyReportState extends State<SafetyReport> {
   }
 
   Future _safetyReport() async {
-    
-
-    await safetyReport(heaSafety);
-    Global.profile.heaSafetySubTime = DateTime.now();
-    Global.save();
-    this.setState(() { 
+    print('heaSafety:${heaSafety.toJson()}');
+    // await safetyReport(heaSafety);
+    updateHeaSafetySubList();
+    this.setState(() {
       selfHasSubmit = todayIsSub();
     });
   }
 
+  updateHeaSafetySubList() {
+    List hlist = Global.profile.heaSafetySubList;
+
+    print('${Global.profile.heaSafetySubList}');
+    if (hlist == null) {
+      hlist = [];
+    }
+    if (hlist.firstWhere((element) => element['classId'] == heaSafety.classId,
+            orElse: () {
+          return null;
+        }) ==
+        null) {
+      Map<String, dynamic> a = {
+        "classId": heaSafety.classId,
+        "subTime": DateTime.now().toString()
+      };
+
+      Global.profile.heaSafetySubList.add(a);
+    }
+    Global.save();
+  }
+
   /*true时表示已提交*/
   bool todayIsSub() {
-    DateTime markTime = Global.profile.heaSafetySubTime;
-    if (markTime == null) {
+    List heaSafetySubList = Global.profile.heaSafetySubList;
+    
+    if (heaSafetySubList == null || heaSafetySubList.length == 0) {
       return false;
     } else {
-      DateTime now = DateTime.now();
-      DateTime nowStart = DateTime(now.year, now.month, now.day);
-      DateTime nowEnd = DateTime(now.year, now.month, now.day, 24, 00);
-      if (markTime.isAfter(nowStart) && markTime.isBefore(nowEnd)) {
-        return true;
+      DateTime markTime;
+      // DateTime.parse(heaSafetySubList.firstWhere((element) => element['classId'] == heaSafety.classId)['subTime']);
+      if (heaSafetySubList.firstWhere(
+              (element) => element['classId'] == heaSafety.classId, orElse: () {
+            return null;
+          }) !=
+          null) {
+        markTime = DateTime.parse(heaSafetySubList.firstWhere(
+            (element) => element['classId'] == heaSafety.classId)['subTime']);
+        DateTime now = DateTime.now();
+        DateTime nowStart = DateTime(now.year, now.month, now.day);
+        DateTime nowEnd = DateTime(now.year, now.month, now.day, 24, 00);
+        if (markTime.isAfter(nowStart) && markTime.isBefore(nowEnd)) {
+          print('true1');
+          return true;
+        } else {
+          print('false1');
+          return false;
+        }
       } else {
+         var kk = heaSafetySubList.firstWhere((element) => element['classId'] == heaSafety.classId,orElse: (){return null;});
+         print("false2:$kk");
         return false;
       }
+
       // now.isAtSameMomentAs(markTime);
     }
   }

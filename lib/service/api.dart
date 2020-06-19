@@ -7,7 +7,7 @@ class Api {
   static String getDics = '/dict/listAllDictItem';
   
   /*学生列表*/
-  static String getStuList = '/student/list';
+  static String getStuList = '/student/listMobile';
 
   /*平安上报-删除*/ 
   static String deleteHeaDaily = '/heaClassDaily/delete';

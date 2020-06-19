@@ -19,12 +19,14 @@ class _LoginState extends State<Login> {
   Profile _profile = Global.profile;
   bool check = false;
   bool viewPwd = true;
+  bool viewBtnVisible = false;
   TextEditingController _userController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   @override
   void initState() {
     super.initState();
-    if (_profile.isChecked!=null&&_profile.isChecked) {
+    print('_profile:${_profile.heaSafetySubList}');
+    if (_profile.isChecked != null && _profile.isChecked) {
       _userController.text = _profile.lastLoginAcount ?? '';
       _passwordController.text = _profile.lastLoginPassword ?? '';
       check = _profile.isChecked ?? false;
@@ -55,7 +57,17 @@ class _LoginState extends State<Login> {
                 autofocus: false,
                 decoration: new InputDecoration(
                     hintText: LoginValue.userTextFormhintText,
-                    prefixIcon: Icon(Icons.person)),
+                    prefixIcon: Icon(Icons.person),
+                    suffix: InkWell(
+                      child: Icon(Icons.close),
+                      onTap: (){
+                         this.setState(() { 
+                           _userController.text = '';
+                         });
+                      },
+                    ),
+                    suffixIconConstraints: BoxConstraints()
+                    ),
                 validator: (String value) {
                   if (value == null || value.isEmpty) {
                     return LoginValue.emptyTextTip;
@@ -72,13 +84,34 @@ class _LoginState extends State<Login> {
                 controller: _passwordController,
                 obscureText: viewPwd,
                 decoration: new InputDecoration(
-                    hintText: LoginValue.passwordTextFormhintText,
-                    prefixIcon: Icon(Icons.lock)),
+                  hintText: LoginValue.passwordTextFormhintText,
+                  prefixIcon: Icon(Icons.lock),
+                  suffix: viewBtnVisible
+                      ? InkWell(
+                        child: Icon(Icons.remove_red_eye),
+                        onTap: (){
+                          this.setState(() { 
+                            viewPwd = !viewPwd;
+                          });
+                        },
+                      )
+                      : null,
+                  // suffixIcon: ,
+                ),
                 validator: (String value) {
                   if (value == null || value.isEmpty) {
                     return LoginValue.pwdEmptyTextTip;
                   }
                   return null;
+                },
+                onChanged: (val) {
+                  this.setState(() {
+                    if (val.length > 0) {
+                      viewBtnVisible = true;
+                    } else {
+                      viewBtnVisible = false;
+                    }
+                  });
                 },
               ),
             ),
@@ -155,6 +188,7 @@ class _LoginState extends State<Login> {
             await getNewsList(pagination: Pagination(page: 1, rows: 3));
         if (newsList != null) {
           _profile.isLogin = true;
+          Global.save();
           Navigator.of(context).pushNamed('/');
         }
       }

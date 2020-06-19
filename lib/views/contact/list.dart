@@ -22,7 +22,7 @@ class _ContactListState extends State<ContactList> {
   Widget stuWidgetList;
   int selected;
   bool showFloatButton = false;
-  Argument args;
+  Argument args = new Argument();
   Health health = new Health();
   Student stu;
   Pagination pagination = Pagination(page: 1, rows: 10);

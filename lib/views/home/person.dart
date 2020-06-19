@@ -85,13 +85,16 @@ class _PersonState extends State<Person> {
                   /*姓名*/
                   Text(_profile.user.userName,
                       style: TextStyle(color: Colors.white, fontSize: 20.0)),
-                  Text(_profile.user.className??'',
+                  Text('${textRole()}:${_profile.user.loginName}',
                       style: TextStyle(color: Colors.white)),
                   Text('角色:${Dictionary.getNameByUniqueNameAndCode(uniqueName:UniqueNameValues[UNIQUE_NAME.ORGTYPE],code:_profile.user.personType)}',
                       style: TextStyle(color: Colors.white))
                 ])
           ])),
     );
+  }
+  String textRole(){
+    return _profile.user.personType=='studentType'?'学号':'工号';
   }
 
   Widget listTile({String title, String value}) {
