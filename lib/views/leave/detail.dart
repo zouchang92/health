@@ -18,6 +18,7 @@ class LeaveDetail extends StatelessWidget {
       appBar: AppBar(title: Text(title)),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ListTile(
               title: Text('申请人'),
@@ -39,6 +40,7 @@ class LeaveDetail extends StatelessWidget {
               trailing: Text(formatTime(form['endTime'])),
             ),
             Divider(height: 1),
+            Padding(padding: EdgeInsets.symmetric(horizontal: 16,vertical: 10),child: Text('请假事由:',style: Theme.of(context).textTheme.subtitle1)),
             TextFormField(
               readOnly: true,
               initialValue: form['reason'],
@@ -47,11 +49,12 @@ class LeaveDetail extends StatelessWidget {
               decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                  prefixIcon: Padding(
-                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                      child: Text('请假事由:',
-                          style: Theme.of(context).textTheme.subtitle1)),
-                  prefixIconConstraints: BoxConstraints()),
+                  // prefixIcon: Padding(
+                  //     padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                  //     child: Text('请假事由:',
+                  //         style: Theme.of(context).textTheme.subtitle1)),
+                  // prefixIconConstraints: BoxConstraints()
+                ),
             ),
             Divider(height: 1),
             // 轮播

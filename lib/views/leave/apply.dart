@@ -86,6 +86,7 @@ class _LeaveApplyState extends State<LeaveApply> {
               height: 10,
               color: Color(0xffe4e4e4),
             ),
+            Padding(padding: EdgeInsets.symmetric(horizontal: 16,vertical: 10),child: Text('请假事由:',style: Theme.of(context).textTheme.subtitle1)),
             TextFormField(
                 maxLines: 8,
                 autofocus: false,
@@ -93,11 +94,7 @@ class _LeaveApplyState extends State<LeaveApply> {
                     hintText: '输入理由',
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                    prefixIcon: Padding(
-                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                        child: Text('请假事由:',
-                            style: Theme.of(context).textTheme.subtitle1)),
-                    prefixIconConstraints: BoxConstraints()),
+                    ),
                 onSaved: (val) {
                   leaveForm.reason = val;
                 }),
