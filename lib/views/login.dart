@@ -24,7 +24,7 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    if (_profile.isChecked) {
+    if (_profile.isChecked!=null&&_profile.isChecked) {
       _userController.text = _profile.lastLoginAcount ?? '';
       _passwordController.text = _profile.lastLoginPassword ?? '';
       check = _profile.isChecked ?? false;

@@ -5,6 +5,7 @@ import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:health/model/argument.dart';
+import 'package:health/model/global.dart';
 
 import 'package:health/model/health.dart';
 import 'package:health/model/leaveForm.dart';
@@ -27,7 +28,7 @@ class _LeaveApplyForStudentState extends State<LeaveApplyForStudent> {
   LeaveForm leaveForm = new LeaveForm();
   Health _health = new Health();
   // Global.profile.user.classIdAndNames??
-  List _bindClass = [];
+  List _bindClass = Global.profile.user.classIdAndNames??[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

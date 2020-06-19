@@ -30,7 +30,7 @@ class _SafetyReportState extends State<SafetyReport> {
     heaSafety.className = bindClass.length > 0 ? bindClass[0]['className'] : '';
     //  bindClass[0]['stuNum']
     heaSafety.total =
-        bindClass.length > 0 ? bindClass[0]['stuNum'] ?? null : null;
+        bindClass.length > 0 ? int.parse(bindClass[0]['totalNum'])  ?? null : null;
 
     heaSafety.status = int.parse(classStatus[0]['code']);
   }

@@ -101,6 +101,7 @@ class _SafetyListState extends State<SafetyList> {
     if (res != null && res['list'] != null) {
       this.setState(() {
         if (res['list'].length > 0) {
+          print(res['list'][0]);
           heaSafety = HeaSafety.fromJson(res['list'][0]);
         }else{
           heaSafety = new HeaSafety();

@@ -32,7 +32,8 @@ getDicts() {
 getStudentList({Student stu, Pagination pagination}) {
   Map a = stu.toJson();
   a.addAll(pagination.toJson());
-  return DioManager().post(Api.getStuList, data: a, loading: false);
+  print(filterEmpty(a));
+  return DioManager().post(Api.getStuList, data: filterEmpty(a), loading: false);
 }
 
 healthList({Health health, Pagination pagination}) {

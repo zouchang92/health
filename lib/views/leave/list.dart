@@ -163,7 +163,7 @@ class _LeaveListState extends State<LeaveList> {
                       Text('请假开始日期:', style: TextStyle(color: Colors.white)),
                       Padding(
                         padding: EdgeInsets.only(left: 10.0),
-                        child: Text(item['startTime'] ? formatTime(item['startTime']):'',
+                        child: Text(item['startTime']!=null ? formatTime(item['startTime']):'',
                             style: TextStyle(color: Colors.white)),
                       ),
                     ]),
@@ -171,7 +171,7 @@ class _LeaveListState extends State<LeaveList> {
                       Text('结束时间:', style: TextStyle(color: Colors.white)),
                       Padding(
                         padding: EdgeInsets.only(left: 10.0),
-                        child:Text(item['endTime']?formatTime(item['endTime']):'',style: TextStyle(color: Colors.white)),
+                        child:Text(item['endTime']!=null?formatTime(item['endTime']):'',style: TextStyle(color: Colors.white)),
                       ),
                     ])
                   ],

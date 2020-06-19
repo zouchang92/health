@@ -29,7 +29,7 @@ class _HealthListState extends State<HealthList> {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
         // print('滑动到了最底部${scrollController.position.pixels}');
-        if(pagination.pageSize == pagination.totalCount){
+        if (pagination.pageSize == pagination.totalCount) {
           _healthList();
         }
       }
@@ -53,11 +53,13 @@ class _HealthListState extends State<HealthList> {
         searchHint: '输入姓名',
         onChange: (String value) {
           // print(value);
-          this.setState(() {
-            health.name = value;
-            pagination.page = 1;
+          if (value != '') {
+            this.setState(() {
+              health.name = value;
+              pagination.page = 1;
+            });
             _healthList();
-          });
+          }
         },
         mainAppBar: AppBar(
           title: Text(widget.title),
@@ -260,7 +262,7 @@ class _HealthListState extends State<HealthList> {
     //     print('value:$value');
     //   }
     // });
-    // print('res$res');
+    print('res$res');
     this.setState(() {
       this.firstLoading = false;
       // studentList = res['list'];
