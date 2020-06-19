@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:health/model/dictionary.dart';
@@ -20,23 +21,21 @@ class _SafetyReportState extends State<SafetyReport> {
       Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.CLASSSTATUS]);
   // GlobalKey _tabKey = new GlobalKey();
   GlobalKey _formKey = new GlobalKey();
-  bool selfHasSubmit = false;
-  final String noClassTip = '未选择班级';
+  bool selfHasSubmit = true;
+  final String noClassTip = '没有绑定班级';
   final String noBindTip = '没有绑定班级';
   @override
   void initState() {
     super.initState();
-    print('classStatus:${bindClass[0]['classId']}');
-    
+    // print('classStatus:${bindClass[0]['classId']}');
     heaSafety.classId = bindClass.length > 0 ? bindClass[0]['classId'] : '';
     heaSafety.className = bindClass.length > 0 ? bindClass[0]['className'] : '';
-    //  bindClass[0]['stuNum']
     heaSafety.total = bindClass.length > 0
         ? int.parse(bindClass[0]['totalNum']) ?? null
         : null;
 
     heaSafety.status = int.parse(classStatus[0]['code']);
-    selfHasSubmit = todayIsSub();
+    todayIsSub();
   }
 
   @override
@@ -127,12 +126,13 @@ class _SafetyReportState extends State<SafetyReport> {
               tabs: _bindClass,
               isScrollable: true,
               onTap: (int val) {
+                todayIsSub();
                 this.setState(() {
-                  print(bindClass[val]);
+                  // print(bindClass[val]);
+                  
                   heaSafety.total = int.parse(bindClass[val]['totalNum']);
                   heaSafety.classId = bindClass[val]['classId'];
                   heaSafety.className = bindClass[val]['className'];
-                  selfHasSubmit = todayIsSub();
                 });
               },
             )));
@@ -220,69 +220,29 @@ class _SafetyReportState extends State<SafetyReport> {
   }
 
   Future _safetyReport() async {
-    print('heaSafety:${heaSafety.toJson()}');
-    // await safetyReport(heaSafety);
-    updateHeaSafetySubList();
+    // print('heaSafety:${heaSafety.toJson()}');
+    await safetyReport(heaSafety);
+
     this.setState(() {
-      selfHasSubmit = todayIsSub();
+      selfHasSubmit = true;
     });
   }
 
-  updateHeaSafetySubList() {
-    List hlist = Global.profile.heaSafetySubList;
-
-    print('${Global.profile.heaSafetySubList}');
-    if (hlist == null) {
-      hlist = [];
-    }
-    if (hlist.firstWhere((element) => element['classId'] == heaSafety.classId,
-            orElse: () {
-          return null;
-        }) ==
-        null) {
-      Map<String, dynamic> a = {
-        "classId": heaSafety.classId,
-        "subTime": DateTime.now().toString()
-      };
-
-      Global.profile.heaSafetySubList.add(a);
-    }
-    Global.save();
-  }
-
   /*true时表示已提交*/
-  bool todayIsSub() {
-    List heaSafetySubList = Global.profile.heaSafetySubList;
-    
-    if (heaSafetySubList == null || heaSafetySubList.length == 0) {
-      return false;
-    } else {
-      DateTime markTime;
-      // DateTime.parse(heaSafetySubList.firstWhere((element) => element['classId'] == heaSafety.classId)['subTime']);
-      if (heaSafetySubList.firstWhere(
-              (element) => element['classId'] == heaSafety.classId, orElse: () {
-            return null;
-          }) !=
-          null) {
-        markTime = DateTime.parse(heaSafetySubList.firstWhere(
-            (element) => element['classId'] == heaSafety.classId)['subTime']);
-        DateTime now = DateTime.now();
-        DateTime nowStart = DateTime(now.year, now.month, now.day);
-        DateTime nowEnd = DateTime(now.year, now.month, now.day, 24, 00);
-        if (markTime.isAfter(nowStart) && markTime.isBefore(nowEnd)) {
-          print('true1');
-          return true;
-        } else {
-          print('false1');
-          return false;
-        }
-      } else {
-         var kk = heaSafetySubList.firstWhere((element) => element['classId'] == heaSafety.classId,orElse: (){return null;});
-         print("false2:$kk");
-        return false;
-      }
+  Future todayIsSub() async {
+    String date = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
+    var res = await safetyList(date, heaSafety.classId);
+    print('dd');
+    if (res != null && res['list'] != null) {
+      this.setState(() {
+        if (res['list'].length > 0) {
+          //  bindClass[0]['stuNum']
 
-      // now.isAtSameMomentAs(markTime);
+          selfHasSubmit = true;
+        } else {
+          selfHasSubmit = false;
+        }
+      });
     }
   }
 }

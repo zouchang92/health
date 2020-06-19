@@ -18,7 +18,8 @@ class _HealthDetailState extends State<HealthDetail> {
     // print('arg${health.measure}');
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
-      body: ListView(
+      body: SingleChildScrollView(
+        child: Column(
           children: <Widget>[
              ListTile(
               title: Text('学生信息:'),
@@ -68,7 +69,7 @@ class _HealthDetailState extends State<HealthDetail> {
             Divider(height: 1),
             ListTile(
               title: Text('是否就诊:'),
-              trailing: Chip(label: Text(health.isHealed ?? '')),
+              trailing: Chip(label: Text(ynLabel(health.isHealed))),
             ),
             Divider(height: 1),
             ListTile(
@@ -122,8 +123,13 @@ class _HealthDetailState extends State<HealthDetail> {
             )
           ],
         ),
+      ),
       
     );
+  }
+  String ynLabel(String code) {
+    return Dictionary.getNameByUniqueNameAndCode(
+        uniqueName: UniqueNameValues[UNIQUE_NAME.BOOLEAN], code: code);
   }
 
   Widget infoTitle(String title) {

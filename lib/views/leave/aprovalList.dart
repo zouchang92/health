@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
@@ -202,7 +203,7 @@ class _LeaveApprovalListState extends State<LeaveApprovalList> {
                         Text('请假开始日期:', style: TextStyle(color: Colors.white)),
                         Padding(
                           padding: EdgeInsets.only(left: 10.0),
-                          child: Text(item['startTime'] ?? '',
+                          child: Text(formatTime(item['startTime']),
                               style: TextStyle(color: Colors.white)),
                         ),
                       ]),
@@ -210,7 +211,7 @@ class _LeaveApprovalListState extends State<LeaveApprovalList> {
                         Text('结束时间:', style: TextStyle(color: Colors.white)),
                         Padding(
                           padding: EdgeInsets.only(left: 10.0),
-                          child: Text(item['endTime'],
+                          child: Text(formatTime(item['endTime']),
                               style: TextStyle(color: Colors.white)),
                         ),
                       ])
@@ -224,9 +225,11 @@ class _LeaveApprovalListState extends State<LeaveApprovalList> {
       ],
     );
   }
-  // Future _refresh() async{
-
-  // }
+ String formatTime(String str) {
+   if(str==null){return '';}
+    return formatDate(
+        DateTime.parse(str), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+  }
   Future _getLeaveList() async {
     print('status:$status');
     var res = await getLeaveList(

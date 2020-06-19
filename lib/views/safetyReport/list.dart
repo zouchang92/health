@@ -1,22 +1,28 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:health/model/dictionary.dart';
+import 'package:health/model/global.dart';
 import 'package:health/model/heaSafety.dart';
 import 'package:health/service/index.dart';
 
 class SafetyList extends StatefulWidget {
   final String title = '平安上报历史';
+  
   @override
   _SafetyListState createState() => _SafetyListState();
 }
 
 class _SafetyListState extends State<SafetyList> {
   HeaSafety heaSafety = new HeaSafety();
+  List bindClass = Global.profile.user.classIdAndNames ?? [];
+  final String noBindTip = '没有绑定班级';
+  String classId;
+  String date = formatDate(DateTime.now() , [yyyy, '-', mm, '-', dd]);
   @override
   void initState() {
     super.initState();
-
-    _safetyList(formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]));
+    classId = bindClass[0]['classId'];
+    _safetyList();
   }
 
   @override
@@ -26,17 +32,18 @@ class _SafetyListState extends State<SafetyList> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            tabbar(),
             CalendarDatePicker(
                 initialDate: DateTime.now(),
                 firstDate: DateTime.now().subtract(Duration(days: 30)),
                 lastDate: DateTime.now(),
                 onDateChanged: (dateTime) {
-                  // print('dateTime:$dateTime');
-                  _safetyList(formatDate(dateTime, [yyyy, '-', mm, '-', dd]));
+                  this.setState(() { 
+                    date = formatDate(dateTime, [yyyy, '-', mm, '-', dd]);
+                  });
+                  _safetyList();
                 }),
-            // form()
-            // empty()
-            // Column()
+            
             heaSafety.status==null?empty():form()
           ],
         ),
@@ -95,8 +102,49 @@ class _SafetyListState extends State<SafetyList> {
     ]);
   }
 
-  Future _safetyList(String date) async {
-    var res = await safetyList(date);
+  /*班级列表*/
+  Widget tabbar() {
+    List<Widget> _bindClass;
+    if (bindClass.length == 0) {
+      _bindClass = [tabbarItem(title: noBindTip)];
+    } else {
+      _bindClass =
+          bindClass.map((e) => tabbarItem(title: e['className'])).toList();
+    }
+    return DefaultTabController(
+        length: bindClass.length,
+        initialIndex: 0,
+        child: Container(
+            width: double.infinity,
+            color: Colors.white,
+            child: TabBar(
+              // key: _tabKey,
+              labelColor: Colors.black,
+              labelStyle: TextStyle(color: Colors.blue),
+              tabs: _bindClass,
+              isScrollable: true,
+              onTap: (int val) {
+                this.setState(() {
+                  classId = bindClass[val]['classId'];
+                });
+                _safetyList();
+                  
+                  
+              },
+            )));
+  }
+
+  /*tabbarItem*/
+  Widget tabbarItem({String title}) {
+    return Tab(
+      // padding: EdgeInsets.symmetric(vertical: 10.0),
+      text: title ?? '',
+    );
+  }
+
+  Future _safetyList() async {
+
+    var res = await safetyList(date,classId);
 
     if (res != null && res['list'] != null) {
       this.setState(() {

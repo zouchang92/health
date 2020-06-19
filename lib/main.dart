@@ -71,10 +71,10 @@ class MyApp extends StatelessWidget {
         // print('${Global.profile.isLogin}');
         if (Global.profile.isLogin != null && Global.profile.isLogin == true) {
           if (routes[routeName] != null) {
-            return MaterialPageRoute(maintainState: true,
+            return MaterialPageRoute(maintainState:keepAliveList.firstWhere((element) => element == routeName,orElse: (){return null;})!=null?true:false ,
                 builder: routes[routeName], settings: routeSetting);
           } else {
-            return MaterialPageRoute(builder: (context) => NotFound(),maintainState: routeSetting.arguments==null?false:true);
+            return MaterialPageRoute(builder: (context) => NotFound(),maintainState: false);
           }
         } else {
           return MaterialPageRoute(builder: routes['/login'],maintainState: false);

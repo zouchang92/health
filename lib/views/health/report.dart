@@ -349,7 +349,7 @@ class _HealthReportState extends State<HealthReport> {
                     _health.illType = illTypeList[0]['code'];
                   }
                   if (_health.isHealed == null) {
-                    _health.isHealed = isHealList[0];
+                    _health.isHealed = isHealList[0]['code'];
                   }
                   if(_health.personType == null){
                     /*Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.PERSONTYPE])[0]['code']*/ 

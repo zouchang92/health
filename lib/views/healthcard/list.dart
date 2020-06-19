@@ -22,9 +22,7 @@ class _HealthCardListState extends State<HealthCardList> {
   final defaultImage = 'images/upload_bg.png';
   ScrollController scrollController = ScrollController();
   List _bindClass = [];
-  HealthCard healthCard = new HealthCard(
-      userNum: Global.profile.user.loginName,
-      personType: Global.profile.user.personType == 'studentDuty' ? '1' : '0');
+  HealthCard healthCard = new HealthCard();
   Pagination pagination = new Pagination(page: 1, rows: 10);
 
   bool loading = true;
@@ -34,6 +32,11 @@ class _HealthCardListState extends State<HealthCardList> {
     super.initState();
     _bindClass = Global.profile.user.classIdAndNames ?? [];
     print('_bindClass:$_bindClass');
+    healthCard = HealthCard(
+      personType: '1',
+      classId: _bindClass[0]['classId']??'',
+      className: _bindClass[0]['className']??''
+    );
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
@@ -86,7 +89,7 @@ class _HealthCardListState extends State<HealthCardList> {
             /*Icon(Icons.navigate_next)*/
             trailing: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
-                children: <Widget>[Text(''), Icon(Icons.navigate_next)]),
+                children: <Widget>[Text(healthCard.className??''), Icon(Icons.navigate_next)]),
             onTap: showPicker,
           ),
           Divider(height: 1),
@@ -206,13 +209,15 @@ class _HealthCardListState extends State<HealthCardList> {
           .map((e) => PickerItem(text: Text(e['className'] ?? '')))
           .toList();
       Picker picker = Picker(
+        height: 0.3*MediaQuery.of(context).size.height,
+        itemExtent: 36,
         adapter: PickerDataAdapter(data: _picerItem),
         title: Text('选择班级'),
         onConfirm: (picker, selecteds) {
-          // print(selecteds);
+          print(_bindClass[selecteds[0]]);
           this.setState(() {
-            healthCard.className = _bindClass[selecteds[0]]['name'];
-            healthCard.classId = _bindClass[selecteds[0]]['id'];
+            healthCard.className = _bindClass[selecteds[0]]['className'];
+            healthCard.classId = _bindClass[selecteds[0]]['classId'];
             dataList = [];
             pagination.page = 1;
           });
@@ -226,14 +231,14 @@ class _HealthCardListState extends State<HealthCardList> {
 
   Future _heaCardList() async {
     var res = await heaCardList(healthCard: healthCard, pagination: pagination);
-    print('_heaCardList:${res['list'][0]}');
+    // print('_heaCardList:${res['list'][0]}');
     this.setState(() {
       loading = false;
     });
     if (res != null) {
       if (res.length > 0) {
         this.setState(() {
-          dataList = res['list'];
+          dataList.addAll( res['list']);
           pagination.totalCount = res['totalCount'];
           pagination.pageSize = res['totalCount'];
         });

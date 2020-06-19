@@ -36,8 +36,8 @@ class _PersonState extends State<Person> {
         Divider(height: 1),
         listTile(title: '所属机构', value: _profile.user.organName),
         Divider(height: 1),
-        listTile(title: '所在校区', value: _profile.user.schName),
-        Divider(height: 1),
+        // listTile(title: '所在校区', value: _profile.user.schName),
+        // Divider(height: 1),
         Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),

@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:health/model/argument.dart';
@@ -28,12 +29,12 @@ class LeaveDetail extends StatelessWidget {
             ),
             ListTile(
               title: Text('开始时间:'),
-              trailing: Text(form['startTime'] ?? ''),
+              trailing: Text(formatTime(form['startTime'])),
             ),
             Divider(height: 1),
             ListTile(
               title: Text('结束时间:'),
-              trailing: Text(form['endTime'] ?? ''),
+              trailing: Text(formatTime(form['endTime'])),
             ),
             Divider(height: 1),
             TextFormField(
@@ -74,6 +75,11 @@ class LeaveDetail extends StatelessWidget {
         ),
       ),
     );
+  }
+  String formatTime(String str) {
+   if(str==null){return '';}
+    return formatDate(
+        DateTime.parse(str), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
   }
 
   /*卡片1-轮播图*/

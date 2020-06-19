@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:health/model/argument.dart';
@@ -32,7 +33,13 @@ class NewsDetail extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
               child: Wrap(
                 children: <Widget>[
-                 Html(data: news['content'])
+                 Html(data: news['content']),
+                 Row(
+                   mainAxisAlignment: MainAxisAlignment.end,
+                   children: <Widget>[
+                     Text(news['publishTime']!=null?formatTime(news['publishTime']):'')
+                   ],
+                 )
                 ],
               ),
             )
@@ -40,5 +47,9 @@ class NewsDetail extends StatelessWidget {
         ),
       ),
     );
+  }
+  String formatTime(String str) {
+    return formatDate(
+        DateTime.parse(str), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
   }
 }

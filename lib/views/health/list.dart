@@ -57,6 +57,7 @@ class _HealthListState extends State<HealthList> {
             this.setState(() {
               health.name = value;
               pagination.page = 1;
+              dataList = [];
             });
             _healthList();
           }
@@ -233,8 +234,11 @@ class _HealthListState extends State<HealthList> {
                 if (value != null) {
                   health.leaveDate =
                       formatDate(value, [yyyy, '-', mm, '-', dd]);
+                  dataList = [];
                 }
-              })
+              }),
+              _healthList()
+
             });
   }
 

@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:health/model/global.dart';
 
@@ -60,14 +61,13 @@ class _LoginState extends State<Login> {
                     prefixIcon: Icon(Icons.person),
                     suffix: InkWell(
                       child: Icon(Icons.close),
-                      onTap: (){
-                         this.setState(() { 
-                           _userController.text = '';
-                         });
+                      onTap: () {
+                        this.setState(() {
+                          _userController.text = '';
+                        });
                       },
                     ),
-                    suffixIconConstraints: BoxConstraints()
-                    ),
+                    suffixIconConstraints: BoxConstraints()),
                 validator: (String value) {
                   if (value == null || value.isEmpty) {
                     return LoginValue.emptyTextTip;
@@ -88,13 +88,13 @@ class _LoginState extends State<Login> {
                   prefixIcon: Icon(Icons.lock),
                   suffix: viewBtnVisible
                       ? InkWell(
-                        child: Icon(Icons.remove_red_eye),
-                        onTap: (){
-                          this.setState(() { 
-                            viewPwd = !viewPwd;
-                          });
-                        },
-                      )
+                          child: Icon(Icons.remove_red_eye),
+                          onTap: () {
+                            this.setState(() {
+                              viewPwd = !viewPwd;
+                            });
+                          },
+                        )
                       : null,
                   // suffixIcon: ,
                 ),
@@ -187,6 +187,8 @@ class _LoginState extends State<Login> {
         var newsList =
             await getNewsList(pagination: Pagination(page: 1, rows: 3));
         if (newsList != null) {
+          
+          
           _profile.isLogin = true;
           Global.save();
           Navigator.of(context).pushNamed('/');

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import '../views/index.dart';
+final List<String> keepAliveList = ['/healthReport','/LeaveApplyForStudent'];
 final routes = {
   '/':(context)=>Home(),
   '/login':(context)=>Login(),

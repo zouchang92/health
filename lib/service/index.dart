@@ -39,6 +39,7 @@ getStudentList({Student stu, Pagination pagination}) {
 healthList({Health health, Pagination pagination}) {
   Map a = health.toJson();
   a.addAll(pagination.toJson());
+  print(filterEmpty(a));
   return DioManager()
       .post(Api.heaInfoDailyList, data: filterEmpty(a), loading: false);
 }
@@ -54,9 +55,9 @@ safetyReport(HeaSafety heaSafety) {
       .post(Api.insertHeaDaily, data: filterEmpty(heaSafety.toJson()));
 }
 
-safetyList(String checkDate) {
+safetyList(String checkDate,String classId) {
   return DioManager()
-      .post(Api.listHeaDaily, data: {"checkDate": checkDate}, loading: false);
+      .post(Api.listHeaDaily, data: {"checkDate": checkDate,"classId":classId}, loading: false);
 }
 
 /*请假-列表*/
