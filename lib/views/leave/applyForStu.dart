@@ -15,7 +15,7 @@ import 'package:health/widget/imagePicker/imagePicker.dart';
 import 'package:provider/provider.dart';
 
 class LeaveApplyForStudent extends StatefulWidget {
-  final String title = '学生请假申请-代请';
+  final String title = '学生请假';
   final Argument args;
   LeaveApplyForStudent({this.args});
   @override
@@ -53,7 +53,7 @@ class _LeaveApplyForStudentState extends State<LeaveApplyForStudent> {
   }
   Widget form() {
     final _arg = Provider.of<ProfileNotify>(context).argValue;
-    print('arg1:${_arg.params.toJson()}');
+    // print('arg1:${_arg}');
     if (_arg != null) {
       Health _thealth = _arg.params as Health;
       // print('_thealth:${_thealth.toJson()}');
@@ -66,13 +66,19 @@ class _LeaveApplyForStudentState extends State<LeaveApplyForStudent> {
         // leaveForm.userId = _health
       });
     }
+    // Text(_health.className??'')
     return Form(
         key: formKey,
         child: Column(
           children: <Widget>[
             ListTile(
               title: Text('班级选择'),
-              trailing: Text(_health.className??''),
+              trailing:  Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: <Widget>[
+                  Text(_health.className??''),
+                  Icon(Icons.navigate_next)
+                ]),
               onTap: showClassPicker,
             ),
             Divider(height: 1),

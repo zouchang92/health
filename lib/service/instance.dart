@@ -71,7 +71,7 @@ class DioManager {
         }
       }
     } on DioError catch (e) {
-      print('e:${e.request.uri}');
+      print('e:$e');
       if (loading&&start) {
         // print('消失');
         if(dismiss!=null){

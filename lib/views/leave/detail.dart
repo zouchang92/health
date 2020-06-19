@@ -23,10 +23,12 @@ class LeaveDetail extends StatelessWidget {
               title: Text('申请人'),
               trailing: Text(form['userName']),
             ),
+            Divider(height: 1),
             ListTile(
               title: Text('班级'),
               trailing: Text(form['className']),
             ),
+            Divider(height: 1),
             ListTile(
               title: Text('开始时间:'),
               trailing: Text(formatTime(form['startTime'])),
@@ -51,13 +53,14 @@ class LeaveDetail extends StatelessWidget {
                           style: Theme.of(context).textTheme.subtitle1)),
                   prefixIconConstraints: BoxConstraints()),
             ),
+            Divider(height: 1),
             // 轮播
             form['photos'] != null
                 ? swiper(form['photos'] as List)
                 : Container(),
 
             Offstage(
-              offstage: form['status'] == 3,
+              offstage: form['status'] == '1',
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
