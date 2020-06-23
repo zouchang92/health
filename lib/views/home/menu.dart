@@ -23,7 +23,7 @@ class _MenuState extends State<Menu> {
   void initState() {
     print(_profile.news);
     images = _profile.news??[];
-    print('images:${images[2]}');
+    // print('images:${images[2]}');
     super.initState();
   }
   @override

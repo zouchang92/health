@@ -41,8 +41,8 @@ class _ChoiceChipOptionsState extends State<ChoiceChipOptions> {
                     if(status){
                       this._selectedIndex = index;
                     }
+                    widget.onValueChange?.call(this._selectedIndex);
                   });
-                  widget.onValueChange?.call(this._selectedIndex);
                   
                   
                 },

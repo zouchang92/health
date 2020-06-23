@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:grouped_checkbox/grouped_checkbox.dart';
 import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
 import 'package:health/model/health.dart';
 import 'package:health/store/profileNotify.dart';
-import 'package:health/widget/index.dart';
+import 'package:health/widget/checkBoxGroup/index.dart';
+
 import 'package:provider/provider.dart';
 
 class SelectSym extends StatefulWidget {
@@ -18,7 +20,7 @@ class _SelectSymState extends State<SelectSym> {
   /*赋值对象*/
   Argument args;
   Health health = new Health();
-  // Map temArg = {};
+  List<String> selected = [];
   @override
   void initState() {
     args = new Argument();
@@ -33,14 +35,13 @@ class _SelectSymState extends State<SelectSym> {
       appBar: AppBar(title: Text(widget.title)),
       body: SingleChildScrollView(
         child: Column(children: <Widget>[
-          RadioOptions(
+          CheckBoxGroup(
             data: symTypeList,
             label: 'name',
-            onValueChange: (_index) {
-              this.setState(() {
-                health.symptomTypeValue = symTypeList[_index]['name'];
-                health.symptomType = symTypeList[_index]['code'];
-              });
+            onValueChange: (selected){
+             print('selected:$selected');
+              health.symptomTypeMulti = selected.map((e) => e['code'] as String).toList();
+              health.symptomTypeMultiValue = selected.map((e) => e['name'] as String).toList();
             },
           ),
           Container(

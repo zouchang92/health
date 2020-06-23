@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 
 import 'package:flui/flui.dart';
@@ -39,21 +37,20 @@ void main() {
 }
 
 Future requestPermission() async {
-  PermissionHandler().requestPermissions([PermissionGroup.photos,PermissionGroup.camera]);
+  PermissionHandler()
+      .requestPermissions([PermissionGroup.photos, PermissionGroup.camera]);
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-   
     return MaterialApp(
       title: '家校通',
       locale: Locale('zh', 'CH'),
       localizationsDelegates: [
         PickerLocalizationsDelegate.delegate,
         GlobalMaterialLocalizations.delegate,
-        
       ],
       supportedLocales: [
         const Locale('zh', 'CH'),
@@ -71,13 +68,51 @@ class MyApp extends StatelessWidget {
         // print('${Global.profile.isLogin}');
         if (Global.profile.isLogin != null && Global.profile.isLogin == true) {
           if (routes[routeName] != null) {
-            return MaterialPageRoute(maintainState:keepAliveList.firstWhere((element) => element == routeName,orElse: (){return null;})!=null?true:false ,
-                builder: routes[routeName], settings: routeSetting);
+            // return MaterialPageRoute(maintainState:keepAliveList.firstWhere((element) => element == routeName,orElse: (){return null;})!=null?true:false ,
+            //     builder: routes[routeName], settings: routeSetting);
+            return PageRouteBuilder(
+              pageBuilder: routes[routeName],
+              maintainState: keepAliveList.firstWhere(
+                          (element) => element == routeName, orElse: () {
+                        return null;
+                      }) !=
+                      null
+                  ? true
+                  : false,
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                return SlideTransition(
+                    position: Tween<Offset>(
+                            begin: Offset(-1.0, 0.0), end: Offset(0.0, 0.0))
+                        .animate(CurvedAnimation(
+                            parent: animation, curve: Curves.fastOutSlowIn)),
+                            child: child,
+                      );
+              },
+            );
           } else {
-            return MaterialPageRoute(builder: (context) => NotFound(),maintainState: false);
+            // return MaterialPageRoute(
+            //     builder: (context) => NotFound(), maintainState: false);
+            return PageRouteBuilder(pageBuilder: (context,a,b){
+              return NotFound();
+            });
           }
         } else {
-          return MaterialPageRoute(builder: routes['/login'],maintainState: false);
+          // return MaterialPageRoute(builder: routes['/login'],maintainState: false);
+          return PageRouteBuilder(
+            pageBuilder: routes['/login'],
+            maintainState: false,
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return SlideTransition(
+                  position: Tween<Offset>(
+                          begin: Offset(-1.0, 0.0), end: Offset(0.0, 0.0))
+                      .animate(CurvedAnimation(
+                          parent: animation, curve: Curves.fastOutSlowIn)),
+                  child: child,
+                );
+            },
+          );
         }
       },
       builder: (context, child) {

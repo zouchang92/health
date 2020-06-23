@@ -31,8 +31,8 @@ class _RadioOptionsState extends State<RadioOptions> {
         onChanged: (iindex){
           this.setState(() {
             this._selected = iindex;
+            widget.onValueChange?.call(this._selected);
            });
-           widget.onValueChange?.call(this._selected);
         }
       )).toList(),
     );

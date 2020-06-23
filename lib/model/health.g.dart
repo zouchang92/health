@@ -65,6 +65,11 @@ Health _$HealthFromJson(Map<String, dynamic> json) {
     stuNumValue: json['stuNumValue'] as String,
     symptomType: json['symptomType'] as String,
     symptomTypeValue: json['symptomTypeValue'] as String,
+    symptomTypeMulti:
+        (json['symptomTypeMulti'] as List)?.map((e) => e as String)?.toList(),
+    symptomTypeMultiValue: (json['symptomTypeMultiValue'] as List)
+        ?.map((e) => e as String)
+        ?.toList(),
   );
 }
 
@@ -126,4 +131,6 @@ Map<String, dynamic> _$HealthToJson(Health instance) => <String, dynamic>{
       'symptomType': instance.symptomType,
       'symptomTypeValue': instance.symptomTypeValue,
       'infectionType': instance.infectionType,
+      'symptomTypeMulti': instance.symptomTypeMulti,
+      'symptomTypeMultiValue': instance.symptomTypeMultiValue,
     };

@@ -117,6 +117,10 @@ class Health{
 
   String infectionType;
 
+  List<String> symptomTypeMulti;
+
+  List<String> symptomTypeMultiValue;
+
   
   Health({this.address,this.approveTime,this.checkPersonType,this.checkResult,this.checkType,
     this.city,this.cityName,this.classId,this.className,this.confirmTime,this.county,this.countyName,
@@ -127,7 +131,8 @@ class Health{
     this.personType,this.phone,this.hurtType,this.infectionType,this.school,
     this.province,this.provinceName,this.reportTime,this.schoolName,this.stuNum,this.healDate,
     this.healHospital,this.illDate,this.illType,this.isHealed,this.leaveDate,this.memo,this.registerType,
-    this.measure,this.hurtSite,this.hurtSiteValue,this.stuNumValue,this.symptomType,this.symptomTypeValue
+    this.measure,this.hurtSite,this.hurtSiteValue,this.stuNumValue,this.symptomType,this.symptomTypeValue,
+    this.symptomTypeMulti,this.symptomTypeMultiValue
   });
   factory Health.fromJson(Map<String,dynamic> json)=>_$HealthFromJson(json);
   Map<String, dynamic> toJson()=>_$HealthToJson(this);

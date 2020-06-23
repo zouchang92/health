@@ -16,7 +16,8 @@ class HealthList extends StatefulWidget {
 
 class _HealthListState extends State<HealthList> {
   final AppBarController appBarController = AppBarController();
-  ScrollController scrollController = ScrollController();
+  final ScrollController scrollController = ScrollController();
+  final defaultAvatar = 'images/upload_bg.png';
   Health health = new Health(personType: '1');
   Pagination pagination = new Pagination(page: 1, rows: 10);
   List dataList = [];
@@ -138,10 +139,13 @@ class _HealthListState extends State<HealthList> {
                   alignment: FractionalOffset(1, 0.9),
                   children: <Widget>[
                     Row(children: <Widget>[
-                      CircleAvatar(
-                          // radius: 35.0,
-                          backgroundColor: Color(0xffe3dfeb),
-                          backgroundImage: AssetImage('images/upload_bg.png')),
+                      // CircleAvatar(
+                      //     // radius: 35.0,
+                      //     backgroundColor: Color(0xffe3dfeb),
+                      //     backgroundImage: AssetImage(defaultAvatar),
+                      //     // backgroundImage: (item['photo']==null&&item['photo']=='')?AssetImage(defaultAvatar):NetworkImage(Global.getHttpPicUrl(item['photo']))
+                      //   ),
+                      Text('姓名:',style: TextStyle(color: Colors.white)),
                       Padding(
                           padding: EdgeInsets.only(left: 10.0),
                           child: Text(item['name'] ?? '',
@@ -199,14 +203,14 @@ class _HealthListState extends State<HealthList> {
           color: Colors.white,
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
           child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: <Widget>[
-                      Text('复课时间:', style: TextStyle(color: Colors.white)),
+                      Text('确诊时间:', style: TextStyle(color: Colors.white)),
                       Text(item['healDate'] ?? '',
                           style: TextStyle(color: Colors.white))
                     ]),
@@ -257,15 +261,13 @@ class _HealthListState extends State<HealthList> {
 
   Future _healthList() async {
     var res = await healthList(health: health, pagination: pagination);
-    // List t = res['list'];
-    // t = t.where((element) => element!=null).toList();
-    // Map tt = t[0] as Map;
-    // tt.forEach((key, value) {
-    //   if(value!=null){
-    //     print('key:$key');
-    //     print('value:$value');
-    //   }
-    // });
+    List t = res['list'];
+    t = t.where((element) => element!=null).toList();
+    Map tt = t[0] as Map;
+    tt.forEach((key, value) {
+      print('key:$key');
+        // print('value:$value');
+    });
     print('res$res');
     this.setState(() {
       this.firstLoading = false;

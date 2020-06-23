@@ -227,7 +227,7 @@ class _HealthReportState extends State<HealthReport> {
             trailing: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: <Widget>[
-                  Text(_health.symptomTypeValue ?? ''),
+                  Text(_health.symptomTypeMultiValue!=null?_health.symptomTypeMultiValue.join(','):''),
                   Icon(Icons.navigate_next)
                 ]),
             onTap: () {

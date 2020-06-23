@@ -34,8 +34,9 @@ class _ImagePickerState extends State<ImagePickerWidget> {
   @override
   Widget build(BuildContext context) {
     List<Widget> imageListwidget = [];
-    imageListwidget
-        .add(Padding(padding: EdgeInsets.symmetric(vertical: 5.0),child:Text('图片:', style: Theme.of(context).textTheme.subtitle1)));
+    imageListwidget.add(Padding(
+        padding: EdgeInsets.symmetric(vertical: 5.0),
+        child: Text('图片:', style: Theme.of(context).textTheme.subtitle1)));
     if (_imageList.length > 0) {
       // imageListwidget.insert()
       // imageListwidget.add(imageListWrapWidget());
@@ -83,10 +84,10 @@ class _ImagePickerState extends State<ImagePickerWidget> {
                   onPressed: () {
                     this.setState(() {
                       _imageList.removeWhere((element) => element == file);
+                      List<File> filePaths =
+                          _imageList.map((e) => File(e.path)).toList();
+                      widget.onValueChange.call(filePaths);
                     });
-                    List<File> filePaths =
-                        _imageList.map((e) => File(e.path)).toList();
-                    widget.onValueChange.call(filePaths);
                   })),
         ],
       ),
@@ -160,10 +161,9 @@ class _ImagePickerState extends State<ImagePickerWidget> {
       if (image != null) {
         this.setState(() {
           _imageList.add(image);
+          List<File> filePaths = _imageList.map((e) => File(e.path)).toList();
+          widget.onValueChange.call(filePaths);
         });
-        // widget.onValueChange.call(File(image.path));
-        List<File> filePaths = _imageList.map((e) => File(e.path)).toList();
-        widget.onValueChange.call(filePaths);
       }
     } catch (exception) {
       print('exception:$exception');
@@ -179,9 +179,9 @@ class _ImagePickerState extends State<ImagePickerWidget> {
       if (image != null) {
         this.setState(() {
           _imageList.add(image);
+          List<File> filePaths = _imageList.map((e) => File(e.path)).toList();
+          widget.onValueChange.call(filePaths);
         });
-        List<File> filePaths = _imageList.map((e) => File(e.path)).toList();
-        widget.onValueChange.call(filePaths);
       }
     } catch (exception) {
       print('exception:$exception');
