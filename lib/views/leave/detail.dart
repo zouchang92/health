@@ -12,7 +12,7 @@ class LeaveDetail extends StatelessWidget {
   LeaveDetail({this.arg});
   @override
   Widget build(BuildContext context) {
-    print('args:${arg.params}');
+    // print('args:${arg.params}');
     Map form = arg.params as Map;
     return Scaffold(
       appBar: AppBar(title: Text(title)),

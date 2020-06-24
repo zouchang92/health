@@ -71,6 +71,7 @@ class MyApp extends StatelessWidget {
             // return MaterialPageRoute(maintainState:keepAliveList.firstWhere((element) => element == routeName,orElse: (){return null;})!=null?true:false ,
             //     builder: routes[routeName], settings: routeSetting);
             return PageRouteBuilder(
+              settings: routeSetting,
               pageBuilder: routes[routeName],
               maintainState: keepAliveList.firstWhere(
                           (element) => element == routeName, orElse: () {

@@ -85,7 +85,7 @@ Text('更多',style: TextStyle(color:Colors.white))
   Widget swiperItem({String imageUrl, String title}) {
     double _width = MediaQuery.of(context).size.width;
     return Stack(
-      alignment: FractionalOffset(0.1, 0.2),
+      alignment: FractionalOffset(0.1, 0.9),
       children: <Widget>[
         // Image.asset(
         //   imageUrl,
