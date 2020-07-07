@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_picker/flutter_picker.dart';
@@ -16,6 +16,20 @@ import 'model/profile.dart';
 import 'routes/index.dart';
 
 // import 'package:flui/widgets/toast.dart';
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow
+    ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true;
+}
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,6 +71,10 @@ class MyApp extends StatelessWidget {
         // const Locale('en', 'US'),
       ],
       theme: ThemeData(
+          // accentTextTheme:
+          //     TextTheme(: TextStyle(decoration: TextDecoration.none)),
+          textTheme:
+              TextTheme(bodyText2: TextStyle(decoration: TextDecoration.none)),
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           buttonColor: Colors.blue,
@@ -83,18 +101,18 @@ class MyApp extends StatelessWidget {
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
                 return SlideTransition(
-                    position: Tween<Offset>(
-                            begin: Offset(-1.0, 0.0), end: Offset(0.0, 0.0))
-                        .animate(CurvedAnimation(
-                            parent: animation, curve: Curves.fastOutSlowIn)),
-                            child: child,
-                      );
+                  position: Tween<Offset>(
+                          begin: Offset(-1.0, 0.0), end: Offset(0.0, 0.0))
+                      .animate(CurvedAnimation(
+                          parent: animation, curve: Curves.fastOutSlowIn)),
+                  child: child,
+                );
               },
             );
           } else {
             // return MaterialPageRoute(
             //     builder: (context) => NotFound(), maintainState: false);
-            return PageRouteBuilder(pageBuilder: (context,a,b){
+            return PageRouteBuilder(pageBuilder: (context, a, b) {
               return NotFound();
             });
           }
@@ -106,18 +124,19 @@ class MyApp extends StatelessWidget {
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               return SlideTransition(
-                  position: Tween<Offset>(
-                          begin: Offset(-1.0, 0.0), end: Offset(0.0, 0.0))
-                      .animate(CurvedAnimation(
-                          parent: animation, curve: Curves.fastOutSlowIn)),
-                  child: child,
-                );
+                position: Tween<Offset>(
+                        begin: Offset(-1.0, 0.0), end: Offset(0.0, 0.0))
+                    .animate(CurvedAnimation(
+                        parent: animation, curve: Curves.fastOutSlowIn)),
+                child: child,
+              );
             },
           );
         }
       },
       builder: (context, child) {
-        return FLToastProvider(child: child);
+        return Scaffold(body: FlutterEasyLoading(child: child));
+        // return FlutterEasyLoading(child: child);
       },
     );
   }

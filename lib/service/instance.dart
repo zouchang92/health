@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flui/flui.dart';
+// import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:health/model/global.dart';
 /**/
@@ -11,7 +12,6 @@ import './base.dart';
 import 'config.dart';
 
 /*提示*/
-
 
 class DioManager {
   static final baseApi = Config.baseApi;
@@ -34,14 +34,13 @@ class DioManager {
       dio = Dio(opt);
     }
   }
-  
 
   Future post<T>(String path,
       {dynamic data, Map<String, dynamic> params, bool loading = true}) async {
     try {
       // print('loading$loading');
       if (loading) {
-        dismiss = FLToast.showLoading();
+        EasyLoading.show();
         start = true;
       }
       Response response = await dio.post(path,
@@ -50,34 +49,33 @@ class DioManager {
           options: Options(headers: {"token": Global.profile.token}));
       // print('response:${response.request.uri}');
       if (response != null) {
-        if (loading) {
-          dismiss();
+        if (loading && start) {
+          EasyLoading.dismiss();
         }
         BaseEntity entity = BaseEntity<T>.fromJson(response.data);
         // print(response.toString());
         if (entity.code == 0) {
           // text: entity.message
           if (loading) {
-            FLToast.showSuccess();
+            // FLToast.showSuccess();
+            EasyLoading.showSuccess(entity.message);
           }
           return entity.data;
         } else {
           //消息提示
           print('response:${entity.message}');
-          if (loading&&start) {
-            FLToast.error(text: entity.message);
+          if (loading && start) {
+            // FLToast.error(text: entity.message);
+            EasyLoading.showError(entity.message);
           }
           // return ErrorEntity(code: entity.code, message: entity.message);
         }
       }
     } on DioError catch (e) {
       print('e:$e');
-      if (loading&&start) {
+      if (loading && start) {
         // print('消失');
-        if(dismiss!=null){
-          dismiss();
-          start = false;
-        }
+        EasyLoading.dismiss();
       }
       //消息提示
       ErrorEntity er = createErrorEntity(e);
@@ -107,7 +105,8 @@ class DioManager {
             });
       } else {
         // print(er);
-        FLToast.error(text: er.message);
+        // FLToast.error(text: er.message);
+        EasyLoading.showError(er.message);
       }
       // dio.close();
       // print(er.code);
@@ -119,30 +118,31 @@ class DioManager {
       {Map<String, dynamic> params, bool loading = true}) async {
     try {
       if (loading) {
-        dismiss = FLToast.showLoading();
+        EasyLoading.show();
+        start = true;
       }
       Response response = await dio.get(path,
           queryParameters: params,
           options: Options(headers: {"token": Global.profile.token}));
       if (response != null) {
-        if (loading) {
-          dismiss();
+        if (loading && start) {
+          EasyLoading.dismiss();
         }
         BaseEntity entity = BaseEntity<T>.fromJson(response.data);
         if (entity.code == 0) {
           return entity.data;
         } else {
           //消息提示
-          if (loading) {
-            FLToast.showSuccess();
+          if (loading && start) {
+            EasyLoading.showSuccess(entity.message);
           }
           // return ErrorEntity(code: entity.code, message: entity.message);
         }
       }
     } on DioError catch (e) {
       ErrorEntity er = createErrorEntity(e);
-      if (loading) {
-        dismiss();
+      if (loading && start) {
+        EasyLoading.dismiss();
       }
       // print('post${er.toJson()}');
 
@@ -170,9 +170,9 @@ class DioManager {
               );
             });
       } else {
-        print('e:$e');
-        FLToast.error(text:'网络异常!');
-        
+        // print('e:$e');
+        // FLToast.error(text: '网络异常!');
+        EasyLoading.showError(er.message);
       }
       // dio.close();
     }

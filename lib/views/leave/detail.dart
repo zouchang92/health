@@ -2,6 +2,7 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:health/model/argument.dart';
+import 'package:health/model/dictionary.dart';
 import 'package:health/model/global.dart';
 import 'package:health/service/index.dart';
 
@@ -12,7 +13,7 @@ class LeaveDetail extends StatelessWidget {
   LeaveDetail({this.arg});
   @override
   Widget build(BuildContext context) {
-    // print('args:${arg.params}');
+    print('args:${arg.params}');
     Map form = arg.params as Map;
     return Scaffold(
       appBar: AppBar(title: Text(title)),
@@ -22,12 +23,12 @@ class LeaveDetail extends StatelessWidget {
           children: <Widget>[
             ListTile(
               title: Text('申请人'),
-              trailing: Text(form['userName']),
+              trailing: Text(form['userName'] ?? ''),
             ),
             Divider(height: 1),
             ListTile(
               title: Text('班级'),
-              trailing: Text(form['className']),
+              trailing: Text(form['className'] ?? ''),
             ),
             Divider(height: 1),
             ListTile(
@@ -40,21 +41,29 @@ class LeaveDetail extends StatelessWidget {
               trailing: Text(formatTime(form['endTime'])),
             ),
             Divider(height: 1),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 16,vertical: 10),child: Text('请假事由:',style: Theme.of(context).textTheme.subtitle1)),
+            ListTile(
+              title: Text('请假类型:'),
+              trailing: Text(getLeaveTypeValue(form['type'])),
+            ),
+            Divider(height: 1),
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                child: Text('请假事由:',
+                    style: Theme.of(context).textTheme.subtitle1)),
             TextFormField(
               readOnly: true,
               initialValue: form['reason'],
               maxLines: 8,
               autofocus: false,
               decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                  // prefixIcon: Padding(
-                  //     padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                  //     child: Text('请假事由:',
-                  //         style: Theme.of(context).textTheme.subtitle1)),
-                  // prefixIconConstraints: BoxConstraints()
-                ),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+                // prefixIcon: Padding(
+                //     padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                //     child: Text('请假事由:',
+                //         style: Theme.of(context).textTheme.subtitle1)),
+                // prefixIconConstraints: BoxConstraints()
+              ),
             ),
             Divider(height: 1),
             // 轮播
@@ -82,10 +91,21 @@ class LeaveDetail extends StatelessWidget {
       ),
     );
   }
+
   String formatTime(String str) {
-   if(str==null){return '';}
+    if (str == null) {
+      return '';
+    }
     return formatDate(
         DateTime.parse(str), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+  }
+
+  String getLeaveTypeValue(String str) {
+    if (str == null) {
+      return '';
+    }
+    return Dictionary.getNameByUniqueNameAndCode(
+        uniqueName: UniqueNameValues[UNIQUE_NAME.LEAVETYPE], code: str);
   }
 
   /*卡片1-轮播图*/
@@ -121,7 +141,7 @@ class LeaveDetail extends StatelessWidget {
     );
   }
 
-  Future _approvalLeave(Map item) async{
-    await approvalLeave(id:item['id'] ,status: '1');
+  Future _approvalLeave(Map item) async {
+    await approvalLeave(id: item['id'], status: '1');
   }
 }

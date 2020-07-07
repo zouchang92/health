@@ -17,6 +17,8 @@ LeaveForm _$LeaveFormFromJson(Map<String, dynamic> json) {
     userNum: json['userNum'] as String,
     filePaths: (json['filePaths'] as List)?.map((e) => e as String)?.toList(),
     status: json['status'] as String,
+    personType: json['personType'] as String,
+    type: json['type'] as String,
   );
 }
 
@@ -29,5 +31,7 @@ Map<String, dynamic> _$LeaveFormToJson(LeaveForm instance) => <String, dynamic>{
       'userNum': instance.userNum,
       'reason': instance.reason,
       'status': instance.status,
+      'personType': instance.personType,
+      'type': instance.type,
       'filePaths': instance.filePaths,
     };

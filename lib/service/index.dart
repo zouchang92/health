@@ -32,8 +32,9 @@ getDicts() {
 getStudentList({Student stu, Pagination pagination}) {
   Map a = stu.toJson();
   a.addAll(pagination.toJson());
-  print(filterEmpty(a));
-  return DioManager().post(Api.getStuList, data: filterEmpty(a), loading: false);
+  // print(filterEmpty(a));
+  return DioManager()
+      .post(Api.getStuList, data: filterEmpty(a), loading: false);
 }
 
 healthList({Health health, Pagination pagination}) {
@@ -55,9 +56,9 @@ safetyReport(HeaSafety heaSafety) {
       .post(Api.insertHeaDaily, data: filterEmpty(heaSafety.toJson()));
 }
 
-safetyList(String checkDate,String classId) {
-  return DioManager()
-      .post(Api.listHeaDaily, data: {"checkDate": checkDate,"classId":classId}, loading: false);
+safetyList(String checkDate, String classId) {
+  return DioManager().post(Api.listHeaDaily,
+      data: {"checkDate": checkDate, "classId": classId}, loading: false);
 }
 
 /*请假-列表*/
@@ -126,14 +127,25 @@ heaCardList({HealthCard healthCard, Pagination pagination}) {
   return DioManager()
       .post(Api.heaInfoCardList, data: filterEmpty(a), loading: false);
 }
-/*文件上传*/
-// _uploadFile(File file){
-//   String path = file.path;
-//   String name = path.substring(path.lastIndexOf("/") + 1, path.length);
-//   String suffix = path.substring(path.lastIndexOf(".") + 1, path.length);
-//   FormData formData = new FormData(file:);
-//   return DioManager().post(Api.uploadFile);
-// }
+
+/*健康信息上报*/
+healthInfoReport({Health health}) {
+  print('_health:${filterEmpty(health.toJson())}');
+  return DioManager()
+      .post(Api.heaInfoDailyParent, data: filterEmpty(health.toJson()));
+}
+
+//每日状态
+checkHasReport({String reportDay, String id, String name}) {
+  return DioManager().post(Api.listDaily,
+      data: {
+        'reportStartTime': reportDay,
+        'reportEndTime': reportDay,
+        'id': id,
+        'name': name
+      },
+      loading: false);
+}
 
 Map filterEmpty(Map s) {
   Map t = {};

@@ -46,6 +46,7 @@ dependencies:
   simple_search_bar: ^0.1.7
   image_picker: ^0.6.7+2
   flutter_html: ^1.0.0
+  flutter_easyloading: ^1.1.4
 
 
 dev_dependencies:

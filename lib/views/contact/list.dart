@@ -124,9 +124,10 @@ class _ContactListState extends State<ContactList> {
               value: index,
               groupValue: selected,
               onChanged: (_index) {
-                //  print('_index:$_index');
+                print('_index:${studentList[_index]}');
                 this.setState(() {
                   this.selected = _index;
+                  health.id = studentList[index]['id'];
                   health.stuNum = studentList[_index]['studentNum'];
                   health.stuNumValue = studentList[_index]['studentName'];
                   health.schoolName = studentList[_index]['schoolName'];

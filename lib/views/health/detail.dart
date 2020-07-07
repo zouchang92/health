@@ -15,7 +15,7 @@ class _HealthDetailState extends State<HealthDetail> {
   Widget build(BuildContext context) {
     Argument arg = ModalRoute.of(context).settings.arguments;
     Health health = Health.fromJson(arg.params);
-    // print('arg${health.measure}');
+    print('arg${health.toJson()}');
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
       body: SingleChildScrollView(
@@ -64,7 +64,7 @@ class _HealthDetailState extends State<HealthDetail> {
             infoTitle('症状信息'),
             ListTile(
               title: Text('学生症状:'),
-              trailing: Text(Dictionary.getNameByUniqueNameAndCode(uniqueName:UniqueNameValues[UNIQUE_NAME.SYMPTOMTYPE],code:health.symptomType)),
+              trailing: Text(symLabel(health.symptomTypeMulti)),
             ),
             Divider(height: 1),
             ListTile(
@@ -130,6 +130,12 @@ class _HealthDetailState extends State<HealthDetail> {
   String ynLabel(String code) {
     return Dictionary.getNameByUniqueNameAndCode(
         uniqueName: UniqueNameValues[UNIQUE_NAME.BOOLEAN], code: code);
+  }
+
+  String symLabel(List<String> list){
+  //  List<String> list = sym.split(',');
+   return list.map((e) => Dictionary.getNameByUniqueNameAndCode(uniqueName:UniqueNameValues[UNIQUE_NAME.SYMPTOMTYPE],code:e)).toList().join(',');
+    // 
   }
 
   Widget infoTitle(String title) {

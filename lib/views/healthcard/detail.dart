@@ -6,7 +6,7 @@ import 'package:health/model/pagination.dart';
 import 'package:health/service/index.dart';
 
 class HealthCardDetail extends StatefulWidget {
-  final String title = '学生健康卡2';
+  final String title = '学生健康卡';
   @override
   _HealthCardDetailState createState() => _HealthCardDetailState();
 }
@@ -47,7 +47,8 @@ class _HealthCardDetailState extends State<HealthCardDetail> {
                 children: <Widget>[
                   CircleAvatar(
                       backgroundColor: Color(0xffe3dfeb),
-                      backgroundImage: (healthCard.faceUrl != null&&healthCard.faceUrl!='')
+                      backgroundImage: (healthCard.faceUrl != null &&
+                              healthCard.faceUrl != '')
                           ? NetworkImage(
                               Global.getHttpPicUrl(healthCard.faceUrl))
                           : AssetImage('images/upload_bg.png')),
@@ -58,7 +59,8 @@ class _HealthCardDetailState extends State<HealthCardDetail> {
                         children: <Widget>[
                           Text(healthCard.name ?? '',
                               style: TextStyle(color: Colors.white)),
-                          Text(healthCard.className??'', style: TextStyle(color: Colors.white))
+                          Text(healthCard.className ?? '',
+                              style: TextStyle(color: Colors.white))
                         ],
                       ))
                 ],
@@ -70,7 +72,6 @@ class _HealthCardDetailState extends State<HealthCardDetail> {
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: statusColor(healthCard.status),
-              
             )
           ]),
           Divider(height: 1),
@@ -175,13 +176,14 @@ class _HealthCardDetailState extends State<HealthCardDetail> {
         uniqueName: UniqueNameValues[UNIQUE_NAME.BOOLEAN], code: code);
   }
 
-  String statusLabel(String code){
-    return Dictionary.getNameByUniqueNameAndCode(uniqueName: UniqueNameValues[UNIQUE_NAME.HEASTATUS],code: code);
-  } 
+  String statusLabel(String code) {
+    return Dictionary.getNameByUniqueNameAndCode(
+        uniqueName: UniqueNameValues[UNIQUE_NAME.HEASTATUS], code: code);
+  }
+
   // 64a247 a26b47 4747a2 47a25d 5c47a2
-  Color statusColor(String status){
+  Color statusColor(String status) {
     switch (status) {
-      
       case '1':
         return Color(0xffff0079);
       case '2':
@@ -190,10 +192,14 @@ class _HealthCardDetailState extends State<HealthCardDetail> {
         return Color(0xffa26b47);
       case '4':
         return Color(0xff4747a2);
-      case '5':return Color(0xff47a25d);
-      case '6':return Color(0xff3ab25d);
-      case '7':return Color(0xff5c47a2);
-      default:return Colors.grey;
+      case '5':
+        return Color(0xff47a25d);
+      case '6':
+        return Color(0xff3ab25d);
+      case '7':
+        return Color(0xff5c47a2);
+      default:
+        return Colors.grey;
     }
   }
 

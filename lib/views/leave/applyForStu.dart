@@ -5,6 +5,7 @@ import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:health/model/argument.dart';
+import 'package:health/model/dictionary.dart';
 import 'package:health/model/global.dart';
 
 import 'package:health/model/health.dart';
@@ -25,45 +26,58 @@ class LeaveApplyForStudent extends StatefulWidget {
 class _LeaveApplyForStudentState extends State<LeaveApplyForStudent> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> formKey = new GlobalKey();
-  
+
   LeaveForm leaveForm = new LeaveForm();
   Health _health = new Health();
   // Global.profile.user.classIdAndNames??
-  List _bindClass = Global.profile.user.classIdAndNames??[];
+  List _bindClass = Global.profile.user.classIdAndNames ?? [];
+  List leaveType =
+      Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.LEAVETYPE]);
+  String leaveTypeValue = '';
   @override
   void dispose() {
-    print('dd');
-    
     // _profileNotify.dispose();
     super.dispose();
-    
   }
+
   @override
   Widget build(BuildContext context) {
+    print('leaveType:$leaveType');
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title:Text(widget.title),
-        
+        title: Text(widget.title),
       ),
       body: SingleChildScrollView(
         child: form(),
       ),
     );
   }
+
+  Map getUnempty(Map a) {
+    Map b = {};
+    a.forEach((key, value) {
+      if (value != null) {
+        b[key] = a[key];
+      }
+    });
+    return b;
+  }
+
   Widget form() {
     final _arg = Provider.of<ProfileNotify>(context).argValue;
     // print('arg1:${_arg}');
     if (_arg != null) {
       Health _thealth = _arg.params as Health;
-      // print('_thealth:${_thealth.toJson()}');
+      // print('_thealth:${getUnempty(_thealth.toJson())}');
       this.setState(() {
         // _health = Object;
         _health = Health.fromJson(amap(_health.toJson(), _thealth.toJson()));
-       
+        leaveForm.userId = _health.id;
+        leaveForm.userName = _health.name;
         leaveForm.userNum = _health.stuNum;
         leaveForm.orgId = _health.classId;
-        // leaveForm.userId = _health
+        leaveForm.personType = Global.profile.user.personType;
       });
     }
     // Text(_health.className??'')
@@ -73,25 +87,24 @@ class _LeaveApplyForStudentState extends State<LeaveApplyForStudent> {
           children: <Widget>[
             ListTile(
               title: Text('班级选择'),
-              trailing:  Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: <Widget>[
-                  Text(_health.className??''),
-                  Icon(Icons.navigate_next)
-                ]),
+              trailing: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: <Widget>[
+                    Text(_health.className ?? ''),
+                    Icon(Icons.navigate_next)
+                  ]),
               onTap: showClassPicker,
             ),
             Divider(height: 1),
             ListTile(
               title: Text('学生选择'),
-              trailing:  Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: <Widget>[
-                  Text(_health.stuNumValue ?? ''),
-                  Icon(Icons.navigate_next)
-                ]),
+              trailing: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: <Widget>[
+                    Text(_health.stuNumValue ?? ''),
+                    Icon(Icons.navigate_next)
+                  ]),
               onTap: openSearch,
-
             ),
             Divider(height: 1),
             ListTile(
@@ -112,20 +125,35 @@ class _LeaveApplyForStudentState extends State<LeaveApplyForStudent> {
               trailing: Text(leaveForm.endTime ?? ''),
               onTap: () {
                 //  minValue:leaveForm.startTime!=null?DateTime.parse(leaveForm.startTime):null
-                showPicker('结束时间',minValue:leaveForm.startTime!=null?DateTime.parse(leaveForm.startTime):null, onConfirm: (Picker picker, selecteds) {
+                showPicker('结束时间',
+                    minValue: leaveForm.startTime != null
+                        ? DateTime.parse(leaveForm.startTime)
+                        : null, onConfirm: (Picker picker, selecteds) {
                   print('结束时间:$selecteds');
                   // print('picker:${picker.g}');
 
                   this.setState(() {
                     if (leaveForm.startTime != null) {
                       int yq = DateTime.parse(leaveForm.startTime).year;
-                      leaveForm.endTime = pickerValueFormat(selecteds,start: yq);
+                      leaveForm.endTime =
+                          pickerValueFormat(selecteds, start: yq);
                     } else {
                       leaveForm.endTime = pickerValueFormat(selecteds);
                     }
                   });
                 });
               },
+            ),
+            Divider(height: 1),
+            ListTile(
+              title: Text('请假类型'),
+              trailing: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: <Widget>[
+                    Text(leaveTypeValue ?? ''),
+                    Icon(Icons.navigate_next)
+                  ]),
+              onTap: showLeaveTypePicker,
             ),
             Container(
               height: 10,
@@ -178,12 +206,12 @@ class _LeaveApplyForStudentState extends State<LeaveApplyForStudent> {
           ],
         ));
   }
+
   Map amap(Map a, Map b) {
     a.forEach((key, _) {
-      if(b[key]!=null){
+      if (b[key] != null) {
         a[key] = b[key];
       }
-     
     });
     // print('a$a');
     return a;
@@ -217,10 +245,15 @@ class _LeaveApplyForStudentState extends State<LeaveApplyForStudent> {
   Future _applicationLeave() async {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
-      
-      leaveForm.status = '3';
+
+      // leaveForm.status = '3';
       // print('leaveForm:${leaveForm.toJson()}');
-      leaveApply(leaveForm);
+      try {
+        await leaveApply(leaveForm);
+        Navigator.of(context).pop();
+      } catch (err) {
+        print('err:$err');
+      }
     }
   }
 
@@ -244,29 +277,50 @@ class _LeaveApplyForStudentState extends State<LeaveApplyForStudent> {
     picker.show(_scaffoldKey.currentState);
   }
 
-   showClassPicker() {
+  showClassPicker() {
     List<PickerItem> _picerItem =
         _bindClass.map((e) => PickerItem(text: Text(e['className']))).toList();
     Picker picker = Picker(
+      height: 200,
       adapter: PickerDataAdapter(data: _picerItem),
       title: Text('选择班级'),
       onConfirm: (picker, selecteds) {
         // print(selecteds);
         this.setState(() {
-         _health.className = _bindClass[selecteds[0]]['className'];
+          _health.className = _bindClass[selecteds[0]]['className'];
           _health.classId = _bindClass[selecteds[0]]['classId'];
         });
       },
     );
     picker.show(_scaffoldKey.currentState);
   }
-  void openSearch() {
-    if(_health.className!=null){
-      // print('params:${_health.classId}');
-      Navigator.of(context).pushNamed('/searchStudent',arguments: Argument(params:_health.classId));
 
-    }else{
-      FLToast.info(text:'请选择班级');
+  showLeaveTypePicker() {
+    List<PickerItem> _pickerItem =
+        leaveType.map((e) => PickerItem(text: Text(e['name']))).toList();
+    Picker picker = Picker(
+      // itemExtent: 40.0,
+      height: 200,
+      adapter: PickerDataAdapter(data: _pickerItem),
+      title: Text('选择请假类型'),
+      onConfirm: (picker, selecteds) {
+        // print(selecteds);
+        this.setState(() {
+          leaveTypeValue = leaveType[selecteds[0]]['name'];
+          leaveForm.type = leaveType[selecteds[0]]['code'];
+        });
+      },
+    );
+    picker.show(_scaffoldKey.currentState);
+  }
+
+  void openSearch() {
+    if (_health.className != null) {
+      // print('params:${_health.classId}');
+      Navigator.of(context).pushNamed('/searchStudent',
+          arguments: Argument(params: _health.classId));
+    } else {
+      FLToast.info(text: '请选择班级');
     }
   }
 }

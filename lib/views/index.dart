@@ -20,3 +20,4 @@ export './leave/detail.dart';
 export './leave/applyForStu.dart';
 export './news/list.dart';
 export './news/newsDateil.dart';
+export './healthReport/healthInfoReport.dart';

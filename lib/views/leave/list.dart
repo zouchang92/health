@@ -1,5 +1,6 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:health/model/global.dart';
 import 'package:health/model/pagination.dart';
@@ -37,6 +38,7 @@ class _LeaveListState extends State<LeaveList> {
       }
     });
   }
+
   @override
   void dispose() {
     super.dispose();
@@ -122,7 +124,7 @@ class _LeaveListState extends State<LeaveList> {
     return Column(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
           child: Column(
             children: <Widget>[
               Padding(
@@ -134,7 +136,8 @@ class _LeaveListState extends State<LeaveList> {
                       CircleAvatar(
                           // radius: 35.0,
                           backgroundColor: Color(0xffe3dfeb),
-                          backgroundImage: NetworkImage(Global.getHttpPicUrl(item['avater']))),
+                          backgroundImage: NetworkImage(
+                              Global.getHttpPicUrl(item['avater']))),
                       Padding(
                           padding: EdgeInsets.only(left: 10.0),
                           child: Text(item['userName'] ?? '',
@@ -163,7 +166,10 @@ class _LeaveListState extends State<LeaveList> {
                       Text('请假开始日期:', style: TextStyle(color: Colors.white)),
                       Padding(
                         padding: EdgeInsets.only(left: 10.0),
-                        child: Text(item['startTime']!=null ? formatTime(item['startTime']):'',
+                        child: Text(
+                            item['startTime'] != null
+                                ? formatTime(item['startTime'])
+                                : '',
                             style: TextStyle(color: Colors.white)),
                       ),
                     ]),
@@ -171,7 +177,11 @@ class _LeaveListState extends State<LeaveList> {
                       Text('结束时间:', style: TextStyle(color: Colors.white)),
                       Padding(
                         padding: EdgeInsets.only(left: 10.0),
-                        child:Text(item['endTime']!=null?formatTime(item['endTime']):'',style: TextStyle(color: Colors.white)),
+                        child: Text(
+                            item['endTime'] != null
+                                ? formatTime(item['endTime'])
+                                : '',
+                            style: TextStyle(color: Colors.white)),
                       ),
                     ])
                   ],
@@ -180,23 +190,22 @@ class _LeaveListState extends State<LeaveList> {
             ],
           ),
         ),
-       
       ],
     );
   }
+
   String formatTime(String str) {
     return formatDate(
         DateTime.parse(str), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
   }
+
   Future _getLeaveList() async {
-    var res =
-        await getLeaveList(
-          pagination: pagination,
-          createUserId: Global.profile.user.id,
-          personType: Global.profile.user.personType,
-          status: ''
-        );
-    // print('res:$res');
+    var res = await getLeaveList(
+        pagination: pagination,
+        createUserId: Global.profile.user.id,
+        personType: Global.profile.user.personType,
+        status: '');
+    print('res:$res');
     this.setState(() {
       loading = false;
     });

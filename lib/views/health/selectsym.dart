@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grouped_checkbox/grouped_checkbox.dart';
+
 import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
 import 'package:health/model/health.dart';
@@ -38,10 +38,12 @@ class _SelectSymState extends State<SelectSym> {
           CheckBoxGroup(
             data: symTypeList,
             label: 'name',
-            onValueChange: (selected){
-             print('selected:$selected');
-              health.symptomTypeMulti = selected.map((e) => e['code'] as String).toList();
-              health.symptomTypeMultiValue = selected.map((e) => e['name'] as String).toList();
+            onValueChange: (selected) {
+              print('selected:$selected');
+              health.symptomTypeMulti =
+                  selected.map((e) => e['code'] as String).toList();
+              health.symptomTypeMultiValue =
+                  selected.map((e) => e['name'] as String).toList();
             },
           ),
           Container(

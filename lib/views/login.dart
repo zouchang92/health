@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:health/model/global.dart';
 
 import 'package:health/model/pagination.dart';
@@ -35,7 +36,9 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: form());
+    // Center(child: form())
+    // return FlutterEasyLoading(child: Center(child: form()));
+    return Scaffold(body: form());
   }
 
   Widget form() {
@@ -186,8 +189,6 @@ class _LoginState extends State<Login> {
         var newsList =
             await getNewsList(pagination: Pagination(page: 1, rows: 3));
         if (newsList != null) {
-          
-          
           _profile.isLogin = true;
           Global.save();
           Navigator.of(context).pushNamed('/');
