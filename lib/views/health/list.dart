@@ -1,11 +1,16 @@
 import 'package:date_format/date_format.dart';
 import 'package:flui/flui.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:flutter_custom_calendar/flutter_custom_calendar.dart';
+
 import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
 import 'package:health/model/health.dart';
 import 'package:health/model/pagination.dart';
 import 'package:health/service/index.dart';
+import 'package:health/widget/index.dart';
 import 'package:simple_search_bar/simple_search_bar.dart';
 
 class HealthList extends StatefulWidget {
@@ -20,6 +25,12 @@ class _HealthListState extends State<HealthList> {
   final defaultAvatar = 'images/upload_bg.png';
   Health health = new Health(personType: '1');
   Pagination pagination = new Pagination(page: 1, rows: 10);
+  CalendarController controller = new CalendarController(
+      minYear: 2018,
+      minYearMonth: 1,
+      maxYear: 2020,
+      maxYearMonth: 12,
+      showMode: CalendarConstants.MODE_SHOW_MONTH_AND_WEEK);
   List dataList = [];
   bool empty = false;
   bool firstLoading = true;
@@ -53,15 +64,12 @@ class _HealthListState extends State<HealthList> {
         primary: Theme.of(context).primaryColor,
         searchHint: '输入姓名',
         onChange: (String value) {
-          // print(value);
-          if (value != '') {
-            this.setState(() {
-              health.name = value;
-              pagination.page = 1;
-              dataList = [];
-            });
-            _healthList();
-          }
+          this.setState(() {
+            health.name = value;
+            pagination.page = 1;
+            dataList = [];
+          });
+          _healthList();
         },
         mainAppBar: AppBar(
           title: Text(widget.title),
@@ -86,10 +94,28 @@ class _HealthListState extends State<HealthList> {
           onTap: selectDate,
         ),
         Divider(height: 1),
+        FLListTile(
+          title: Text('上报时间'),
+          trailing: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: <Widget>[
+                Container(
+                    width: 100, child: Text(health.reportStartTime ?? '')),
+                Icon(Icons.calendar_today),
+                Container(width: 100, child: Text(health.reportEndTime ?? '')),
+                Icon(Icons.calendar_today)
+              ]),
+          onTap: showCalendar,
+        ),
+        Divider(height: 1),
         Flexible(child: list(), flex: 1)
       ]),
     );
   }
+
+  // Widget _buildTableCalendar() {
+  //   return TableCalendar(calendarController: _calendarController);
+  // }
 
   Widget list() {
     if (firstLoading == true) {
@@ -145,7 +171,7 @@ class _HealthListState extends State<HealthList> {
                       //     backgroundImage: AssetImage(defaultAvatar),
                       //     // backgroundImage: (item['photo']==null&&item['photo']=='')?AssetImage(defaultAvatar):NetworkImage(Global.getHttpPicUrl(item['photo']))
                       //   ),
-                      Text('姓名:',style: TextStyle(color: Colors.white)),
+                      Text('姓名:', style: TextStyle(color: Colors.white)),
                       Padding(
                           padding: EdgeInsets.only(left: 10.0),
                           child: Text(item['name'] ?? '',
@@ -203,7 +229,7 @@ class _HealthListState extends State<HealthList> {
           color: Colors.white,
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
           child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -242,8 +268,33 @@ class _HealthListState extends State<HealthList> {
                 }
               }),
               _healthList()
-
             });
+  }
+
+  void showCalendar() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return MultiSelectStylePage(
+            onValueChange: (value) {
+              // print('showCalendar:$value');
+              if (value.length == 2) {
+                DateTime st = value[0].isBefore(value[1]) ? value[0] : value[1];
+                DateTime et = value[0].isAfter(value[1]) ? value[0] : value[1];
+                this.setState(() {
+                  // formatDate(value, [yyyy, '-', mm, '-', dd]);
+                  health.reportStartTime =
+                      formatDate(st, [yyyy, '-', mm, '-', dd]);
+                  health.reportEndTime =
+                      formatDate(et, [yyyy, '-', mm, '-', dd]);
+                  dataList = [];
+                });
+                _healthList();
+                Navigator.of(context).pop();
+              }
+            },
+          );
+        });
   }
 
   Future _push() async {
@@ -261,14 +312,7 @@ class _HealthListState extends State<HealthList> {
 
   Future _healthList() async {
     var res = await healthList(health: health, pagination: pagination);
-    List t = res['list'];
-    t = t.where((element) => element!=null).toList();
-    Map tt = t[0] as Map;
-    tt.forEach((key, value) {
-      print('key:$key');
-        // print('value:$value');
-    });
-    print('res$res');
+
     this.setState(() {
       this.firstLoading = false;
       // studentList = res['list'];

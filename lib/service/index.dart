@@ -136,13 +136,15 @@ healthInfoReport({Health health}) {
 }
 
 //每日状态
-checkHasReport({String reportDay, String id, String name}) {
+checkHasReport({String reportDay, String id, String personType}) {
+  print(reportDay);
   return DioManager().post(Api.listDaily,
       data: {
         'reportStartTime': reportDay,
         'reportEndTime': reportDay,
-        'id': id,
-        'name': name
+        // 'id': id,
+
+        'personType': '1'
       },
       loading: false);
 }

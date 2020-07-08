@@ -7,7 +7,8 @@ import '../views/index.dart';
 final List<String> keepAliveList = [
   '/healthReport',
   '/LeaveApplyForStudent',
-  '/HealthInfoReport'
+  '/HealthInfoReport',
+  '/approvalLeaveList'
 ];
 final routes = {
   '/': (context, a, b) => Home(),

@@ -59,7 +59,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return FlutterEasyLoading(
+        child: MaterialApp(
       title: '家校通',
       locale: Locale('zh', 'CH'),
       localizationsDelegates: [
@@ -71,10 +72,6 @@ class MyApp extends StatelessWidget {
         // const Locale('en', 'US'),
       ],
       theme: ThemeData(
-          // accentTextTheme:
-          //     TextTheme(: TextStyle(decoration: TextDecoration.none)),
-          textTheme:
-              TextTheme(bodyText2: TextStyle(decoration: TextDecoration.none)),
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           buttonColor: Colors.blue,
@@ -134,10 +131,10 @@ class MyApp extends StatelessWidget {
           );
         }
       },
-      builder: (context, child) {
-        return Scaffold(body: FlutterEasyLoading(child: child));
-        // return FlutterEasyLoading(child: child);
-      },
-    );
+      // builder: (context, child) {
+      //   return Scaffold(body: FlutterEasyLoading(child: child));
+      //   // return FlutterEasyLoading(child: child);
+      // },
+    ));
   }
 }

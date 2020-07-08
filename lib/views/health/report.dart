@@ -31,16 +31,17 @@ class _HealthReportState extends State<HealthReport> {
       Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.CHECKTYPE]);
   List illTypeList =
       Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.ILLTYPE]);
-  List isHealList = Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.BOOLEAN]);
+  List isHealList =
+      Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.BOOLEAN]);
   Health _health = new Health();
   bool visible = false;
   @override
   void initState() {
-    
     super.initState();
-    _bindClass = _profile.user.classIdAndNames??[];
+    _bindClass = _profile.user.classIdAndNames ?? [];
     // print('_bindClass:$_bindClass');
   }
+
   @override
   Widget build(BuildContext context) {
     // print('_health$_health');
@@ -54,10 +55,9 @@ class _HealthReportState extends State<HealthReport> {
 
   Map amap(Map a, Map b) {
     a.forEach((key, _) {
-      if(b[key]!=null){
+      if (b[key] != null) {
         a[key] = b[key];
       }
-     
     });
     // print('a$a');
     return a;
@@ -66,9 +66,9 @@ class _HealthReportState extends State<HealthReport> {
   Widget form() {
     final _arg = Provider.of<ProfileNotify>(context).argValue;
     // print('arg:$_arg');
-    if (_arg != null) {
+    if (_arg != null && _arg.params != null) {
       Health _thealth = _arg.params as Health;
-      // print('_thealth:${_thealth.toJson()}');
+      print('_thealth:${_thealth.toJson()}');
       this.setState(() {
         // _health = Object;
         _health = Health.fromJson(amap(_health.toJson(), _thealth.toJson()));
@@ -131,12 +131,12 @@ class _HealthReportState extends State<HealthReport> {
           Divider(height: 1),
           ListTile(
             title: Text('所属地区:'),
-            trailing: Text(_health.provinceName??''),
+            trailing: Text(_health.provinceName ?? ''),
           ),
           Divider(height: 1),
           ListTile(
             title: Text('学校名称:'),
-            trailing: Text(_health.schoolName??''),
+            trailing: Text(_health.schoolName ?? ''),
           ),
           Divider(height: 1),
           FLListTile(
@@ -227,7 +227,9 @@ class _HealthReportState extends State<HealthReport> {
             trailing: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: <Widget>[
-                  Text(_health.symptomTypeMultiValue!=null?_health.symptomTypeMultiValue.join(','):''),
+                  Text(_health.symptomTypeMultiValue != null
+                      ? _health.symptomTypeMultiValue.join(',')
+                      : ''),
                   Icon(Icons.navigate_next)
                 ]),
             onTap: () {
@@ -340,7 +342,7 @@ class _HealthReportState extends State<HealthReport> {
             child: RaisedButton(
                 onPressed: () {
                   if (_health.registerType == null) {
-                    _health.registerType= registerTypeList[0]['code'];
+                    _health.registerType = registerTypeList[0]['code'];
                   }
                   if (_health.checkType == null) {
                     _health.checkType = registerTypeList[0]['code'];
@@ -351,9 +353,9 @@ class _HealthReportState extends State<HealthReport> {
                   if (_health.isHealed == null) {
                     _health.isHealed = isHealList[0]['code'];
                   }
-                  if(_health.personType == null){
-                    /*Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.PERSONTYPE])[0]['code']*/ 
-                     _health.personType = '1';
+                  if (_health.personType == null) {
+                    /*Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.PERSONTYPE])[0]['code']*/
+                    _health.personType = '1';
                   }
                   var _form = _formKey.currentState;
                   if (_form.validate()) {
@@ -395,20 +397,21 @@ class _HealthReportState extends State<HealthReport> {
   }
 
   void openSearch() {
-    if(_health.className!=null){
+    if (_health.className != null) {
       // print('params:${_health.classId}');
-      Navigator.of(context).pushNamed('/searchStudent',arguments: Argument(params:_health.classId));
-
-    }else{
-      FLToast.info(text:'请选择班级');
+      Navigator.of(context).pushNamed('/searchStudent',
+          arguments: Argument(params: _health.classId));
+    } else {
+      FLToast.info(text: '请选择班级');
     }
   }
 
   Future _healthReport() async {
-   var res = await healthReport(_health);
-   
-   if(res==null){
-     Navigator.of(context).pop();
-   }
+    // print('_health:${_health.toJson()}');
+    var res = await healthReport(_health);
+
+    if (res != null) {
+      Navigator.of(context).pop();
+    }
   }
 }

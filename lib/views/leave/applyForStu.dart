@@ -249,8 +249,10 @@ class _LeaveApplyForStudentState extends State<LeaveApplyForStudent> {
       // leaveForm.status = '3';
       // print('leaveForm:${leaveForm.toJson()}');
       try {
-        await leaveApply(leaveForm);
-        Navigator.of(context).pop();
+        var res = await leaveApply(leaveForm);
+        if (res != null && res['code'] == 0) {
+          Navigator.of(context).pop();
+        }
       } catch (err) {
         print('err:$err');
       }

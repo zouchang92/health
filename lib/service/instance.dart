@@ -47,7 +47,7 @@ class DioManager {
           data: data,
           queryParameters: params,
           options: Options(headers: {"token": Global.profile.token}));
-      // print('response:${response.request.uri}');
+      print('response:${response.data}');
       if (response != null) {
         if (loading && start) {
           EasyLoading.dismiss();
@@ -60,7 +60,11 @@ class DioManager {
             // FLToast.showSuccess();
             EasyLoading.showSuccess(entity.message);
           }
-          return entity.data;
+          if (entity.data != null) {
+            return entity.data;
+          } else {
+            return response.data;
+          }
         } else {
           //消息提示
           print('response:${entity.message}');

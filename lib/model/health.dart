@@ -96,6 +96,8 @@ class Health {
 
   String healHospital;
 
+  String idCard;
+
   /*采取措施-名称*/
   String memo;
   /*登记类型*/
@@ -121,6 +123,10 @@ class Health {
   List<String> symptomTypeMulti;
 
   List<String> symptomTypeMultiValue;
+
+  String reportStartTime;
+
+  String reportEndTime;
 
   double temp;
 
@@ -184,7 +190,10 @@ class Health {
       this.symptomTypeValue,
       this.symptomTypeMulti,
       this.symptomTypeMultiValue,
-      this.temp});
+      this.idCard,
+      this.temp,
+      this.reportEndTime,
+      this.reportStartTime});
   factory Health.fromJson(Map<String, dynamic> json) => _$HealthFromJson(json);
   Map<String, dynamic> toJson() => _$HealthToJson(this);
 }

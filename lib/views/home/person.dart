@@ -99,7 +99,7 @@ class _PersonState extends State<Person> {
   }
 
   String textRole() {
-    return _profile.user.personType == 'studentType' ? '学号' : '工号';
+    return _profile.user.personType == 'studentDuty' ? '学号' : '工号';
   }
 
   Widget listTile({String title, String value}) {

@@ -188,8 +188,10 @@ class _LeaveApplyState extends State<LeaveApply> {
       leaveForm.userNum = Global.profile.user.loginName;
       leaveForm.personType = Global.profile.user.personType;
 
-      print('leaveForm:${leaveForm.toJson()}');
-      leaveApply(leaveForm);
+      var res = await leaveApply(leaveForm);
+      if (res != null && res['code'] == 0) {
+        Navigator.of(context).pushNamed('/leaveList');
+      }
     }
   }
 

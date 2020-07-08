@@ -70,7 +70,10 @@ Health _$HealthFromJson(Map<String, dynamic> json) {
     symptomTypeMultiValue: (json['symptomTypeMultiValue'] as List)
         ?.map((e) => e as String)
         ?.toList(),
+    idCard: json['idCard'] as String,
     temp: (json['temp'] as num)?.toDouble(),
+    reportEndTime: json['reportEndTime'] as String,
+    reportStartTime: json['reportStartTime'] as String,
   );
 }
 
@@ -121,6 +124,7 @@ Map<String, dynamic> _$HealthToJson(Health instance) => <String, dynamic>{
       'isHealed': instance.isHealed,
       'healDate': instance.healDate,
       'healHospital': instance.healHospital,
+      'idCard': instance.idCard,
       'memo': instance.memo,
       'registerType': instance.registerType,
       'leaveDate': instance.leaveDate,
@@ -134,5 +138,7 @@ Map<String, dynamic> _$HealthToJson(Health instance) => <String, dynamic>{
       'infectionType': instance.infectionType,
       'symptomTypeMulti': instance.symptomTypeMulti,
       'symptomTypeMultiValue': instance.symptomTypeMultiValue,
+      'reportStartTime': instance.reportStartTime,
+      'reportEndTime': instance.reportEndTime,
       'temp': instance.temp,
     };

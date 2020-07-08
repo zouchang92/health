@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
 import 'package:health/model/health.dart';
+
 class HealthDetail extends StatefulWidget {
   final String title = '晨午检详情';
   final Argument arg;
@@ -11,17 +12,17 @@ class HealthDetail extends StatefulWidget {
 }
 
 class _HealthDetailState extends State<HealthDetail> {
-    @override
+  @override
   Widget build(BuildContext context) {
     Argument arg = ModalRoute.of(context).settings.arguments;
     Health health = Health.fromJson(arg.params);
-    print('arg${health.toJson()}');
+    // print('arg${health.toJson()}');
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-             ListTile(
+            ListTile(
               title: Text('学生信息:'),
               trailing: Text(health.name ?? ''),
             ),
@@ -36,19 +37,22 @@ class _HealthDetailState extends State<HealthDetail> {
               trailing: Text(health.className ?? ''),
             ),
             Divider(height: 1),
-           
             ListTile(
               title: Text('登记类型:'),
-              trailing: Chip(label: Text(Dictionary.getNameByUniqueNameAndCode(
-                uniqueName: UniqueNameValues[
-                                        UNIQUE_NAME.REGISTERTYPE],
-                                    code: health.registerType
-              ) ?? '')),
+              trailing: Chip(
+                  label: Text(Dictionary.getNameByUniqueNameAndCode(
+                          uniqueName:
+                              UniqueNameValues[UNIQUE_NAME.REGISTERTYPE],
+                          code: health.registerType) ??
+                      '')),
             ),
             Divider(height: 1),
             ListTile(
               title: Text('上报类型:'),
-              trailing: Chip(label: Text(Dictionary.getNameByUniqueNameAndCode(uniqueName:UniqueNameValues[UNIQUE_NAME.CHECKTYPE],code:health.checkType))),
+              trailing: Chip(
+                  label: Text(Dictionary.getNameByUniqueNameAndCode(
+                      uniqueName: UniqueNameValues[UNIQUE_NAME.CHECKTYPE],
+                      code: health.checkType))),
             ),
             Divider(height: 1),
             ListTile(
@@ -74,45 +78,43 @@ class _HealthDetailState extends State<HealthDetail> {
             Divider(height: 1),
             ListTile(
               title: Text('病例类型:'),
-              trailing: Chip(label: Text(Dictionary.getNameByUniqueNameAndCode(uniqueName:UniqueNameValues[UNIQUE_NAME.ILLTYPE],code:health.illType))),
+              trailing: Chip(
+                  label: Text(Dictionary.getNameByUniqueNameAndCode(
+                      uniqueName: UniqueNameValues[UNIQUE_NAME.ILLTYPE],
+                      code: health.illType))),
             ),
             Divider(height: 1),
             ListTile(
               title: Text('就诊日期:'),
-              trailing: Text(health.healDate??''),
+              trailing: Text(health.healDate ?? ''),
             ),
             Divider(height: 1),
-            
             Offstage(
-              offstage: (health.illType!=null&&health.illType != '3') ? false : true,
+              offstage: (health.illType != null && health.illType != '3')
+                  ? false
+                  : true,
               child: infoTitle(getTypeValue(health.illType)),
             ),
             Offstage(
-              offstage: (health.hurtType != null)?false:true,
+              offstage: (health.hurtType != null) ? false : true,
               child: ListTile(
                 title: Text('伤害信息'),
                 trailing: Text(Dictionary.getNameByUniqueNameAndCode(
-                  uniqueName:UniqueNameValues[UNIQUE_NAME.HURTTYPE],
-                  code:health.hurtType
-                )),
+                    uniqueName: UniqueNameValues[UNIQUE_NAME.HURTTYPE],
+                    code: health.hurtType)),
               ),
             ),
             Offstage(
-              offstage: (health.hurtSite != null)
-                  ? false
-                  : true,
+              offstage: (health.hurtSite != null) ? false : true,
               child: ListTile(
                 title: Text('伤害地点'),
                 trailing: Text(Dictionary.getNameByUniqueNameAndCode(
-                        uniqueName: UniqueNameValues[UNIQUE_NAME.HURTSITE],
-                        code: health.hurtSite)),
+                    uniqueName: UniqueNameValues[UNIQUE_NAME.HURTSITE],
+                    code: health.hurtSite)),
               ),
             ),
-           
             Offstage(
-              offstage: (health.infectionType!=null)
-                  ? false
-                  : true,
+              offstage: (health.infectionType != null) ? false : true,
               child: ListTile(
                 title: Text('确诊详情'),
                 trailing: Text(Dictionary.getNameByUniqueNameAndCode(
@@ -124,18 +126,22 @@ class _HealthDetailState extends State<HealthDetail> {
           ],
         ),
       ),
-      
     );
   }
+
   String ynLabel(String code) {
     return Dictionary.getNameByUniqueNameAndCode(
         uniqueName: UniqueNameValues[UNIQUE_NAME.BOOLEAN], code: code);
   }
 
-  String symLabel(List<String> list){
-  //  List<String> list = sym.split(',');
-   return list.map((e) => Dictionary.getNameByUniqueNameAndCode(uniqueName:UniqueNameValues[UNIQUE_NAME.SYMPTOMTYPE],code:e)).toList().join(',');
-    // 
+  String symLabel(List<String> list) {
+    //  List<String> list = sym.split(',');
+    return list
+        .map((e) => Dictionary.getNameByUniqueNameAndCode(
+            uniqueName: UniqueNameValues[UNIQUE_NAME.SYMPTOMTYPE], code: e))
+        .toList()
+        .join(',');
+    //
   }
 
   Widget infoTitle(String title) {
@@ -152,5 +158,3 @@ class _HealthDetailState extends State<HealthDetail> {
     return '$item信息';
   }
 }
-
-

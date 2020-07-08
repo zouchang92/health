@@ -31,12 +31,11 @@ class _HealthCardListState extends State<HealthCardList> {
   void initState() {
     super.initState();
     _bindClass = Global.profile.user.classIdAndNames ?? [];
-    print('_bindClass:$_bindClass');
+    // print('_bindClass:$_bindClass');
     healthCard = HealthCard(
-      personType: '1',
-      classId: _bindClass[0]['classId']??'',
-      className: _bindClass[0]['className']??''
-    );
+        personType: '1',
+        classId: _bindClass[0]['classId'] ?? '',
+        className: _bindClass[0]['className'] ?? '');
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
@@ -89,7 +88,10 @@ class _HealthCardListState extends State<HealthCardList> {
             /*Icon(Icons.navigate_next)*/
             trailing: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
-                children: <Widget>[Text(healthCard.className??''), Icon(Icons.navigate_next)]),
+                children: <Widget>[
+                  Text(healthCard.className ?? ''),
+                  Icon(Icons.navigate_next)
+                ]),
             onTap: showPicker,
           ),
           Divider(height: 1),
@@ -140,13 +142,13 @@ class _HealthCardListState extends State<HealthCardList> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 20),
-                        child:Chip(
-                        label: Text(statusLabel(dataList[_index]['status']),style: TextStyle(color: Colors.white)),
-                        backgroundColor:
-                            statusColor(dataList[_index]['status']),
-                      ) ,
+                        child: Chip(
+                          label: Text(statusLabel(dataList[_index]['status']),
+                              style: TextStyle(color: Colors.white)),
+                          backgroundColor:
+                              statusColor(dataList[_index]['status']),
+                        ),
                       ),
-                      
                     ],
                   ),
                   trailing: Icon(Icons.navigate_next),
@@ -209,7 +211,7 @@ class _HealthCardListState extends State<HealthCardList> {
           .map((e) => PickerItem(text: Text(e['className'] ?? '')))
           .toList();
       Picker picker = Picker(
-        height: 0.3*MediaQuery.of(context).size.height,
+        height: 0.3 * MediaQuery.of(context).size.height,
         itemExtent: 36,
         adapter: PickerDataAdapter(data: _picerItem),
         title: Text('选择班级'),
@@ -222,7 +224,6 @@ class _HealthCardListState extends State<HealthCardList> {
             pagination.page = 1;
           });
           _heaCardList();
-
         },
       );
       picker.show(_scaffoldKey.currentState);
@@ -238,7 +239,7 @@ class _HealthCardListState extends State<HealthCardList> {
     if (res != null) {
       if (res.length > 0) {
         this.setState(() {
-          dataList.addAll( res['list']);
+          dataList.addAll(res['list']);
           pagination.totalCount = res['totalCount'];
           pagination.pageSize = res['totalCount'];
         });

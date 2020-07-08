@@ -1,6 +1,5 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:health/model/global.dart';
 import 'package:health/model/pagination.dart';
@@ -205,7 +204,7 @@ class _LeaveListState extends State<LeaveList> {
         createUserId: Global.profile.user.id,
         personType: Global.profile.user.personType,
         status: '');
-    print('res:$res');
+    // print('res:$res');
     this.setState(() {
       loading = false;
     });

@@ -55,7 +55,7 @@ class _LeaveApprovalListState extends State<LeaveApprovalList> {
         title: Text(widget.title),
         actions: <Widget>[
           InkWell(
-            onTap: (){
+            onTap: () {
               Navigator.of(context).pushNamed('/LeaveApplyForStudent');
             },
             child: Icon(Icons.add),
@@ -158,8 +158,9 @@ class _LeaveApprovalListState extends State<LeaveApprovalList> {
     return Column(
       children: <Widget>[
         InkWell(
-          onTap: (){
-            Navigator.of(context).pushNamed('/leaveDateil',arguments: Argument(params: item));
+          onTap: () {
+            Navigator.of(context)
+                .pushNamed('/leaveDateil', arguments: Argument(params: item));
           },
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
@@ -226,21 +227,24 @@ class _LeaveApprovalListState extends State<LeaveApprovalList> {
       ],
     );
   }
- String formatTime(String str) {
-   if(str==null){return '';}
+
+  String formatTime(String str) {
+    if (str == null) {
+      return '';
+    }
     return formatDate(
         DateTime.parse(str), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
   }
+
   Future _getLeaveList() async {
-    print('status:$status');
+    // print('status:$status');
     var res = await getLeaveList(
-      pagination: pagination,
-      createUserId: Global.profile.user.id,
-      personType: Global.profile.user.personType,
-      // status: '',
-      status:status
-    );
-    print('res:$res');
+        pagination: pagination,
+        createUserId: Global.profile.user.id,
+        personType: Global.profile.user.personType,
+        // status: '',
+        status: status);
+    // print('res:$res');
     this.setState(() {
       loading = false;
     });
