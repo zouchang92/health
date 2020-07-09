@@ -27,8 +27,8 @@ class _HealthInfoReportState extends State<HealthInfoReport> {
       Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.BOOLEAN]);
   Health _health = new Health();
   bool todayIsSubmit = false;
-  final double TMPMAX = 45.0;
-  final double TMPMIN = 30.0;
+  final double maxTep = 45.0;
+  final double minTep = 30.0;
   @override
   void initState() {
     super.initState();
@@ -280,7 +280,7 @@ class _HealthInfoReportState extends State<HealthInfoReport> {
       EasyLoading.showInfo('体温未填写');
       return;
     } else {
-      if (_health.temp > TMPMAX || _health.temp < TMPMIN) {
+      if (_health.temp > maxTep || _health.temp < minTep) {
         EasyLoading.showInfo('体温数据异常,请检查是否是人类体温数据');
         return;
       }

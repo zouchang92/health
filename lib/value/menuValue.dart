@@ -24,6 +24,11 @@ class MenuValue {
       "title": '学生健康卡',
       "path": '/healthCardList',
       "picUrl": 'images/icon/menu_icon_5.png'
+    },
+    {
+      "title": '健康上报查询',
+      "path": '/HealthInfoReportList',
+      "picUrl": 'images/icon/menu_icon_5.png'
     }
   ];
   static List PARENT_VALUE = [

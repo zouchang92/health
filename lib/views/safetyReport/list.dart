@@ -7,7 +7,7 @@ import 'package:health/service/index.dart';
 
 class SafetyList extends StatefulWidget {
   final String title = '平安上报历史';
-  
+
   @override
   _SafetyListState createState() => _SafetyListState();
 }
@@ -17,11 +17,11 @@ class _SafetyListState extends State<SafetyList> {
   List bindClass = Global.profile.user.classIdAndNames ?? [];
   final String noBindTip = '没有绑定班级';
   String classId;
-  String date = formatDate(DateTime.now() , [yyyy, '-', mm, '-', dd]);
+  String date = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
   @override
   void initState() {
     super.initState();
-    classId = bindClass[0]['classId'];
+    classId = bindClass.length > 0 ? bindClass[0]['classId'] : '';
     _safetyList();
   }
 
@@ -38,21 +38,21 @@ class _SafetyListState extends State<SafetyList> {
                 firstDate: DateTime.now().subtract(Duration(days: 30)),
                 lastDate: DateTime.now(),
                 onDateChanged: (dateTime) {
-                  this.setState(() { 
+                  this.setState(() {
                     date = formatDate(dateTime, [yyyy, '-', mm, '-', dd]);
                   });
                   _safetyList();
                 }),
-            
-            heaSafety.status==null?empty():form()
+            heaSafety.status == null ? empty() : form()
           ],
         ),
       ),
     );
   }
-  Widget empty(){
+
+  Widget empty() {
     return Center(
-      child: Text('--未提交数据--',style: TextStyle(color:Color(0xff666666))),
+      child: Text('--未提交数据--', style: TextStyle(color: Color(0xff666666))),
     );
   }
 
@@ -94,10 +94,10 @@ class _SafetyListState extends State<SafetyList> {
       // Divider(height: 1),
       ListTile(
         title: Text('班级状态:'),
-        trailing: Chip(label: Text(Dictionary.getNameByUniqueNameAndCode(
-          uniqueName: UniqueNameValues[UNIQUE_NAME.CLASSSTATUS],
-          code: heaSafety.status?.toString()
-        ))),
+        trailing: Chip(
+            label: Text(Dictionary.getNameByUniqueNameAndCode(
+                uniqueName: UniqueNameValues[UNIQUE_NAME.CLASSSTATUS],
+                code: heaSafety.status?.toString()))),
       )
     ]);
   }
@@ -112,7 +112,7 @@ class _SafetyListState extends State<SafetyList> {
           bindClass.map((e) => tabbarItem(title: e['className'])).toList();
     }
     return DefaultTabController(
-        length: bindClass.length,
+        length: _bindClass.length,
         initialIndex: 0,
         child: Container(
             width: double.infinity,
@@ -128,8 +128,6 @@ class _SafetyListState extends State<SafetyList> {
                   classId = bindClass[val]['classId'];
                 });
                 _safetyList();
-                  
-                  
               },
             )));
   }
@@ -143,15 +141,14 @@ class _SafetyListState extends State<SafetyList> {
   }
 
   Future _safetyList() async {
-
-    var res = await safetyList(date,classId);
+    var res = await safetyList(date, classId);
 
     if (res != null && res['list'] != null) {
       this.setState(() {
         if (res['list'].length > 0) {
           print(res['list'][0]);
           heaSafety = HeaSafety.fromJson(res['list'][0]);
-        }else{
+        } else {
           heaSafety = new HeaSafety();
         }
       });

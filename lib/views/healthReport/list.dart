@@ -13,13 +13,13 @@ import 'package:health/service/index.dart';
 import 'package:health/widget/index.dart';
 import 'package:simple_search_bar/simple_search_bar.dart';
 
-class HealthList extends StatefulWidget {
-  final String title = '晨午检查询';
+class HealthInfoReportList extends StatefulWidget {
+  final String title = '健康上报查询';
   @override
-  _HealthListState createState() => _HealthListState();
+  _HealthInfoReportListState createState() => _HealthInfoReportListState();
 }
 
-class _HealthListState extends State<HealthList> {
+class _HealthInfoReportListState extends State<HealthInfoReportList> {
   final AppBarController appBarController = AppBarController();
   final ScrollController scrollController = ScrollController();
   final defaultAvatar = 'images/upload_bg.png';

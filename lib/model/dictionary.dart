@@ -94,7 +94,7 @@ const UniqueNameValues = {
   UNIQUE_NAME.BOOLEAN: 'boolean',
   UNIQUE_NAME.ORGTYPE: 'orgType',
   UNIQUE_NAME.DEALCODE: 'dealCode',
-  UNIQUE_NAME.JUDGESTATUS: 'judgestatus',
+  UNIQUE_NAME.JUDGESTATUS: 'mobileLeaveType',
   UNIQUE_NAME.TASKSTATUS: 'taskStatus',
   UNIQUE_NAME.FLOWSTATUS: 'flowStatus',
   UNIQUE_NAME.HEASTATUS: 'heaStatus'

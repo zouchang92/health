@@ -130,6 +130,8 @@ class Health {
 
   double temp;
 
+  String leaveDateEnd;
+
   Health(
       {this.address,
       this.approveTime,
@@ -193,6 +195,7 @@ class Health {
       this.idCard,
       this.temp,
       this.reportEndTime,
+      this.leaveDateEnd,
       this.reportStartTime});
   factory Health.fromJson(Map<String, dynamic> json) => _$HealthFromJson(json);
   Map<String, dynamic> toJson() => _$HealthToJson(this);

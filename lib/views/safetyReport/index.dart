@@ -106,7 +106,7 @@ class _SafetyReportState extends State<SafetyReport> {
 
   /*班级列表*/
   Widget tabbar() {
-    List<Widget> _bindClass;
+    List<Widget> _bindClass = [];
     if (bindClass.length == 0) {
       _bindClass = [tabbarItem(title: noBindTip)];
     } else {
@@ -114,7 +114,7 @@ class _SafetyReportState extends State<SafetyReport> {
           bindClass.map((e) => tabbarItem(title: e['className'])).toList();
     }
     return DefaultTabController(
-        length: bindClass.length,
+        length: _bindClass.length,
         initialIndex: 0,
         child: Container(
             width: double.infinity,
@@ -129,7 +129,7 @@ class _SafetyReportState extends State<SafetyReport> {
                 todayIsSub();
                 this.setState(() {
                   // print(bindClass[val]);
-                  
+
                   heaSafety.total = int.parse(bindClass[val]['totalNum']);
                   heaSafety.classId = bindClass[val]['classId'];
                   heaSafety.className = bindClass[val]['className'];

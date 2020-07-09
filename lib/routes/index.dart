@@ -8,7 +8,6 @@ final List<String> keepAliveList = [
   '/healthReport',
   '/LeaveApplyForStudent',
   '/HealthInfoReport',
-  '/approvalLeaveList'
 ];
 final routes = {
   '/': (context, a, b) => Home(),
@@ -38,5 +37,6 @@ final routes = {
   '/newsList': (context, a, b) => NewsList(),
   '/newsDetail': (context, a, b) =>
       NewsDetail(args: ModalRoute.of(context).settings.arguments),
-  '/HealthInfoReport': (context, a, b) => HealthInfoReport()
+  '/HealthInfoReport': (context, a, b) => HealthInfoReport(),
+  '/HealthInfoReportList': (context, a, b) => HealthInfoReportList()
 };

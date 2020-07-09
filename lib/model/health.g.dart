@@ -73,6 +73,7 @@ Health _$HealthFromJson(Map<String, dynamic> json) {
     idCard: json['idCard'] as String,
     temp: (json['temp'] as num)?.toDouble(),
     reportEndTime: json['reportEndTime'] as String,
+    leaveDateEnd: json['leaveDateEnd'] as String,
     reportStartTime: json['reportStartTime'] as String,
   );
 }
@@ -141,4 +142,5 @@ Map<String, dynamic> _$HealthToJson(Health instance) => <String, dynamic>{
       'reportStartTime': instance.reportStartTime,
       'reportEndTime': instance.reportEndTime,
       'temp': instance.temp,
+      'leaveDateEnd': instance.leaveDateEnd,
     };

@@ -83,7 +83,7 @@ class _LeaveApprovalListState extends State<LeaveApprovalList> {
 
   Widget tabbar() {
     // _tabController = TabController(length: bindClass.length, vsync: this);
-    print(MediaQuery.of(context));
+    // print(MediaQuery.of(context));
     List<Widget> _bindClass =
         bindClass.map((e) => tabbarItem(title: e['name'])).toList();
     return DefaultTabController(

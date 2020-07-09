@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_calendar/flutter_custom_calendar.dart';
 
-/**
+/*
  * 自定义风格+多选
  */
 class MultiSelectStylePage extends StatefulWidget {
   final ValueChanged<List<DateTime>> onValueChange;
-  MultiSelectStylePage({Key key, this.onValueChange}) : super(key: key);
+  final ValueChanged<List<DateTime>> onSubmit;
+  final VoidCallback onCancle;
+  MultiSelectStylePage(
+      {Key key, this.onValueChange, this.onSubmit, this.onCancle})
+      : super(key: key);
 
   @override
   _MultiSelectStylePageState createState() => _MultiSelectStylePageState();
@@ -36,14 +40,14 @@ class _MultiSelectStylePageState extends State<MultiSelectStylePage> {
     );
 
     controller.addOnCalendarSelectListener((dateModel) {
-      List<DateTime> mutiValue = controller
-          .getMultiSelectCalendar()
-          .toList()
-          .map((e) => e.getDateTime())
-          .toList();
-      // print('dateModel:$mutiValue');
+      // List<DateTime> mutiValue = controller
+      //     .getMultiSelectCalendar()
+      //     .toList()
+      //     .map((e) => e.getDateTime())
+      //     .toList();
+      // // print('dateModel:$mutiValue');
 
-      widget.onValueChange.call(mutiValue);
+      // widget.onValueChange.call(mutiValue);
     });
 
     text = new ValueNotifier("${DateTime.now().year}年${DateTime.now().month}月");
@@ -58,23 +62,42 @@ class _MultiSelectStylePageState extends State<MultiSelectStylePage> {
         child: new Column(
       children: <Widget>[
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            new IconButton(
-                icon: Icon(Icons.navigate_before),
+            FlatButton(
                 onPressed: () {
-                  controller.moveToPreviousMonth();
-                }),
-            ValueListenableBuilder(
-                valueListenable: text,
-                builder: (context, value, child) {
-                  return new Text(text.value);
-                }),
-            new IconButton(
-                icon: Icon(Icons.navigate_next),
+                  widget.onCancle();
+                },
+                child: Text('取消')),
+            Row(
+              children: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.navigate_before),
+                    onPressed: () {
+                      controller.moveToPreviousMonth();
+                    }),
+                ValueListenableBuilder(
+                    valueListenable: text,
+                    builder: (context, value, child) {
+                      return new Text(text.value);
+                    }),
+                IconButton(
+                    icon: Icon(Icons.navigate_next),
+                    onPressed: () {
+                      controller.moveToNextMonth();
+                    })
+              ],
+            ),
+            FlatButton(
                 onPressed: () {
-                  controller.moveToNextMonth();
-                }),
+                  List<DateTime> mutiValue = controller
+                      .getMultiSelectCalendar()
+                      .toList()
+                      .map((e) => e.getDateTime())
+                      .toList();
+                  widget.onSubmit.call(mutiValue);
+                },
+                child: Text('确认'))
           ],
         ),
         CalendarViewWidget(
