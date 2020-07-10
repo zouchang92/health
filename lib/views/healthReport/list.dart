@@ -2,11 +2,13 @@ import 'package:date_format/date_format.dart';
 import 'package:flui/flui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_custom_calendar/flutter_custom_calendar.dart';
 
 import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
+import 'package:health/model/global.dart';
 import 'package:health/model/health.dart';
 import 'package:health/model/pagination.dart';
 import 'package:health/service/index.dart';
@@ -34,9 +36,15 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
   List dataList = [];
   bool empty = false;
   bool firstLoading = true;
+  List bindClass = [];
+  List symTypeList =
+      Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.SYMPTOMTYPE]);
+  List reportStatusList =
+      Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.REPORTSTATUS]);
   @override
   void initState() {
     super.initState();
+    bindClass = Global.profile.user.classIdAndNames ?? [];
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
@@ -59,62 +67,15 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
   Widget build(BuildContext context) {
     // AppBar(title: Text(widget.title))
     return Scaffold(
-      appBar: SearchAppBar(
-        appBarController: appBarController,
-        primary: Theme.of(context).primaryColor,
-        searchHint: '输入姓名',
-        onChange: (String value) {
-          this.setState(() {
-            health.name = value;
-            pagination.page = 1;
-            dataList = [];
-          });
-          _healthList();
-        },
-        mainAppBar: AppBar(
-          title: Text(widget.title),
-          actions: <Widget>[
-            InkWell(
-                child: Icon(Icons.search),
-                onTap: () {
-                  appBarController.stream.add(true);
-                })
-          ],
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      endDrawer: Drawer(
+        child: SingleChildScrollView(
+          child: drawerContent(),
         ),
       ),
-      body: Column(children: <Widget>[
-        FLListTile(
-          title: Text('离校日期'),
-          trailing: Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: <Widget>[
-                Container(width: 100, child: Text(health.leaveDate ?? '')),
-                Icon(Icons.calendar_today),
-                Container(width: 100, child: Text(health.leaveDateEnd ?? '')),
-                Icon(Icons.calendar_today),
-              ]),
-          onTap: selectDate,
-        ),
-        Divider(height: 1),
-        FLListTile(
-          title: Text('上报时间'),
-          trailing: Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: <Widget>[
-                Container(
-                    width: 100, child: Text(health.reportStartTime ?? '')),
-                Icon(Icons.calendar_today),
-                Container(width: 100, child: Text(health.reportEndTime ?? '')),
-                Icon(Icons.calendar_today)
-              ]),
-          onTap: showCalendar,
-        ),
-        Divider(height: 1),
-        Flexible(child: list(), flex: 1)
-      ]),
-      floatingActionButton:
-          FloatingActionButton(onPressed: () {}, child: Icon(Icons.search)),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      body: Column(children: <Widget>[Flexible(child: list(), flex: 1)]),
     );
   }
 
@@ -258,6 +219,94 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
     );
   }
 
+  Widget drawerContent() {
+    return Container(
+      color: Color(0xfff2f2f2),
+      height: MediaQuery.of(context).size.height,
+      // padding: EdgeInsets.only(top: 25, left: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 25, left: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('症状信息:'),
+                ChoiceChipOptions(
+                  data: symTypeList,
+                  label: 'name',
+                  onValueChange: (val) {
+                    this.setState(() {
+                      health.symptomType = symTypeList[val]['code'];
+                    });
+                  },
+                )
+              ],
+            ),
+          ),
+          Divider(height: 1),
+          Padding(
+            padding: EdgeInsets.only(left: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('记录状态:'),
+                ChoiceChipOptions(
+                  data: reportStatusList,
+                  label: 'name',
+                  onValueChange: (val) {},
+                )
+              ],
+            ),
+          ),
+          Divider(height: 1),
+          Padding(
+            padding: EdgeInsets.only(left: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('体温信息/(℃):'),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    WhitelistingTextInputFormatter(RegExp("[.,0-9]"))
+                  ],
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      fillColor: Colors.white,
+                      filled: true,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      prefixIcon: Padding(
+                          padding: EdgeInsets.only(left: 15.0, right: 10.0),
+                          child: Text('大于或等于:')),
+                      prefixIconConstraints: BoxConstraints()),
+                  onChanged: (val) {
+                    health.temp = double.parse(val);
+                  },
+                ),
+              ],
+            ),
+          ),
+          Divider(height: 1),
+          Padding(
+            padding: EdgeInsets.only(left: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('班级信息:'),
+                ChoiceChipOptions(
+                  data: bindClass,
+                  label: 'className',
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   void selectDate() {
     showModalBottomSheet(
         context: context,
@@ -331,7 +380,8 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
     this.setState(() {
       pagination.page = 1;
     });
-    var res = await healthList(health: health, pagination: pagination);
+    var res =
+        await getHealthInfoReportList(health: health, pagination: pagination);
     this.setState(() {
       dataList = res['list'];
 
@@ -341,8 +391,10 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
   }
 
   Future _healthList() async {
-    var res = await healthList(health: health, pagination: pagination);
+    var res =
+        await getHealthInfoReportList(health: health, pagination: pagination);
 
+    print(res);
     this.setState(() {
       this.firstLoading = false;
       // studentList = res['list'];
@@ -356,13 +408,6 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
       // print('studentList:$studentList');
     });
   }
-
-  // Future _healthDelete(String id) async {
-  //   await healthDelete(id);
-  //   this.setState(() {
-  //     dataList = dataList.where((element) => element['id'] != id).toList();
-  //   });
-  // }
 
   void _checkDetail(Map item) {
     // print('item$item');

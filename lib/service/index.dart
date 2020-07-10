@@ -149,6 +149,16 @@ checkHasReport({String reportDay, String id, String personType}) {
       loading: false);
 }
 
+//上报查询
+getHealthInfoReportList({Health health, Pagination pagination}) {
+  Map a = pagination.toJson();
+  if (health != null) {
+    a.addAll(health.toJson());
+  }
+  print(filterEmpty(a));
+  return DioManager().post(Api.listDaily, data: filterEmpty(a), loading: false);
+}
+
 Map filterEmpty(Map s) {
   Map t = {};
   s.forEach((key, value) {

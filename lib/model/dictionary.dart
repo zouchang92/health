@@ -69,7 +69,8 @@ enum UNIQUE_NAME {
   JUDGESTATUS,
   TASKSTATUS,
   FLOWSTATUS,
-  HEASTATUS
+  HEASTATUS,
+  REPORTSTATUS
 }
 
 enum HEALTH_TYPE { ILLNESS, INJURY }
@@ -97,7 +98,8 @@ const UniqueNameValues = {
   UNIQUE_NAME.JUDGESTATUS: 'mobileLeaveType',
   UNIQUE_NAME.TASKSTATUS: 'taskStatus',
   UNIQUE_NAME.FLOWSTATUS: 'flowStatus',
-  UNIQUE_NAME.HEASTATUS: 'heaStatus'
+  UNIQUE_NAME.HEASTATUS: 'heaStatus',
+  UNIQUE_NAME.REPORTSTATUS: 'parentReportStatus'
 };
 
 const HealthTypeValues = {
