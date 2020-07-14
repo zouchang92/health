@@ -40,9 +40,9 @@ class _HealthCardListState extends State<HealthCardList> {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
         // print('滑动到了最底部${scrollController.position.pixels}');
-        this.pagination.page += 1;
+
         if (pagination.pageSize == pagination.totalCount) {
-          this.pagination.page += 1;
+          pagination.page += 1;
           // _getLeaveList();
           _heaCardList();
         }
