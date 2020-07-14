@@ -40,7 +40,7 @@ getStudentList({Student stu, Pagination pagination}) {
 healthList({Health health, Pagination pagination}) {
   Map a = health.toJson();
   a.addAll(pagination.toJson());
-  print(filterEmpty(a));
+  // print('和阿阿凯:${filterEmpty(a)}');
   return DioManager()
       .post(Api.heaInfoDailyList, data: filterEmpty(a), loading: false);
 }
@@ -155,7 +155,7 @@ getHealthInfoReportList({Health health, Pagination pagination}) {
   if (health != null) {
     a.addAll(health.toJson());
   }
-  print(filterEmpty(a));
+  // print(filterEmpty(a));
   return DioManager().post(Api.listDaily, data: filterEmpty(a), loading: false);
 }
 

@@ -34,14 +34,15 @@ class Dictionary {
   }
 
   static String getNameByUniqueNameAndCode({String uniqueName, String code}) {
+    // print('打架:$code');
     if (code == null) {
       return '';
     }
     List ulist = getByUniqueName(uniqueName);
     Map item =
         ulist.firstWhere((element) => element['code'] == code, orElse: () {
-      print('eee');
-      return code;
+      // print('eee');
+      return {'name': code};
     });
 
     return item['name'] ?? '';

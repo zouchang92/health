@@ -53,6 +53,7 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
           scrollController.position.maxScrollExtent) {
         // print('滑动到了最底部${scrollController.position.pixels}');
         if (pagination.pageSize == pagination.totalCount) {
+          pagination.page += 1;
           _healthList();
         }
       }
@@ -81,7 +82,10 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
       ),
       body: Column(children: <Widget>[
         FLListTile(
-          title: Text('上报日期'),
+          title: Text(
+            '上报日期',
+            style: TextStyle(fontSize: 14),
+          ),
           trailing: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: <Widget>[
@@ -128,9 +132,9 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
     return GestureDetector(
       child: Card(
         // color: Color(0xffae96bc),
-        // margin: EdgeInsets.all(15.0),
+        margin: EdgeInsets.all(15.0),
         clipBehavior: Clip.antiAlias,
-        elevation: 5.0,
+        // elevation: 5.0,
         // shape: RoundedRectangleBorder(
         //     borderRadius: BorderRadius.all(Radius.circular(15.0))),
         child: cardContent(item),
@@ -226,8 +230,8 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
           ),
         ),
         Positioned(
-            top: 20,
-            right: 20,
+            top: 5,
+            right: 5,
             child: Checkbox(
                 value: selecteds.contains(item['id']),
                 onChanged: (val) {

@@ -47,7 +47,7 @@ class DioManager {
           data: data,
           queryParameters: params,
           options: Options(headers: {"token": Global.profile.token}));
-      print('response:${response.data}');
+      // print('response:${response.data}');
       if (response != null) {
         if (loading && start) {
           EasyLoading.dismiss();
@@ -67,18 +67,20 @@ class DioManager {
           }
         } else {
           //消息提示
-          print('response:${entity.message}');
           if (loading && start) {
+            // print('response:${entity.message}');
             // FLToast.error(text: entity.message);
-            EasyLoading.showError(entity.message);
+            EasyLoading.showError(entity.message,
+                duration: Duration(seconds: 20));
           }
           // return ErrorEntity(code: entity.code, message: entity.message);
         }
       }
     } on DioError catch (e) {
-      print('e:$e');
+      // print('e:$e');
       if (loading && start) {
         // print('消失');
+
         EasyLoading.dismiss();
       }
       //消息提示
@@ -86,6 +88,7 @@ class DioManager {
 
       /*token失效*/
       if (er.code == -15) {
+        print('ddd打横幅暗黑风');
         showDialog(
             context: Global.appContext,
             builder: (BuildContext context) {

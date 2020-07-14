@@ -49,9 +49,8 @@ class _HealthListState extends State<HealthList> {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
         // print('滑动到了最底部${scrollController.position.pixels}');
-        this.pagination.page += 1;
+        pagination.page += 1;
         if (pagination.pageSize == pagination.totalCount) {
-          this.pagination.page += 1;
           _healthList();
         }
       }
@@ -95,7 +94,7 @@ class _HealthListState extends State<HealthList> {
       ),
       body: Column(children: <Widget>[
         FLListTile(
-          title: Text('离校日期:'),
+          title: Text('离校日期:', style: TextStyle(fontSize: 14.0)),
           trailing: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: <Widget>[
@@ -108,7 +107,7 @@ class _HealthListState extends State<HealthList> {
         ),
         Divider(height: 1),
         FLListTile(
-          title: Text('上报时间:'),
+          title: Text('上报时间:', style: TextStyle(fontSize: 14.0)),
           trailing: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: <Widget>[
@@ -171,7 +170,7 @@ class _HealthListState extends State<HealthList> {
   }
 
   Widget listItem(Map item) {
-    return GestureDetector(
+    return InkWell(
       child: Card(
         color: Color(0xffae96bc),
         margin: EdgeInsets.all(15.0),
@@ -214,13 +213,15 @@ class _HealthListState extends State<HealthList> {
                     ]),
                     InkWell(
                       child: Chip(
+                          // item['illStatus']
                           backgroundColor: Color(0xffff0079),
                           label: Text(
                               Dictionary.getNameByUniqueNameAndCode(
-                                      uniqueName: UniqueNameValues[
-                                          UNIQUE_NAME.HEASTATUS],
-                                      code: item['illStatus']) ??
-                                  '待确认',
+                                  uniqueName:
+                                      UniqueNameValues[UNIQUE_NAME.HEASTATUS],
+                                  code: (item['illStatus'] == null
+                                      ? '待确认'
+                                      : item['illStatus'])),
                               style: TextStyle(color: Colors.white))),
                       onTap: () {},
                     )
