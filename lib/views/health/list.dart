@@ -214,7 +214,7 @@ class _HealthListState extends State<HealthList> {
                     InkWell(
                       child: Chip(
                           // item['illStatus']
-                          backgroundColor: Color(0xffff0079),
+                          backgroundColor: statusColor(item['illStatus']),
                           label: Text(
                               Dictionary.getNameByUniqueNameAndCode(
                                   uniqueName:
@@ -444,5 +444,26 @@ class _HealthListState extends State<HealthList> {
       },
     );
     picker.show(_scaffoldKey.currentState);
+  }
+
+  Color statusColor(String status) {
+    switch (status) {
+      case '1':
+        return Color(0xffff0079);
+      case '2':
+        return Color(0xff64a247);
+      case '3':
+        return Color(0xffa26b47);
+      case '4':
+        return Color(0xff4747a2);
+      case '5':
+        return Color(0xff47a25d);
+      case '6':
+        return Color(0xff3ab25d);
+      case '7':
+        return Color(0xff5c47a2);
+      default:
+        return Colors.grey;
+    }
   }
 }
