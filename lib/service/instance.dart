@@ -28,7 +28,7 @@ class DioManager {
         // contentType: Headers.jsonContentType,
         responseType: ResponseType.json,
         receiveDataWhenStatusError: true,
-        connectTimeout: 5000,
+        connectTimeout: 20000,
         receiveTimeout: 3000,
       );
       dio = Dio(opt);

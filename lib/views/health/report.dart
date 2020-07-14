@@ -1,6 +1,7 @@
 import 'package:date_format/date_format.dart';
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:health/model/argument.dart';
 // import 'package:health/model/argument.dart';
@@ -237,6 +238,26 @@ class _HealthReportState extends State<HealthReport> {
             },
           ),
           Divider(height: 1),
+          TextFormField(
+            textAlign: TextAlign.right,
+            inputFormatters: [
+              WhitelistingTextInputFormatter(RegExp("[.,0-9]"))
+            ],
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+                prefixIcon: Padding(
+                    padding: EdgeInsets.only(left: 16.0, right: 10.0),
+                    child: Text(
+                      '体温/(℃):',
+                      style: TextStyle(fontSize: 17.0),
+                    )),
+                prefixIconConstraints: BoxConstraints()),
+            onChanged: (val) {
+              _health.temp = double.parse(val);
+            },
+          ),
+          Divider(height: 1),
           ListTile(
               title: Text('是否就诊'),
               trailing: RadioOptions(
@@ -315,8 +336,11 @@ class _HealthReportState extends State<HealthReport> {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                 prefixIcon: Padding(
-                    padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                    child: Text('就诊医院:')),
+                    padding: EdgeInsets.only(left: 16.0, right: 10.0),
+                    child: Text(
+                      '就诊医院:',
+                      style: TextStyle(fontSize: 17.0),
+                    )),
                 prefixIconConstraints: BoxConstraints()),
             onSaved: (val) {
               _health.healHospital = val;
@@ -329,8 +353,11 @@ class _HealthReportState extends State<HealthReport> {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                 prefixIcon: Padding(
-                    padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                    child: Text('采取措施:')),
+                    padding: EdgeInsets.only(left: 16.0, right: 10.0),
+                    child: Text(
+                      '采取措施:',
+                      style: TextStyle(fontSize: 17.0),
+                    )),
                 prefixIconConstraints: BoxConstraints()),
             onSaved: (val) {
               _health.measure = val;

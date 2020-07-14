@@ -62,4 +62,12 @@ class Api {
 
   /*状态*/
   static String listDaily = '/heaInfoDailyParent/list';
+
+  /*生成信息*/
+  static String insertHeaInfoDaily = '/heaInfoDailyParent/insertHeaInfoDaily';
+
+  /*批量正常*/
+  static String updateAllStatus = '/heaInfoDailyParent/updateAllStatus';
+  /*确认正常*/
+  static String updateStatus = '/heaInfoDaily/updateStatus';
 }

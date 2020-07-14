@@ -159,6 +159,21 @@ getHealthInfoReportList({Health health, Pagination pagination}) {
   return DioManager().post(Api.listDaily, data: filterEmpty(a), loading: false);
 }
 
+//确认状态
+updateStatus({String id, illStatus}) {
+  return DioManager()
+      .post(Api.updateStatus, data: {"id": id, illStatus: 'illStatus'});
+}
+
+insertHeaInfoDaily(String id) {
+  return DioManager().post(Api.insertHeaInfoDaily, data: {"id": id});
+}
+
+updateAllStatus({String checkResult: '1', id}) {
+  return DioManager()
+      .post(Api.updateAllStatus, data: {"ids": id, checkResult: '1'});
+}
+
 Map filterEmpty(Map s) {
   Map t = {};
   s.forEach((key, value) {

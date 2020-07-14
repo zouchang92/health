@@ -211,14 +211,10 @@ class _HealthInfoReportState extends State<HealthInfoReport> {
         'text': ynLabel(_health.isContactSuspect),
         'type': 'chip'
       },
-      {
-        'title': '居家隔离:',
-        'text': ynLabel(_health.isDiscomfortHome),
-        'type': 'chip'
-      },
+      {'title': '居家隔离:', 'text': ynLabel(_health.isQuarantine), 'type': 'chip'},
       {
         'title': '家庭成员是否有不是症状:',
-        'text': ynLabel(_health.isDiscomfort),
+        'text': ynLabel(_health.isDiscomfortHome),
         'type': 'chip'
       },
       {

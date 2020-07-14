@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_custom_calendar/flutter_custom_calendar.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 
 import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
@@ -25,6 +26,7 @@ class _HealthListState extends State<HealthList> {
   final defaultAvatar = 'images/upload_bg.png';
   Health health = new Health(personType: '1');
   Pagination pagination = new Pagination(page: 1, rows: 10);
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   CalendarController controller = new CalendarController(
       minYear: 2018,
       minYearMonth: 1,
@@ -32,11 +34,17 @@ class _HealthListState extends State<HealthList> {
       maxYearMonth: 12,
       showMode: CalendarConstants.MODE_SHOW_MONTH_AND_WEEK);
   List dataList = [];
+  List heaList =
+      Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.HEASTATUS]);
+  List checkResultList =
+      Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.CHECKRESULT]);
+  String leaveTypeValue = '';
   bool empty = false;
   bool firstLoading = true;
   @override
   void initState() {
     super.initState();
+    heaList.removeRange(0, 2);
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
@@ -59,6 +67,7 @@ class _HealthListState extends State<HealthList> {
   Widget build(BuildContext context) {
     // AppBar(title: Text(widget.title))
     return Scaffold(
+      key: _scaffoldKey,
       appBar: SearchAppBar(
         appBarController: appBarController,
         primary: Theme.of(context).primaryColor,
@@ -84,7 +93,7 @@ class _HealthListState extends State<HealthList> {
       ),
       body: Column(children: <Widget>[
         FLListTile(
-          title: Text('离校日期'),
+          title: Text('离校日期:'),
           trailing: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: <Widget>[
@@ -97,7 +106,7 @@ class _HealthListState extends State<HealthList> {
         ),
         Divider(height: 1),
         FLListTile(
-          title: Text('上报时间'),
+          title: Text('上报时间:'),
           trailing: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: <Widget>[
@@ -110,11 +119,30 @@ class _HealthListState extends State<HealthList> {
           onTap: showCalendar,
         ),
         Divider(height: 1),
+        FLListTile(
+          title: Text('核查结果:'),
+          trailing: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: <Widget>[
+              ChoiceChipOptions(
+                data: checkResultList,
+                selectIndex: -1,
+                label: 'name',
+                onValueChange: (val) {
+                  this.setState(() {
+                    health.checkResult = checkResultList[val]['code'];
+                    pagination.page = 1;
+                    dataList = [];
+                  });
+                  _healthList();
+                },
+              )
+            ],
+          ),
+        ),
+        Divider(height: 1),
         Flexible(child: list(), flex: 1)
       ]),
-      floatingActionButton:
-          FloatingActionButton(onPressed: () {}, child: Icon(Icons.search)),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
@@ -167,7 +195,7 @@ class _HealthListState extends State<HealthList> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 5.0),
                 child: Stack(
-                  alignment: FractionalOffset(1, 0.9),
+                  alignment: FractionalOffset(1, 0.6),
                   children: <Widget>[
                     Row(children: <Widget>[
                       // CircleAvatar(
@@ -182,10 +210,17 @@ class _HealthListState extends State<HealthList> {
                           child: Text(item['name'] ?? '',
                               style: TextStyle(color: Colors.white))),
                     ]),
-                    // Chip(
-                    //     backgroundColor: Color(0xffff0079),
-                    //     label:
-                    //         Text('未复课', style: TextStyle(color: Colors.white)))
+                    InkWell(
+                      child: Chip(
+                          backgroundColor: Color(0xffff0079),
+                          label: Text(
+                              Dictionary.getNameByUniqueNameAndCode(
+                                  uniqueName:
+                                      UniqueNameValues[UNIQUE_NAME.HEASTATUS],
+                                  code: item['illStatus']),
+                              style: TextStyle(color: Colors.white))),
+                      onTap: () {},
+                    )
                   ],
                 ),
               ),
@@ -236,23 +271,39 @@ class _HealthListState extends State<HealthList> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
           child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: <Widget>[
-                      Text('确诊时间:', style: TextStyle(color: Colors.white)),
-                      Text(item['healDate'] ?? '',
-                          style: TextStyle(color: Colors.white))
-                    ]),
-                // Chip(
-                //   backgroundColor: Color(0xff0099db),
-                //   label: Text('复课', style: TextStyle(color: Colors.white)),
-                //   // onDeleted: () {
-                //   //   _healthDelete(item['id']);
-                //   // },
-                // )
-              ]),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(),
+              Wrap(
+                children: <Widget>[
+                  Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: InkWell(
+                        child: Chip(
+                          label:
+                              Text('正常', style: TextStyle(color: Colors.white)),
+                          backgroundColor: Color(0xff00a7ed),
+                        ),
+                        onTap: () {
+                          updateStatus(id: item['id'], illStatus: '');
+                          // dataList = [];
+                          // pagination.page = 1;
+                          showResult();
+                        },
+                      )),
+                  InkWell(
+                    child: Chip(
+                      label: Text('异常', style: TextStyle(color: Colors.white)),
+                      backgroundColor: Color(0xffda0420),
+                    ),
+                    onTap: () {
+                      showPicker(item['id']);
+                    },
+                  )
+                ],
+              )
+            ],
+          ),
         )
       ],
     );
@@ -340,6 +391,7 @@ class _HealthListState extends State<HealthList> {
     });
   }
 
+  void showResult() {}
   Future _healthList() async {
     var res = await healthList(health: health, pagination: pagination);
 
@@ -368,5 +420,25 @@ class _HealthListState extends State<HealthList> {
     // print('item$item');
     Navigator.of(context)
         .pushNamed('/healthDetail', arguments: Argument(params: item));
+  }
+
+  showPicker(String id) {
+    List<PickerItem> _picerItem =
+        heaList.map((e) => PickerItem(text: Text(e['name']))).toList();
+    Picker picker = Picker(
+      height: 200,
+      itemExtent: 30,
+      adapter: PickerDataAdapter(data: _picerItem),
+      title: Text('选择异常状态'),
+      onConfirm: (picker, selecteds) {
+        print(heaList[selecteds[0]]['code']);
+        print(id);
+        updateStatus(id: id, illStatus: heaList[selecteds[0]]['code']);
+        dataList = [];
+        pagination.page = 1;
+        _healthList();
+      },
+    );
+    picker.show(_scaffoldKey.currentState);
   }
 }

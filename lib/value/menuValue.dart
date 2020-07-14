@@ -26,7 +26,7 @@ class MenuValue {
       "picUrl": 'images/icon/menu_icon_5.png'
     },
     {
-      "title": '健康上报查询',
+      "title": '家长上报',
       "path": '/HealthInfoReportList',
       "picUrl": 'images/icon/menu_icon_5.png'
     }
@@ -43,7 +43,7 @@ class MenuValue {
       "picUrl": 'images/icon/menu_icon_5.png'
     },
     {
-      "title": '每日健康上报',
+      "title": '家长上报',
       "path": '/HealthInfoReport',
       "picUrl": 'images/icon/menu_icon_1.png'
     }
