@@ -49,7 +49,9 @@ class _HealthListState extends State<HealthList> {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
         // print('滑动到了最底部${scrollController.position.pixels}');
+        this.pagination.page += 1;
         if (pagination.pageSize == pagination.totalCount) {
+          this.pagination.page += 1;
           _healthList();
         }
       }
@@ -215,9 +217,10 @@ class _HealthListState extends State<HealthList> {
                           backgroundColor: Color(0xffff0079),
                           label: Text(
                               Dictionary.getNameByUniqueNameAndCode(
-                                  uniqueName:
-                                      UniqueNameValues[UNIQUE_NAME.HEASTATUS],
-                                  code: item['illStatus']),
+                                      uniqueName: UniqueNameValues[
+                                          UNIQUE_NAME.HEASTATUS],
+                                      code: item['illStatus']) ??
+                                  '待确认',
                               style: TextStyle(color: Colors.white))),
                       onTap: () {},
                     )
@@ -285,10 +288,10 @@ class _HealthListState extends State<HealthList> {
                           backgroundColor: Color(0xff00a7ed),
                         ),
                         onTap: () {
-                          updateStatus(id: item['id'], illStatus: '');
-                          // dataList = [];
-                          // pagination.page = 1;
-                          showResult();
+                          updateStatus(id: item['id'], illStatus: '2');
+                          dataList = [];
+                          pagination.page = 1;
+                          _healthList();
                         },
                       )),
                   InkWell(

@@ -41,7 +41,7 @@ class Dictionary {
     Map item =
         ulist.firstWhere((element) => element['code'] == code, orElse: () {
       print('eee');
-      return {"name": code};
+      return code;
     });
 
     return item['name'] ?? '';

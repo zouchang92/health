@@ -162,7 +162,7 @@ getHealthInfoReportList({Health health, Pagination pagination}) {
 //确认状态
 updateStatus({String id, illStatus}) {
   return DioManager()
-      .post(Api.updateStatus, data: {"id": id, illStatus: 'illStatus'});
+      .post(Api.updateStatus, data: {"id": id, 'illStatus': illStatus});
 }
 
 insertHeaInfoDaily(String id) {
