@@ -10,13 +10,13 @@ import 'package:health/model/pagination.dart';
 import 'package:health/service/index.dart';
 import 'package:simple_search_bar/simple_search_bar.dart';
 
-class HealthCardList extends StatefulWidget {
-  final String title = '学生健康卡';
+class NucleicReportList extends StatefulWidget {
+  final String title = '学生核酸信息';
   @override
-  _HealthCardListState createState() => _HealthCardListState();
+  _NucleicReportList createState() => _NucleicReportList();
 }
 
-class _HealthCardListState extends State<HealthCardList> {
+class _NucleicReportList extends State<NucleicReportList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final AppBarController appBarController = AppBarController();
   final defaultImage = 'images/upload_bg.png';
@@ -84,7 +84,7 @@ class _HealthCardListState extends State<HealthCardList> {
       body: Column(
         children: <Widget>[
           FLListTile(
-            title: Text('班级信息:'),
+            title: Text('所属班级:'),
             /*Icon(Icons.navigate_next)*/
             trailing: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
@@ -129,24 +129,35 @@ class _HealthCardListState extends State<HealthCardList> {
                             : AssetImage(defaultImage),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 10),
+                        padding: EdgeInsets.symmetric(vertical: 5.0),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          // crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(dataList[_index]['name'] ?? ''),
-                            Text(dataList[_index]['createTime'] != null
-                                ? formatTime(dataList[_index]['createTime'])
-                                : ''),
+                            // Text(dataList[_index]['name'] ?? ''),
+                            // Text('检测时间:'),
+                            // Padding(
+                            //   padding: EdgeInsets.only(left: 10.0),
+                            //   child: Text(dataList[_index]['createTime'] != null
+                            //       ? formatTime(dataList[_index]['createTime'])
+                            //       : ''),
+                            // ),
+                            Row(children: <Widget>[
+                              Text(
+                                dataList[_index]['name'] ?? '',
+                              ),
+                            ]),
+                            Row(children: <Widget>[
+                              // Text(dataList[_index]['name'] ?? ''),
+                              Text('检测时间:'),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: Text(dataList[_index]['createTime'] !=
+                                        null
+                                    ? formatTime(dataList[_index]['createTime'])
+                                    : ''),
+                              ),
+                            ]),
                           ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Chip(
-                          label: Text(statusLabel(dataList[_index]['status']),
-                              style: TextStyle(color: Colors.white)),
-                          backgroundColor:
-                              statusColor(dataList[_index]['status']),
                         ),
                       ),
                     ],
@@ -233,8 +244,9 @@ class _HealthCardListState extends State<HealthCardList> {
   }
 
   Future _heaCardList() async {
-    var res = await heaCardList(healthCard: healthCard, pagination: pagination);
-    // print('_heaCardList:${res['list'][0]}');
+    var res = await getStuHea(pagination: pagination);
+    print(1231);
+    print(res);
     this.setState(() {
       loading = false;
     });

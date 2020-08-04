@@ -159,6 +159,14 @@ getHealthInfoReportList({Health health, Pagination pagination}) {
   return DioManager().post(Api.listDaily, data: filterEmpty(a), loading: false);
 }
 
+//学生核酸信息查询
+getStuHea({Pagination pagination}) {
+  Map a = pagination.toJson();
+  print(filterEmpty(a));
+  return DioManager()
+      .post(Api.getStuHeaInfo, data: filterEmpty(a), loading: false);
+}
+
 //确认状态
 updateStatus({String id, illStatus}) {
   return DioManager()

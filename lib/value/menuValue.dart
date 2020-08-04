@@ -29,6 +29,11 @@ class MenuValue {
       "title": '家长上报',
       "path": '/HealthInfoReportList',
       "picUrl": 'images/icon/menu_icon_5.png'
+    },
+    {
+      "title": '学生核酸信息',
+      "path": '/nucleicReportList',
+      "picUrl": 'images/icon/menu_icon_5.png'
     }
   ];
   static List PARENT_VALUE = [

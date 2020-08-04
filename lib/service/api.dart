@@ -70,4 +70,7 @@ class Api {
   static String updateAllStatus = '/heaInfoDailyParent/updateAllStatus';
   /*确认正常*/
   static String updateStatus = '/heaInfoDaily/updateStatus';
+
+  /* 获取学生核酸信息*/
+  static String getStuHeaInfo = '/heaInfoDailyNAT/list';
 }
