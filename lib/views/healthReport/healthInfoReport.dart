@@ -16,7 +16,7 @@ import 'package:health/widget/index.dart';
 import 'package:provider/provider.dart';
 
 class HealthInfoReport extends StatefulWidget {
-  final String title = '每日健康上报';
+  final String title = '家长上报';
   @override
   _HealthInfoReportState createState() => _HealthInfoReportState();
 }

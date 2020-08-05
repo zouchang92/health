@@ -51,6 +51,11 @@ class MenuValue {
       "title": '家长上报',
       "path": '/HealthInfoReport',
       "picUrl": 'images/icon/menu_icon_1.png'
+    },
+    {
+      "title": '核酸上报',
+      "path": '/nucleicList',
+      "picUrl": 'images/icon/menu_icon_1.png'
     }
   ];
 }
