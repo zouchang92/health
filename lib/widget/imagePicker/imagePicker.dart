@@ -10,7 +10,8 @@ class ImagePickerWidget extends StatefulWidget {
   final int maxNum;
   final double size;
   final ValueChanged<List<File>> onValueChange;
-  ImagePickerWidget({this.maxNum, this.size, this.onValueChange});
+  final String title;
+  ImagePickerWidget({this.maxNum, this.size, this.onValueChange, this.title});
   @override
   _ImagePickerState createState() => _ImagePickerState();
 }
@@ -24,11 +25,13 @@ class _ImagePickerState extends State<ImagePickerWidget> {
   double width;
   List<PickedFile> _imageList = [];
   PickedFile imageFile;
+  String mTitle;
   @override
   void initState() {
     super.initState();
     max = widget.maxNum;
     width = widget.size;
+    mTitle = widget.title;
   }
 
   @override
@@ -36,7 +39,8 @@ class _ImagePickerState extends State<ImagePickerWidget> {
     List<Widget> imageListwidget = [];
     imageListwidget.add(Padding(
         padding: EdgeInsets.symmetric(vertical: 5.0),
-        child: Text('图片:', style: Theme.of(context).textTheme.subtitle1)));
+        child: Text(mTitle ?? '图片' + ':',
+            style: Theme.of(context).textTheme.subtitle1)));
     if (_imageList.length > 0) {
       // imageListwidget.insert()
       // imageListwidget.add(imageListWrapWidget());
