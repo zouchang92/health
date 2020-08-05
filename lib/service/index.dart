@@ -40,7 +40,7 @@ getStudentList({Student stu, Pagination pagination}) {
 healthList({Health health, Pagination pagination}) {
   Map a = health.toJson();
   a.addAll(pagination.toJson());
-  print(filterEmpty(a));
+  // print('和阿阿凯:${filterEmpty(a)}');
   return DioManager()
       .post(Api.heaInfoDailyList, data: filterEmpty(a), loading: false);
 }
@@ -155,8 +155,31 @@ getHealthInfoReportList({Health health, Pagination pagination}) {
   if (health != null) {
     a.addAll(health.toJson());
   }
-  print(filterEmpty(a));
+  // print(filterEmpty(a));
   return DioManager().post(Api.listDaily, data: filterEmpty(a), loading: false);
+}
+
+//学生核酸信息查询
+getStuHea({Pagination pagination}) {
+  Map a = pagination.toJson();
+  print(filterEmpty(a));
+  return DioManager()
+      .post(Api.getStuHeaInfo, data: filterEmpty(a), loading: false);
+}
+
+//确认状态
+updateStatus({String id, illStatus}) {
+  return DioManager()
+      .post(Api.updateStatus, data: {"id": id, 'illStatus': illStatus});
+}
+
+insertHeaInfoDaily(String id) {
+  return DioManager().post(Api.insertHeaInfoDaily, data: {"id": id});
+}
+
+updateAllStatus({String checkResult: '1', id}) {
+  return DioManager()
+      .post(Api.updateAllStatus, data: {"ids": id, checkResult: '1'});
 }
 
 Map filterEmpty(Map s) {

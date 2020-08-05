@@ -34,14 +34,15 @@ class Dictionary {
   }
 
   static String getNameByUniqueNameAndCode({String uniqueName, String code}) {
+    // print('打架:$code');
     if (code == null) {
       return '';
     }
     List ulist = getByUniqueName(uniqueName);
     Map item =
         ulist.firstWhere((element) => element['code'] == code, orElse: () {
-      print('eee');
-      return {"name": code};
+      // print('eee');
+      return {'name': code};
     });
 
     return item['name'] ?? '';
@@ -70,7 +71,8 @@ enum UNIQUE_NAME {
   TASKSTATUS,
   FLOWSTATUS,
   HEASTATUS,
-  REPORTSTATUS
+  REPORTSTATUS,
+  CHECKRESULT
 }
 
 enum HEALTH_TYPE { ILLNESS, INJURY }
@@ -99,7 +101,8 @@ const UniqueNameValues = {
   UNIQUE_NAME.TASKSTATUS: 'taskStatus',
   UNIQUE_NAME.FLOWSTATUS: 'flowStatus',
   UNIQUE_NAME.HEASTATUS: 'heaStatus',
-  UNIQUE_NAME.REPORTSTATUS: 'parentReportStatus'
+  UNIQUE_NAME.REPORTSTATUS: 'parentReportStatus',
+  UNIQUE_NAME.CHECKRESULT: 'checkResult'
 };
 
 const HealthTypeValues = {

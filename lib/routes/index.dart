@@ -38,5 +38,9 @@ final routes = {
   '/newsDetail': (context, a, b) =>
       NewsDetail(args: ModalRoute.of(context).settings.arguments),
   '/HealthInfoReport': (context, a, b) => HealthInfoReport(),
-  '/HealthInfoReportList': (context, a, b) => HealthInfoReportList()
+  '/HealthInfoReportList': (context, a, b) => HealthInfoReportList(),
+  '/HealthReportDetail': (context, a, b) =>
+      HealthReportDetail(arg: ModalRoute.of(context).settings.arguments),
+  '/nucleicReportList': (context, a, b) => NucleicReportList(),
+  '/nucleicList': (context, a, b) => NucleicList(),
 };

@@ -1,5 +1,6 @@
 import 'package:date_format/date_format.dart';
 import 'package:flui/flui.dart';
+// import 'package:flui/flui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,12 +17,13 @@ import 'package:health/widget/index.dart';
 import 'package:simple_search_bar/simple_search_bar.dart';
 
 class HealthInfoReportList extends StatefulWidget {
-  final String title = '健康上报查询';
+  final String title = '家长上报';
   @override
   _HealthInfoReportListState createState() => _HealthInfoReportListState();
 }
 
 class _HealthInfoReportListState extends State<HealthInfoReportList> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final AppBarController appBarController = AppBarController();
   final ScrollController scrollController = ScrollController();
   final defaultAvatar = 'images/upload_bg.png';
@@ -41,6 +43,7 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
       Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.SYMPTOMTYPE]);
   List reportStatusList =
       Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.REPORTSTATUS]);
+  List<String> selecteds = [];
   @override
   void initState() {
     super.initState();
@@ -50,6 +53,7 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
           scrollController.position.maxScrollExtent) {
         // print('滑动到了最底部${scrollController.position.pixels}');
         if (pagination.pageSize == pagination.totalCount) {
+          pagination.page += 1;
           _healthList();
         }
       }
@@ -67,6 +71,7 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
   Widget build(BuildContext context) {
     // AppBar(title: Text(widget.title))
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(widget.title),
       ),
@@ -75,7 +80,29 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
           child: drawerContent(),
         ),
       ),
-      body: Column(children: <Widget>[Flexible(child: list(), flex: 1)]),
+      body: Column(children: <Widget>[
+        FLListTile(
+          title: Text(
+            '上报日期',
+            style: TextStyle(fontSize: 14),
+          ),
+          trailing: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: <Widget>[
+                Container(
+                    width: 100, child: Text(health.reportStartTime ?? '')),
+                Icon(Icons.calendar_today),
+                Container(width: 100, child: Text(health.reportEndTime ?? '')),
+                Icon(Icons.calendar_today),
+              ]),
+          onTap: selectDate,
+        ),
+        Divider(height: 1),
+        Flexible(
+          child: list(),
+          flex: 1,
+        )
+      ]),
     );
   }
 
@@ -104,12 +131,12 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
   Widget listItem(Map item) {
     return GestureDetector(
       child: Card(
-        color: Color(0xffae96bc),
+        // color: Color(0xffae96bc),
         margin: EdgeInsets.all(15.0),
         clipBehavior: Clip.antiAlias,
-        elevation: 5.0,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15.0))),
+        // elevation: 5.0,
+        // shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.all(Radius.circular(15.0))),
         child: cardContent(item),
       ),
       onTap: () {
@@ -118,8 +145,10 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
     );
   }
 
+/*
+*/
   Widget cardContent(Map item) {
-    return Column(
+    return Stack(
       children: <Widget>[
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -137,11 +166,22 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
                       //     backgroundImage: AssetImage(defaultAvatar),
                       //     // backgroundImage: (item['photo']==null&&item['photo']=='')?AssetImage(defaultAvatar):NetworkImage(Global.getHttpPicUrl(item['photo']))
                       //   ),
-                      Text('姓名:', style: TextStyle(color: Colors.white)),
+                      Text('姓名:', style: TextStyle(color: Colors.black)),
                       Padding(
                           padding: EdgeInsets.only(left: 10.0),
                           child: Text(item['name'] ?? '',
-                              style: TextStyle(color: Colors.white))),
+                              style: TextStyle(color: Colors.black))),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Text('班级信息:',
+                            style: TextStyle(color: Colors.black)),
+                      ),
+
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.0),
+                        child: Text(item['className'] ?? '',
+                            style: TextStyle(color: Colors.black)),
+                      ),
                     ]),
                     // Chip(
                     //     backgroundColor: Color(0xffff0079),
@@ -154,24 +194,16 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
                 padding: EdgeInsets.symmetric(vertical: 5.0),
                 child: Column(
                   children: <Widget>[
+                    // Row(children: <Widget>[
+                    //   Text('班级信息:', style: TextStyle(color: Colors.white)),
+                    //   Padding(
+                    //     padding: EdgeInsets.only(left: 10.0),
+                    //     child: Text(item['className'] ?? '',
+                    //         style: TextStyle(color: Colors.white)),
+                    //   ),
+                    // ]),
                     Row(children: <Widget>[
-                      Text('班级信息:', style: TextStyle(color: Colors.white)),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.0),
-                        child: Text(item['className'] ?? '',
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                    ]),
-                    Row(children: <Widget>[
-                      Text('离校日期:', style: TextStyle(color: Colors.white)),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.0),
-                        child: Text(item['leaveDate'] ?? '',
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                    ]),
-                    Row(children: <Widget>[
-                      Text('登记类型:', style: TextStyle(color: Colors.white)),
+                      Text('记录状态:', style: TextStyle(color: Colors.black)),
                       Padding(
                         padding: EdgeInsets.only(left: 10.0),
                         child: Chip(
@@ -179,10 +211,17 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
                             label: Text(
                                 Dictionary.getNameByUniqueNameAndCode(
                                     uniqueName: UniqueNameValues[
-                                        UNIQUE_NAME.REGISTERTYPE],
-                                    code: item['registerType']),
+                                        UNIQUE_NAME.REPORTSTATUS],
+                                    code: item['checkResult']),
                                 style: TextStyle(color: Colors.white))),
                       ),
+                      SizedBox(width: 100.0),
+                      Text('体温:', style: TextStyle(color: Colors.blue)),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.0),
+                        child: Text(item['temp'].toString(),
+                            style: TextStyle(color: Colors.blue)),
+                      )
                     ])
                   ],
                 ),
@@ -190,31 +229,25 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
             ],
           ),
         ),
-        Divider(
-          height: 1,
-          color: Colors.white,
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: <Widget>[
-                      Text('确诊时间:', style: TextStyle(color: Colors.white)),
-                      Text(item['healDate'] ?? '',
-                          style: TextStyle(color: Colors.white))
-                    ]),
-                // Chip(
-                //   backgroundColor: Color(0xff0099db),
-                //   label: Text('复课', style: TextStyle(color: Colors.white)),
-                //   // onDeleted: () {
-                //   //   _healthDelete(item['id']);
-                //   // },
-                // )
-              ]),
-        )
+        Positioned(
+            top: 5,
+            right: 5,
+            child: Checkbox(
+                value: selecteds.contains(item['id']),
+                onChanged: (val) {
+                  this.setState(() {
+                    if (val) {
+                      if (!selecteds.contains(item['id'])) {
+                        selecteds.add(item['id']);
+                        showBottom();
+                      }
+                    } else {
+                      if (selecteds.contains(item['id'])) {
+                        selecteds.remove(item['id']);
+                      }
+                    }
+                  });
+                }))
       ],
     );
   }
@@ -227,22 +260,26 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(top: 25, left: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('症状信息:'),
-                ChoiceChipOptions(
-                  data: symTypeList,
-                  label: 'name',
-                  onValueChange: (val) {
-                    this.setState(() {
-                      health.symptomType = symTypeList[val]['code'];
-                    });
-                  },
-                )
-              ],
+          SafeArea(
+            // padding: EdgeInsets.only(top: 25, left: 20),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('症状信息:'),
+                  ChoiceChipOptions(
+                    selectIndex: -1,
+                    data: symTypeList,
+                    label: 'name',
+                    onValueChange: (val) {
+                      this.setState(() {
+                        health.symptomType = symTypeList[val]['code'];
+                      });
+                    },
+                  )
+                ],
+              ),
             ),
           ),
           Divider(height: 1),
@@ -253,9 +290,14 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
               children: <Widget>[
                 Text('记录状态:'),
                 ChoiceChipOptions(
+                  selectIndex: -1,
                   data: reportStatusList,
                   label: 'name',
-                  onValueChange: (val) {},
+                  onValueChange: (val) {
+                    this.setState(() {
+                      health.checkResult = reportStatusList[val]['code'];
+                    });
+                  },
                 )
               ],
             ),
@@ -296,10 +338,37 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
               children: <Widget>[
                 Text('班级信息:'),
                 ChoiceChipOptions(
+                  selectIndex: -1,
                   data: bindClass,
                   label: 'className',
+                  onValueChange: (val) {
+                    this.setState(() {
+                      health.classId = bindClass[val]['classId'];
+                    });
+                  },
                 )
               ],
+            ),
+          ),
+          Divider(height: 1),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
+            child: RaisedButton(
+              onPressed: () {
+                this.setState(() {
+                  dataList = [];
+                  pagination.page = 1;
+                });
+                _healthList();
+                Navigator.of(context).pop();
+              },
+              color: Colors.blue,
+              highlightColor: Colors.blue[700],
+              child: Container(
+                width: double.infinity,
+                alignment: Alignment.center,
+                child: Text('确定'),
+              ),
             ),
           )
         ],
@@ -326,8 +395,9 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
               }
               this.setState(() {
                 // formatDate(value, [yyyy, '-', mm, '-', dd]);
-                health.leaveDate = formatDate(st, [yyyy, '-', mm, '-', dd]);
-                health.leaveDateEnd = formatDate(et, [yyyy, '-', mm, '-', dd]);
+                health.reportStartTime =
+                    formatDate(st, [yyyy, '-', mm, '-', dd]);
+                health.reportEndTime = formatDate(et, [yyyy, '-', mm, '-', dd]);
                 dataList = [];
               });
               _healthList();
@@ -405,6 +475,10 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
       } else {
         this.empty = true;
       }
+      health.temp = null;
+      health.symptomType = '';
+      health.classId = '';
+      health.checkResult = '';
       // print('studentList:$studentList');
     });
   }
@@ -412,6 +486,31 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
   void _checkDetail(Map item) {
     // print('item$item');
     Navigator.of(context)
-        .pushNamed('/healthDetail', arguments: Argument(params: item));
+        .pushNamed('/HealthReportDetail', arguments: Argument(params: item));
+  }
+
+  void showBottom() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Wrap(children: <Widget>[
+                  Text('已选'),
+                  Text(
+                      '${selecteds.length.toString()}/${pagination.totalCount.toString()}')
+                ]),
+                RaisedButton(
+                    onPressed: () {
+                      updateAllStatus(checkResult: '1', id: selecteds);
+                    },
+                    child: Text('批量正常'))
+              ],
+            ),
+          );
+        });
   }
 }

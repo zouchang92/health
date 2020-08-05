@@ -18,7 +18,7 @@ import 'routes/index.dart';
 // import 'package:flui/widgets/toast.dart';
 void configLoading() {
   EasyLoading.instance
-    ..displayDuration = const Duration(milliseconds: 2000)
+    ..displayDuration = const Duration(seconds: 2000)
     ..indicatorType = EasyLoadingIndicatorType.fadingCircle
     ..loadingStyle = EasyLoadingStyle.dark
     ..indicatorSize = 45.0
@@ -97,6 +97,7 @@ class MyApp extends StatelessWidget {
                   : false,
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
+                Global.appContext = context;
                 return SlideTransition(
                   position: Tween<Offset>(
                           begin: Offset(-1.0, 0.0), end: Offset(0.0, 0.0))

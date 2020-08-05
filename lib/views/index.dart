@@ -22,3 +22,6 @@ export './news/list.dart';
 export './news/newsDateil.dart';
 export './healthReport/healthInfoReport.dart';
 export './healthReport/list.dart';
+export './healthReport/detail.dart';
+export './nucleicReport/list.dart';
+export './nucleicReport/nucleicReport.dart';
