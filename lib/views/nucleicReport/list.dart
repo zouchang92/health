@@ -5,6 +5,7 @@ import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 import 'package:health/model/argument.dart';
 
 // import 'package:health/model/argument.dart';
@@ -25,8 +26,11 @@ class NucleicList extends StatefulWidget {
 
 class _NucleicList extends State<NucleicList> {
   User user = Global.profile.user;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List yesOrNo =
       Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.BOOLEAN]);
+  List igg = Dictionary.getByUniqueName(
+      UniqueNameValues[UNIQUE_NAME.IGGMANDHSSSTATUS]);
   NuclecReport _NuclecReport = new NuclecReport();
   bool todayIsSubmit = false;
   final double maxTep = 45.0;
@@ -87,15 +91,43 @@ class _NucleicList extends State<NucleicList> {
           trailing: Text(getLastIndex(user.organName)),
         ),
         Divider(height: 1),
+        FLListTile(
+          title: Text('检测时间:'),
+          trailing: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: <Widget>[
+                Text(_NuclecReport.checkTime ?? ''),
+                Icon(Icons.calendar_today)
+              ]),
+          onTap: () {
+            showDatePicker(
+                    context: context,
+                    initialDate: new DateTime.now(),
+                    firstDate:
+                        new DateTime.now().subtract(new Duration(days: 30)),
+                    lastDate: new DateTime.now().add(new Duration(days: 30)))
+                .then((value) => {
+                      print('取消:$value'),
+                      if (value != null)
+                        {
+                          this.setState(() {
+                            this._NuclecReport.checkTime =
+                                formatDate(value, [yyyy, '-', mm, '-', dd]);
+                          })
+                        }
+                    });
+          },
+        ),
+        Divider(height: 1),
         ListTile(
             title: Text('igG:'),
             trailing: RadioOptions(
-              data: yesOrNo,
-              initIndex: 1,
+              data: igg,
+              // initIndex: 1,
               label: 'name',
               onValueChange: (int _index) {
                 this.setState(() {
-                  _NuclecReport.igG = yesOrNo[_index]['code'];
+                  _NuclecReport.igG = igg[_index]['code'];
                 });
               },
             )),
@@ -103,12 +135,12 @@ class _NucleicList extends State<NucleicList> {
         ListTile(
             title: Text('igM:'),
             trailing: RadioOptions(
-              data: yesOrNo,
+              data: igg,
               label: 'name',
-              initIndex: 1,
+              initIndex: 0,
               onValueChange: (int _index) {
                 this.setState(() {
-                  _NuclecReport.igM = yesOrNo[_index]['code'];
+                  _NuclecReport.igM = igg[_index]['code'];
                 });
               },
             )),
@@ -116,13 +148,12 @@ class _NucleicList extends State<NucleicList> {
         ListTile(
           title: Text('核酸:'),
           trailing: RadioOptions(
-            data: yesOrNo,
+            data: igg,
             label: 'name',
-            initIndex: 1,
+            initIndex: 0,
             onValueChange: (int _index) {
               this.setState(() {
-                _NuclecReport.heaInfoDailyNATDTOLisths =
-                    yesOrNo[_index]['code'];
+                _NuclecReport.hs = igg[_index]['code'];
               });
             },
           ),
@@ -130,6 +161,7 @@ class _NucleicList extends State<NucleicList> {
         Divider(height: 1),
         ImagePickerWidget(
           maxNum: 6,
+          title: '核酸检测报告:',
           onValueChange: (List<File> files) {
             // print('file:${file.path}');
             this.setState(() {
@@ -143,7 +175,9 @@ class _NucleicList extends State<NucleicList> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
           child: RaisedButton(
-            onPressed: () {},
+            onPressed: () {
+              nuclecReport();
+            },
             child: Container(
               width: double.infinity,
               alignment: Alignment.center,
@@ -176,11 +210,7 @@ class _NucleicList extends State<NucleicList> {
       {'title': '所属班级:', 'text': getLastIndex(user.organName)},
       {'title': 'igG:', 'text': ynLabel(_NuclecReport.igG), 'type': 'chip'},
       {'title': 'igM:', 'text': ynLabel(_NuclecReport.igG), 'type': 'chip'},
-      {
-        'title': '核酸:',
-        'text': ynLabel(_NuclecReport.heaInfoDailyNATDTOLisths),
-        'type': 'chip'
-      },
+      {'title': '核酸:', 'text': ynLabel(_NuclecReport.hs), 'type': 'chip'},
     ];
     return Column(
       children: list
@@ -254,7 +284,7 @@ class _NucleicList extends State<NucleicList> {
             classId: user.organId,
             igM: '0',
             igG: '0',
-            heaInfoDailyNATDTOLisths: '0',
+            hs: '0',
             personType: '1');
       });
     }
@@ -268,5 +298,14 @@ class _NucleicList extends State<NucleicList> {
       }
     });
     return t;
+  }
+
+  Future nuclecReport() async {
+    // print('_health:${_health.toJson()}');
+    var res = await NucleicReportList(_NuclecReport);
+
+    if (res != null) {
+      Navigator.of(context).pop();
+    }
   }
 }

@@ -15,7 +15,9 @@ class NuclecReport {
 
   String currentTimes;
 
-  String heaInfoDailyNATDTOLisths;
+  String heaInfoDailyNATDTOList;
+
+  String hs;
 
   String igG;
 
@@ -37,7 +39,8 @@ class NuclecReport {
       this.classId,
       this.confirmEndTime,
       this.currentTimes,
-      this.heaInfoDailyNATDTOLisths,
+      this.heaInfoDailyNATDTOList,
+      this.hs,
       this.igG,
       this.igM,
       this.report,

@@ -6,6 +6,7 @@ import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
 import 'package:health/model/global.dart';
 import 'package:health/model/heaCard.dart';
+import 'package:health/model/nuclecReport.dart';
 import 'package:health/model/pagination.dart';
 import 'package:health/service/index.dart';
 import 'package:simple_search_bar/simple_search_bar.dart';
@@ -22,7 +23,7 @@ class _NucleicReportList extends State<NucleicReportList> {
   final defaultImage = 'images/upload_bg.png';
   ScrollController scrollController = ScrollController();
   List _bindClass = [];
-  HealthCard healthCard = new HealthCard();
+  NuclecReport nuclecReport = new NuclecReport();
   Pagination pagination = new Pagination(page: 1, rows: 10);
 
   bool loading = true;
@@ -32,10 +33,11 @@ class _NucleicReportList extends State<NucleicReportList> {
     super.initState();
     _bindClass = Global.profile.user.classIdAndNames ?? [];
     // print('_bindClass:$_bindClass');
-    healthCard = HealthCard(
-        personType: '1',
-        classId: _bindClass[0]['classId'] ?? '',
-        className: _bindClass[0]['className'] ?? '');
+    nuclecReport = NuclecReport(
+      personType: '1',
+      // classId: _bindClass[0]['classId'] ?? '',
+      // className: _bindClass[0]['className'] ?? ''
+    );
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
@@ -75,7 +77,7 @@ class _NucleicReportList extends State<NucleicReportList> {
             this.setState(() {
               dataList = [];
               pagination.page = 1;
-              healthCard.name = val;
+              nuclecReport.name = val;
             });
             _heaCardList();
           }
@@ -89,7 +91,7 @@ class _NucleicReportList extends State<NucleicReportList> {
             trailing: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: <Widget>[
-                  Text(healthCard.className ?? ''),
+                  Text(nuclecReport.className ?? ''),
                   Icon(Icons.navigate_next)
                 ]),
             onTap: showPicker,
@@ -133,29 +135,48 @@ class _NucleicReportList extends State<NucleicReportList> {
                         child: Column(
                           // crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            // Text(dataList[_index]['name'] ?? ''),
-                            // Text('检测时间:'),
-                            // Padding(
-                            //   padding: EdgeInsets.only(left: 10.0),
-                            //   child: Text(dataList[_index]['createTime'] != null
-                            //       ? formatTime(dataList[_index]['createTime'])
-                            //       : ''),
-                            // ),
                             Row(children: <Widget>[
-                              Text(
-                                dataList[_index]['name'] ?? '',
-                              ),
+                              Padding(
+                                padding: EdgeInsets.only(right: 170.0),
+                                child: Text(
+                                  dataList[_index]['name'] ?? '',
+                                ),
+                              )
                             ]),
                             Row(children: <Widget>[
-                              // Text(dataList[_index]['name'] ?? ''),
-                              Text('检测时间:'),
-                              Padding(
-                                padding: EdgeInsets.only(left: 10.0),
-                                child: Text(dataList[_index]['createTime'] !=
-                                        null
-                                    ? formatTime(dataList[_index]['createTime'])
-                                    : ''),
+                              Text(
+                                '检测时间:',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                ),
                               ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 0.0),
+                                child: Text(
+                                  dataList[_index]['createTime'] != null
+                                      ? formatTime(
+                                          dataList[_index]['createTime'])
+                                      : '',
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                '检测次数:',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 20.0),
+                                child: Text(
+                                  dataList[_index]['totalTimes'],
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                  ),
+                                ),
+                              )
                             ]),
                           ],
                         ),
@@ -183,8 +204,14 @@ class _NucleicReportList extends State<NucleicReportList> {
   }
 
   String formatTime(String str) {
-    return formatDate(
-        DateTime.parse(str), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]);
+    return formatDate(DateTime.parse(str), [
+      yyyy,
+      '-',
+      mm,
+      '-',
+      dd,
+      ' ',
+    ]);
   }
 
   String statusLabel(String code) {
@@ -192,31 +219,9 @@ class _NucleicReportList extends State<NucleicReportList> {
         uniqueName: UniqueNameValues[UNIQUE_NAME.HEASTATUS], code: code);
   }
 
-  // 64a247 a26b47 4747a2 47a25d 5c47a2
-  Color statusColor(String status) {
-    switch (status) {
-      case '1':
-        return Color(0xffff0079);
-      case '2':
-        return Color(0xff64a247);
-      case '3':
-        return Color(0xffa26b47);
-      case '4':
-        return Color(0xff4747a2);
-      case '5':
-        return Color(0xff47a25d);
-      case '6':
-        return Color(0xff3ab25d);
-      case '7':
-        return Color(0xff5c47a2);
-      default:
-        return Colors.grey;
-    }
-  }
-
   showPicker() {
     print('12314');
-    print(_heaCardList());
+    // print(_heaCardList());
     if (_bindClass.length == 0) {
       FLToast.info(text: '未绑定班级!');
     } else {
@@ -231,8 +236,8 @@ class _NucleicReportList extends State<NucleicReportList> {
         onConfirm: (picker, selecteds) {
           print(_bindClass[selecteds[0]]);
           this.setState(() {
-            healthCard.className = _bindClass[selecteds[0]]['className'];
-            healthCard.classId = _bindClass[selecteds[0]]['classId'];
+            nuclecReport.className = _bindClass[selecteds[0]]['className'];
+            nuclecReport.classId = _bindClass[selecteds[0]]['classId'];
             dataList = [];
             pagination.page = 1;
           });
@@ -249,15 +254,16 @@ class _NucleicReportList extends State<NucleicReportList> {
     print(res);
     this.setState(() {
       loading = false;
+      dataList = res['list'];
     });
-    if (res != null) {
-      if (res.length > 0) {
-        this.setState(() {
-          dataList.addAll(res['list']);
-          pagination.totalCount = res['totalCount'];
-          pagination.pageSize = res['totalCount'];
-        });
-      }
-    }
+    // if (res != null) {
+    //   if (res.length > 0) {
+    //     this.setState(() {
+    //       dataList.addAll(res['list']);
+    //       pagination.totalCount = res['totalCount'];
+    //       pagination.pageSize = res['totalCount'];
+    //     });
+    //   }
+    // }
   }
 }

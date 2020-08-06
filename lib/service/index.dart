@@ -5,8 +5,10 @@ import 'package:health/model/health.dart';
 import 'package:health/model/leaveForm.dart';
 // import 'package:health/model/leaveForm.dart';
 import 'package:health/model/news.dart';
+import 'package:health/model/nuclecReport.dart';
 import 'package:health/model/pagination.dart';
 import 'package:health/model/student.dart';
+import 'package:health/views/index.dart';
 import './instance.dart';
 import './api.dart';
 
@@ -165,6 +167,12 @@ getStuHea({Pagination pagination}) {
   print(filterEmpty(a));
   return DioManager()
       .post(Api.getStuHeaInfo, data: filterEmpty(a), loading: false);
+}
+
+/*核酸上报*/
+NucleicReportList(NuclecReport nuclecReport) {
+  return DioManager().post(Api.insterBuclecReportList,
+      data: filterEmpty(nuclecReport.toJson()));
 }
 
 //确认状态

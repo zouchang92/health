@@ -72,7 +72,8 @@ enum UNIQUE_NAME {
   FLOWSTATUS,
   HEASTATUS,
   REPORTSTATUS,
-  CHECKRESULT
+  CHECKRESULT,
+  IGGMANDHSSSTATUS
 }
 
 enum HEALTH_TYPE { ILLNESS, INJURY }
@@ -102,7 +103,8 @@ const UniqueNameValues = {
   UNIQUE_NAME.FLOWSTATUS: 'flowStatus',
   UNIQUE_NAME.HEASTATUS: 'heaStatus',
   UNIQUE_NAME.REPORTSTATUS: 'parentReportStatus',
-  UNIQUE_NAME.CHECKRESULT: 'checkResult'
+  UNIQUE_NAME.CHECKRESULT: 'checkResult',
+  UNIQUE_NAME.IGGMANDHSSSTATUS: 'igGMAndhsstatus'
 };
 
 const HealthTypeValues = {

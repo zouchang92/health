@@ -73,4 +73,7 @@ class Api {
 
   /* 获取学生核酸信息*/
   static String getStuHeaInfo = '/heaInfoDailyNAT/list';
+
+  /*核酸上报*/
+  static String insterBuclecReportList = '/heaInfoDailyNAT/insert';
 }
