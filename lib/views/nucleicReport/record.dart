@@ -31,7 +31,6 @@ class _NucleicRecordState extends State<NucleicRecord> {
     super.initState();
     Map item = new Map<String, dynamic>.from(widget.args.params);
     nuclecReport = item as NuclecReport;
-    print
     print(nuclecReport);
   }
 
