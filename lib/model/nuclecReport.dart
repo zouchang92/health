@@ -3,6 +3,10 @@ part 'nuclecReport.g.dart';
 
 @JsonSerializable()
 class NuclecReport {
+  String faceUrl;
+
+  String checkResult;
+
   String checkTime;
 
   String classId;
@@ -47,7 +51,9 @@ class NuclecReport {
       this.totalTimes,
       this.name,
       this.personType,
-      this.stuNum});
+      this.stuNum,
+      this.faceUrl,
+      this.checkResult});
   factory NuclecReport.fromJson(Map<String, dynamic> json) =>
       _$NuclecReportFromJson(json);
   Map<String, dynamic> toJson() => _$NuclecReportToJson(this);

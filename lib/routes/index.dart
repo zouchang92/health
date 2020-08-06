@@ -43,4 +43,6 @@ final routes = {
       HealthReportDetail(arg: ModalRoute.of(context).settings.arguments),
   '/nucleicReportList': (context, a, b) => NucleicReportList(),
   '/nucleicList': (context, a, b) => NucleicList(),
+  '/nucleicRecord': (context, a, b) =>
+      NucleicRecord(args: ModalRoute.of(context).settings.arguments),
 };

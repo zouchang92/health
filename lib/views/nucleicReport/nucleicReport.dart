@@ -62,14 +62,14 @@ class _NucleicReportList extends State<NucleicReportList> {
         searchHint: '搜索',
         mainAppBar: AppBar(
           title: Text(widget.title),
-          actions: <Widget>[
-            InkWell(
-              child: Icon(Icons.search),
-              onTap: () {
-                appBarController.stream.add(true);
-              },
-            )
-          ],
+          // actions: <Widget>[
+          //   InkWell(
+          //     child: Icon(Icons.search),
+          //     onTap: () {
+          //       appBarController.stream.add(true);
+          //     },
+          //   )
+          // ],
         ),
         primary: Theme.of(context).primaryColor,
         onChange: (val) {
@@ -96,7 +96,7 @@ class _NucleicReportList extends State<NucleicReportList> {
                 ]),
             onTap: showPicker,
           ),
-          Divider(height: 1),
+          Divider(height: 1, color: Colors.black),
           Flexible(child: pageList(), flex: 1)
         ],
       ),
@@ -137,17 +137,20 @@ class _NucleicReportList extends State<NucleicReportList> {
                           children: <Widget>[
                             Row(children: <Widget>[
                               Padding(
-                                padding: EdgeInsets.only(right: 170.0),
+                                padding: EdgeInsets.only(right: 180.0),
                                 child: Text(
                                   dataList[_index]['name'] ?? '',
                                 ),
                               )
                             ]),
                             Row(children: <Widget>[
-                              Text(
-                                '检测时间:',
-                                style: TextStyle(
-                                  fontSize: 15.0,
+                              Padding(
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: Text(
+                                  '检测时间:',
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                  ),
                                 ),
                               ),
                               Padding(
@@ -162,16 +165,19 @@ class _NucleicReportList extends State<NucleicReportList> {
                                   ),
                                 ),
                               ),
-                              Text(
-                                '检测次数:',
-                                style: TextStyle(
-                                  fontSize: 15.0,
+                              Padding(
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: Text(
+                                  '检测次数:',
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                  ),
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 20.0),
+                                padding: EdgeInsets.only(left: 0.0),
                                 child: Text(
-                                  dataList[_index]['totalTimes'],
+                                  dataList[_index]['totalTimes'].toString(),
                                   style: TextStyle(
                                     fontSize: 15.0,
                                   ),
@@ -185,15 +191,16 @@ class _NucleicReportList extends State<NucleicReportList> {
                   ),
                   trailing: Icon(Icons.navigate_next),
                   onTap: () {
-                    Navigator.pushNamed(context, '/healthCardReport',
-                        arguments: Argument(
-                            params: HealthCard.fromJson(dataList[_index])));
+                    // print(NuclecReport.fromJson(dataList[_index]));
+                    Navigator.pushNamed(context, '/nucleicRecord',
+                        arguments: Argument(params: dataList[_index]));
                   },
                 ),
                 Offstage(
                   offstage: _index == dataList.length - 1,
                   child: Divider(height: 1),
-                )
+                ),
+                Divider(height: 1, color: Colors.black)
               ],
             );
           },
