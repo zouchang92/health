@@ -23,6 +23,8 @@ class _NucleicRecordState extends State<NucleicRecord> {
   final AppBarController appBarController = AppBarController();
   final ScrollController scrollController = ScrollController();
   List yn = Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.BOOLEAN]);
+  List igg = Dictionary.getByUniqueName(
+      UniqueNameValues[UNIQUE_NAME.IGGMANDHSSSTATUS]);
   bool empty = false;
   bool firstLoading = true;
   List dataList = [];
@@ -95,9 +97,13 @@ class _NucleicRecordState extends State<NucleicRecord> {
                       ),
                     ]),
                     Row(children: <Widget>[
-                      Text('检测日期:', style: TextStyle(color: Colors.white)),
                       Padding(
-                        padding: EdgeInsets.only(left: 10.0),
+                        padding: EdgeInsets.only(top: 10.0),
+                        child: Text('检测日期:',
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.0, top: 10.0),
                         child: Text(
                             item['createTime'] != null
                                 ? formatTime(item['createTime'])
@@ -105,13 +111,62 @@ class _NucleicRecordState extends State<NucleicRecord> {
                             style: TextStyle(color: Colors.white)),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 100.0),
+                        padding: EdgeInsets.only(left: 100.0, top: 10.0),
                         child: Text(
                           '第' + item['totalTimes'].toString() + '次检测',
                           style: TextStyle(fontSize: 15.0, color: Colors.white),
                         ),
                       ),
                     ]),
+                    Divider(height: 1, color: Colors.white),
+                    Row(
+                      children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.only(top: 15.0),
+                            child: Text('igG:',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18.0))),
+                        Padding(
+                            padding: EdgeInsets.only(left: 10.0, top: 15.0),
+                            child: Text(
+                                Dictionary.getNameByUniqueNameAndCode(
+                                    uniqueName: UniqueNameValues[
+                                        UNIQUE_NAME.IGGMANDHSSSTATUS],
+                                    code: item['igG']),
+                                style: TextStyle(color: Colors.white))),
+                        Padding(
+                          padding: EdgeInsets.only(top: 15.0, left: 140.0),
+                          child: Text('igM:',
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 18.0)),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(top: 15.0),
+                            child: Text(
+                                Dictionary.getNameByUniqueNameAndCode(
+                                    uniqueName: UniqueNameValues[
+                                        UNIQUE_NAME.IGGMANDHSSSTATUS],
+                                    code: item['igM']),
+                                style: TextStyle(color: Colors.white))),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.only(top: 15.0),
+                            child: Text('核酸:',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18.0))),
+                        Padding(
+                            padding: EdgeInsets.only(left: 10.0, top: 15.0),
+                            child: Text(
+                                Dictionary.getNameByUniqueNameAndCode(
+                                    uniqueName: UniqueNameValues[
+                                        UNIQUE_NAME.IGGMANDHSSSTATUS],
+                                    code: item['hs']),
+                                style: TextStyle(color: Colors.white))),
+                      ],
+                    )
                   ],
                 ),
               )
