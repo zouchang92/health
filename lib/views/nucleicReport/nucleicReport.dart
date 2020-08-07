@@ -5,7 +5,7 @@ import 'package:flutter_picker/flutter_picker.dart';
 import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
 import 'package:health/model/global.dart';
-import 'package:health/model/heaCard.dart';
+
 import 'package:health/model/nuclecReport.dart';
 import 'package:health/model/pagination.dart';
 import 'package:health/service/index.dart';
@@ -57,32 +57,7 @@ class _NucleicReportList extends State<NucleicReportList> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: SearchAppBar(
-        appBarController: appBarController,
-        searchHint: '搜索',
-        mainAppBar: AppBar(
-          title: Text(widget.title),
-          // actions: <Widget>[
-          //   InkWell(
-          //     child: Icon(Icons.search),
-          //     onTap: () {
-          //       appBarController.stream.add(true);
-          //     },
-          //   )
-          // ],
-        ),
-        primary: Theme.of(context).primaryColor,
-        onChange: (val) {
-          if (val != '') {
-            this.setState(() {
-              dataList = [];
-              pagination.page = 1;
-              nuclecReport.name = val;
-            });
-            _heaCardList();
-          }
-        },
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       body: Column(
         children: <Widget>[
           FLListTile(
@@ -192,6 +167,7 @@ class _NucleicReportList extends State<NucleicReportList> {
                   trailing: Icon(Icons.navigate_next),
                   onTap: () {
                     // print(NuclecReport.fromJson(dataList[_index]));
+                    // 这里传的参数是Map类型 监测页面没必要在转为class了 直接用就行了
                     Navigator.pushNamed(context, '/nucleicRecord',
                         arguments: Argument(params: dataList[_index]));
                   },
@@ -200,7 +176,9 @@ class _NucleicReportList extends State<NucleicReportList> {
                   offstage: _index == dataList.length - 1,
                   child: Divider(height: 1),
                 ),
-                Divider(height: 1, color: Colors.black)
+                Divider(
+                  height: 1,
+                )
               ],
             );
           },
@@ -257,20 +235,19 @@ class _NucleicReportList extends State<NucleicReportList> {
 
   Future _heaCardList() async {
     var res = await getStuHea(pagination: pagination);
-    print(1231);
+
     print(res);
     this.setState(() {
       loading = false;
-      dataList = res['list'];
     });
-    // if (res != null) {
-    //   if (res.length > 0) {
-    //     this.setState(() {
-    //       dataList.addAll(res['list']);
-    //       pagination.totalCount = res['totalCount'];
-    //       pagination.pageSize = res['totalCount'];
-    //     });
-    //   }
-    // }
+    if (res != null) {
+      if (res.length > 0) {
+        this.setState(() {
+          dataList.addAll(res['list']);
+          pagination.totalCount = res['totalCount'];
+          pagination.pageSize = res['totalCount'];
+        });
+      }
+    }
   }
 }

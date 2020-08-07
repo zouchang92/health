@@ -3,10 +3,6 @@ import 'dart:io';
 import 'package:date_format/date_format.dart';
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_picker/flutter_picker.dart';
-import 'package:health/model/argument.dart';
 
 // import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
@@ -14,9 +10,8 @@ import 'package:health/model/global.dart';
 import 'package:health/model/nuclecReport.dart';
 import 'package:health/model/user.dart';
 import 'package:health/service/index.dart';
-import 'package:health/store/profileNotify.dart';
+
 import 'package:health/widget/index.dart';
-import 'package:provider/provider.dart';
 
 class NucleicList extends StatefulWidget {
   final String title = '核酸情况上报';
@@ -26,12 +21,12 @@ class NucleicList extends StatefulWidget {
 
 class _NucleicList extends State<NucleicList> {
   User user = Global.profile.user;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   List yesOrNo =
       Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.BOOLEAN]);
   List igg = Dictionary.getByUniqueName(
       UniqueNameValues[UNIQUE_NAME.IGGMANDHSSSTATUS]);
-  NuclecReport _NuclecReport = new NuclecReport();
+  NuclecReport nuclecReport = NuclecReport();
   bool todayIsSubmit = false;
   final double maxTep = 45.0;
   final double minTep = 30.0;
@@ -43,39 +38,15 @@ class _NucleicList extends State<NucleicList> {
 
   @override
   Widget build(BuildContext context) {
-    final _arg = Provider.of<ProfileNotify>(context).argValue;
-
-    // print('arg:$_arg.');
-    if (_arg != null && _arg.params != null) {
-      NuclecReport _thealth = _arg.params as NuclecReport;
-      // print('_thealth:${filterEmpty(_thealth.toJson())}');
-      this.setState(() {
-        // _health = Object;
-        _NuclecReport = NuclecReport.fromJson(
-            amap(_NuclecReport.toJson(), _thealth.toJson()));
-        // print('_health:${filterEmpty(_health.toJson())}');
-      });
-    }
-    return WillPopScope(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(widget.title),
-          ),
-          body: SingleChildScrollView(
-            child: todayIsSubmit ? record() : form(),
-            // child: form(),
-          ),
-        ),
-        onWillPop: () {
-          // print('返回');
-          final _profileNotify =
-              Provider.of<ProfileNotify>(context, listen: false);
-          Argument args = Argument();
-          args.params = null;
-
-          _profileNotify.saveArg(args);
-          return Future.value(true);
-        });
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: SingleChildScrollView(
+        child: todayIsSubmit ? record() : form(),
+        // child: form(),
+      ),
+    );
   }
 
   Widget form() {
@@ -96,7 +67,7 @@ class _NucleicList extends State<NucleicList> {
           trailing: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: <Widget>[
-                Text(_NuclecReport.checkTime ?? ''),
+                Text(nuclecReport.checkTime ?? ''),
                 Icon(Icons.calendar_today)
               ]),
           onTap: () {
@@ -111,7 +82,7 @@ class _NucleicList extends State<NucleicList> {
                       if (value != null)
                         {
                           this.setState(() {
-                            this._NuclecReport.checkTime =
+                            nuclecReport.checkTime =
                                 formatDate(value, [yyyy, '-', mm, '-', dd]);
                           })
                         }
@@ -127,7 +98,7 @@ class _NucleicList extends State<NucleicList> {
               label: 'name',
               onValueChange: (int _index) {
                 this.setState(() {
-                  _NuclecReport.igG = igg[_index]['code'];
+                  nuclecReport.igG = igg[_index]['code'];
                 });
               },
             )),
@@ -140,7 +111,7 @@ class _NucleicList extends State<NucleicList> {
               initIndex: 0,
               onValueChange: (int _index) {
                 this.setState(() {
-                  _NuclecReport.igM = igg[_index]['code'];
+                  nuclecReport.igM = igg[_index]['code'];
                 });
               },
             )),
@@ -153,7 +124,7 @@ class _NucleicList extends State<NucleicList> {
             initIndex: 0,
             onValueChange: (int _index) {
               this.setState(() {
-                _NuclecReport.hs = igg[_index]['code'];
+                nuclecReport.hs = igg[_index]['code'];
               });
             },
           ),
@@ -167,7 +138,7 @@ class _NucleicList extends State<NucleicList> {
             this.setState(() {
               // leaveForm.file = [file];
               // if (files.length > 0) {
-              _NuclecReport.report = files.map((e) => e.path).toList();
+              nuclecReport.report = files.map((e) => e.path).toList();
               // }
             });
           },
@@ -176,7 +147,7 @@ class _NucleicList extends State<NucleicList> {
           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
           child: RaisedButton(
             onPressed: () {
-              nuclecReport();
+              submit();
             },
             child: Container(
               width: double.infinity,
@@ -208,9 +179,9 @@ class _NucleicList extends State<NucleicList> {
     List<Map> list = [
       {'title': '姓名:', 'text': user.userName},
       {'title': '所属班级:', 'text': getLastIndex(user.organName)},
-      {'title': 'igG:', 'text': ynLabel(_NuclecReport.igG), 'type': 'chip'},
-      {'title': 'igM:', 'text': ynLabel(_NuclecReport.igG), 'type': 'chip'},
-      {'title': '核酸:', 'text': ynLabel(_NuclecReport.hs), 'type': 'chip'},
+      {'title': 'igG:', 'text': ynLabel(nuclecReport.igG), 'type': 'chip'},
+      {'title': 'igM:', 'text': ynLabel(nuclecReport.igG), 'type': 'chip'},
+      {'title': '核酸:', 'text': ynLabel(nuclecReport.hs), 'type': 'chip'},
     ];
     return Column(
       children: list
@@ -274,11 +245,11 @@ class _NucleicList extends State<NucleicList> {
     if (res != null && res['list'].length > 0) {
       this.setState(() {
         todayIsSubmit = true;
-        _NuclecReport = NuclecReport.fromJson(res['list'][0]);
+        nuclecReport = NuclecReport.fromJson(res['list'][0]);
       });
     } else {
       this.setState(() {
-        _NuclecReport = new NuclecReport(
+        nuclecReport = new NuclecReport(
             name: user.userName,
             stuNum: user.loginName,
             classId: user.organId,
@@ -300,9 +271,9 @@ class _NucleicList extends State<NucleicList> {
     return t;
   }
 
-  Future nuclecReport() async {
+  Future submit() async {
     // print('_health:${_health.toJson()}');
-    var res = await NucleicReportList(_NuclecReport);
+    var res = await NucleicReportList(nuclecReport);
 
     if (res != null) {
       Navigator.of(context).pop();

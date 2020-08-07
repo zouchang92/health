@@ -111,9 +111,9 @@ class DioManager {
               );
             });
       } else {
-        // print(er);
+        print(er.message);
         // FLToast.error(text: er.message);
-        EasyLoading.showError(er.message);
+        EasyLoading.showError(er.message, duration: Duration(seconds: 3));
       }
       // dio.close();
       // print(er.code);

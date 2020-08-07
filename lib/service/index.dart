@@ -8,7 +8,7 @@ import 'package:health/model/news.dart';
 import 'package:health/model/nuclecReport.dart';
 import 'package:health/model/pagination.dart';
 import 'package:health/model/student.dart';
-import 'package:health/views/index.dart';
+
 import './instance.dart';
 import './api.dart';
 

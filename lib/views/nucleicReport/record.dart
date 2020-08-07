@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+// import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
@@ -29,25 +29,21 @@ class _NucleicRecordState extends State<NucleicRecord> {
   @override
   void initState() {
     super.initState();
-    Map item = new Map<String, dynamic>.from(widget.args.params);
-    nuclecReport = item as NuclecReport;
-    print(nuclecReport);
+    //  参数已经传到了 Map类型-因为之前传来的就是Map
+    print(widget.args.params);
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   Argument args = ModalRoute.of(context).settings.arguments;
-  //   Map item = new Map<String, dynamic>.from(args.params);
-  //   // print(item);
-  //   return Scaffold(
-  //     appBar: AppBar(title: Text(widget.title)),
-  //     body: SingleChildScrollView(
-  //       child: Column(children: <Widget>[]),
-  //     ),
-  //   );
-  // }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.title)),
+      body: SingleChildScrollView(
+        child: Column(children: <Widget>[]),
+      ),
+    );
+  }
 
-  Widget listItem(nuclecReport) {
+  Widget listItem(Map item) {
     return InkWell(
       child: Card(
         color: Color(0xffae96bc),
@@ -56,7 +52,7 @@ class _NucleicRecordState extends State<NucleicRecord> {
         elevation: 5.0,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15.0))),
-        child: cardContent(nuclecReport),
+        child: cardContent(item),
         // child: Text('123'),
       ),
       onTap: () {},
@@ -121,15 +117,6 @@ class _NucleicRecordState extends State<NucleicRecord> {
       default:
         return Colors.grey;
     }
-  }
-
-  Future _push() async {
-    this.setState(() {
-      dataList = widget.args.params;
-      print(dataList);
-      // pagination.totalCount = res['totalCount'];
-      // pagination.pageSize = res['totalCount'];
-    });
   }
 
   String ynLabel(String code) {
