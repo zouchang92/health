@@ -170,6 +170,9 @@ getStuHea({Pagination pagination}) {
 }
 
 /*核酸上报*/
+/*方法名称首字母不能大写  看问题会有提示-之前的menuValue里的可以改过来，后面的遵照规则来
+  否则问题里太多这样的因为拼写提示的错误会太多 导致你看不到其他问题
+*/
 NucleicReportList(NuclecReport nuclecReport) {
   return DioManager().post(Api.insterBuclecReportList,
       data: filterEmpty(nuclecReport.toJson()));
