@@ -55,7 +55,10 @@ class _NucleicRecordState extends State<NucleicRecord> {
             borderRadius: BorderRadius.all(Radius.circular(15.0))),
         child: cardContent(item),
       ),
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context)
+            .pushNamed('/nuclecDetail', arguments: Argument(params: item));
+      },
     );
   }
 

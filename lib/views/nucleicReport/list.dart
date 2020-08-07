@@ -273,7 +273,7 @@ class _NucleicList extends State<NucleicList> {
 
   Future submit() async {
     // print('_health:${_health.toJson()}');
-    var res = await NucleicReportList(nuclecReport);
+    var res = await nucleicReportList(nuclecReport);
 
     if (res != null) {
       Navigator.of(context).pop();

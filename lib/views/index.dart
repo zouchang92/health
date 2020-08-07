@@ -26,3 +26,4 @@ export './healthReport/detail.dart';
 export './nucleicReport/list.dart';
 export './nucleicReport/nucleicReport.dart';
 export './nucleicReport/record.dart';
+export './nucleicReport/detail.dart';
