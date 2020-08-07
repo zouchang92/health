@@ -1,4 +1,5 @@
 // import 'package:dio/dio.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
@@ -37,9 +38,7 @@ class _NucleicRecordState extends State<NucleicRecord> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
-      body: SingleChildScrollView(
-        child: Column(children: <Widget>[]),
-      ),
+      body: SingleChildScrollView(child: listItem(widget.args.params)),
     );
   }
 
@@ -53,7 +52,6 @@ class _NucleicRecordState extends State<NucleicRecord> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15.0))),
         child: cardContent(item),
-        // child: Text('123'),
       ),
       onTap: () {},
     );
@@ -72,15 +70,51 @@ class _NucleicRecordState extends State<NucleicRecord> {
                   alignment: FractionalOffset(1, 0.6),
                   children: <Widget>[
                     Row(children: <Widget>[
-                      Text('姓名:'),
+                      Text('姓名:', style: TextStyle(color: Colors.white)),
                       Padding(
                         padding: EdgeInsets.only(left: 10.0),
-                        child: Text('123'),
+                        child: Text(
+                          item['name'],
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ]),
                   ],
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 5.0),
+                child: Column(
+                  children: <Widget>[
+                    Row(children: <Widget>[
+                      Text('班级信息:', style: TextStyle(color: Colors.white)),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.0),
+                        child: Text(item['className'] ?? '',
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                    ]),
+                    Row(children: <Widget>[
+                      Text('检测日期:', style: TextStyle(color: Colors.white)),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.0),
+                        child: Text(
+                            item['createTime'] != null
+                                ? formatTime(item['createTime'])
+                                : '',
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 100.0),
+                        child: Text(
+                          '第' + item['totalTimes'].toString() + '次检测',
+                          style: TextStyle(fontSize: 15.0, color: Colors.white),
+                        ),
+                      ),
+                    ]),
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -117,6 +151,17 @@ class _NucleicRecordState extends State<NucleicRecord> {
       default:
         return Colors.grey;
     }
+  }
+
+  String formatTime(String str) {
+    return formatDate(DateTime.parse(str), [
+      yyyy,
+      '-',
+      mm,
+      '-',
+      dd,
+      ' ',
+    ]);
   }
 
   String ynLabel(String code) {
