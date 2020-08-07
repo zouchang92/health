@@ -16,6 +16,7 @@ class _NucleicDetailState extends State<NucleicDetail> {
   Widget build(BuildContext context) {
     Argument arg = ModalRoute.of(context).settings.arguments;
     NuclecReport nucleicReport = NuclecReport.fromJson(arg.params);
+    // print('arg${nucleicReport.toJson()}');
     return Scaffold(
         appBar: AppBar(title: Text(widget.title)),
         body: SingleChildScrollView(
