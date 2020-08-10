@@ -22,6 +22,7 @@ NuclecReport _$NuclecReportFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     personType: json['personType'] as String,
     stuNum: json['stuNum'] as String,
+    gender: json['gender'] as String,
   )..confirmStartTime = json['confirmStartTime'] as String;
 }
 
@@ -42,4 +43,5 @@ Map<String, dynamic> _$NuclecReportToJson(NuclecReport instance) =>
       'name': instance.name,
       'personType': instance.personType,
       'stuNum': instance.stuNum,
+      'gender': instance.gender
     };

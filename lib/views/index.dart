@@ -27,3 +27,4 @@ export './nucleicReport/list.dart';
 export './nucleicReport/nucleicReport.dart';
 export './nucleicReport/record.dart';
 export './nucleicReport/detail.dart';
+export 'nucleicReport/history.dart';

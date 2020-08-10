@@ -37,6 +37,8 @@ class NuclecReport {
 
   String stuNum;
 
+  String gender;
+
   NuclecReport(
       {this.checkTime,
       this.className,
@@ -53,7 +55,8 @@ class NuclecReport {
       this.personType,
       this.stuNum,
       this.faceUrl,
-      this.checkResult});
+      this.checkResult,
+      this.gender});
   factory NuclecReport.fromJson(Map<String, dynamic> json) =>
       _$NuclecReportFromJson(json);
   Map<String, dynamic> toJson() => _$NuclecReportToJson(this);

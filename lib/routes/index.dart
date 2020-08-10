@@ -47,4 +47,5 @@ final routes = {
       NucleicRecord(args: ModalRoute.of(context).settings.arguments),
   '/nucleicDetail': (context, a, b) =>
       NucleicDetail(arg: ModalRoute.of(context).settings.arguments),
+  '/nucleicHistory': (context, a, b) => NucleicHistory(),
 };

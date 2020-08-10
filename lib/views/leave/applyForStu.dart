@@ -247,7 +247,7 @@ class _LeaveApplyForStudentState extends State<LeaveApplyForStudent> {
       formKey.currentState.save();
 
       // leaveForm.status = '3';
-      // print('leaveForm:${leaveForm.toJson()}');
+      print('leaveForm:${leaveForm.toJson()}');
       try {
         var res = await leaveApply(leaveForm);
         if (res != null && res['code'] == 0) {

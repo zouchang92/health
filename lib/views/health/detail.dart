@@ -17,6 +17,8 @@ class _HealthDetailState extends State<HealthDetail> {
     Argument arg = ModalRoute.of(context).settings.arguments;
     Health health = Health.fromJson(arg.params);
     // print('arg${health.toJson()}');
+    print('什么鬼');
+    print(health);
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
       body: SingleChildScrollView(

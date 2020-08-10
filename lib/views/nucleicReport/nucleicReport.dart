@@ -110,13 +110,14 @@ class _NucleicReportList extends State<NucleicReportList> {
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 5.0),
                         child: Column(
-                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Row(children: <Widget>[
                               Padding(
-                                padding: EdgeInsets.only(right: 180.0),
+                                padding: EdgeInsets.only(left: 10.0),
                                 child: Text(
                                   dataList[_index]['name'] ?? '',
+                                  textAlign: TextAlign.left,
                                 ),
                               )
                             ]),

@@ -12,6 +12,7 @@ import 'package:health/model/user.dart';
 import 'package:health/service/index.dart';
 
 import 'package:health/widget/index.dart';
+import 'package:simple_search_bar/simple_search_bar.dart';
 
 class NucleicList extends StatefulWidget {
   final String title = '核酸情况上报';
@@ -21,11 +22,15 @@ class NucleicList extends StatefulWidget {
 
 class _NucleicList extends State<NucleicList> {
   User user = Global.profile.user;
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final AppBarController appBarController = AppBarController();
   List yesOrNo =
       Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.BOOLEAN]);
   List igg = Dictionary.getByUniqueName(
       UniqueNameValues[UNIQUE_NAME.IGGMANDHSSSTATUS]);
+
+  List jl =
+      Dictionary.getByUniqueName(UniqueNameValues[UNIQUE_NAME.CHECKRESULTS]);
   NuclecReport nuclecReport = NuclecReport();
   bool todayIsSubmit = false;
   final double maxTep = 45.0;
@@ -39,8 +44,21 @@ class _NucleicList extends State<NucleicList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
+      key: _scaffoldKey,
+      appBar: SearchAppBar(
+        appBarController: appBarController,
+        primary: Theme.of(context).primaryColor,
+        onChange: (String value) {},
+        mainAppBar: AppBar(
+          title: Text(widget.title),
+          actions: <Widget>[
+            InkWell(
+                child: Icon(Icons.history),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/nucleicHistory');
+                })
+          ],
+        ),
       ),
       body: SingleChildScrollView(
         child: todayIsSubmit ? record() : form(),
@@ -130,19 +148,31 @@ class _NucleicList extends State<NucleicList> {
           ),
         ),
         Divider(height: 1),
-        ImagePickerWidget(
-          maxNum: 6,
-          title: '核酸检测报告:',
-          onValueChange: (List<File> files) {
-            // print('file:${file.path}');
-            this.setState(() {
-              // leaveForm.file = [file];
-              // if (files.length > 0) {
-              nuclecReport.report = files.map((e) => e.path).toList();
-              // }
-            });
-          },
+        ListTile(
+          title: Text('检测结论:'),
+          trailing: RadioOptions(
+            data: jl,
+            label: 'name',
+            initIndex: 0,
+            onValueChange: (int _index) {
+              this.setState(() {
+                nuclecReport.checkResult = jl[_index]['code'];
+              });
+            },
+          ),
         ),
+        Divider(height: 1),
+        // ImagePickerWidget(
+        //   maxNum: 6,
+        //   title: '核酸检测报告:',
+        //   onValueChange: (List<File> files) {
+        //     this.setState(() {
+        //       if (files.length > 0) {
+        //         nuclecReport.report = files.map((e) => e.path).toList();
+        //       }
+        //     });
+        //   },
+        // ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
           child: RaisedButton(
@@ -182,6 +212,11 @@ class _NucleicList extends State<NucleicList> {
       {'title': 'igG:', 'text': ynLabel(nuclecReport.igG), 'type': 'chip'},
       {'title': 'igM:', 'text': ynLabel(nuclecReport.igG), 'type': 'chip'},
       {'title': '核酸:', 'text': ynLabel(nuclecReport.hs), 'type': 'chip'},
+      {
+        'title': '检测结果',
+        'text': ynLabel(nuclecReport.checkResult),
+        'type': 'chip'
+      }
     ];
     return Column(
       children: list
@@ -253,9 +288,7 @@ class _NucleicList extends State<NucleicList> {
             name: user.userName,
             stuNum: user.loginName,
             classId: user.organId,
-            igM: '0',
-            igG: '0',
-            hs: '0',
+            gender: user.gender,
             personType: '1');
       });
     }
@@ -272,11 +305,13 @@ class _NucleicList extends State<NucleicList> {
   }
 
   Future submit() async {
-    // print('_health:${_health.toJson()}');
-    var res = await nucleicReportList(nuclecReport);
-
-    if (res != null) {
-      Navigator.of(context).pop();
+    try {
+      var res = await nucleicReportList(nuclecReport);
+      // if (res != null && res['code'] == 0) {
+      //   Navigator.of(context).pop();
+      // }
+    } catch (err) {
+      print('err:$err');
     }
   }
 }

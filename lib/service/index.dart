@@ -76,7 +76,7 @@ getLeaveList(
     "status": status
   };
   a.addAll(b);
-
+  print(a);
   return DioManager().post(Api.leaveList, data: a, loading: false);
 }
 
@@ -162,9 +162,11 @@ getHealthInfoReportList({Health health, Pagination pagination}) {
 }
 
 //学生核酸信息查询
-getStuHea({Pagination pagination}) {
+getStuHea({Pagination pagination, String name}) {
   Map a = pagination.toJson();
-  print(filterEmpty(a));
+  Map<String, dynamic> b = {"name": name};
+  a.addAll(b);
+  print(a);
   return DioManager()
       .post(Api.getStuHeaInfo, data: filterEmpty(a), loading: false);
 }
