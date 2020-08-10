@@ -170,6 +170,8 @@ class _HealthListState extends State<HealthList> {
   }
 
   Widget listItem(Map item) {
+    print('这是什么');
+    print(item);
     return InkWell(
       child: Card(
         color: Color(0xffae96bc),
@@ -187,6 +189,8 @@ class _HealthListState extends State<HealthList> {
   }
 
   Widget cardContent(Map item) {
+    // print('这是什么');
+    // print(item);
     return Column(
       children: <Widget>[
         Padding(

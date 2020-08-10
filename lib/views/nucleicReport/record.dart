@@ -45,6 +45,8 @@ class _NucleicRecordState extends State<NucleicRecord> {
   }
 
   Widget listItem(Map item) {
+    print('我想看看');
+    print(item);
     return InkWell(
       child: Card(
         color: Color(0xffae96bc),

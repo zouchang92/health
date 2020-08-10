@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:date_format/date_format.dart';
 import 'package:flui/flui.dart';
 import 'package:flutter/material.dart';
@@ -166,10 +168,12 @@ class _NucleicReportList extends State<NucleicReportList> {
                   ),
                   trailing: Icon(Icons.navigate_next),
                   onTap: () {
-                    // print(NuclecReport.fromJson(dataList[_index]));
+                    var item = dataList[_index];
+
                     // 这里传的参数是Map类型 监测页面没必要在转为class了 直接用就行了
                     Navigator.pushNamed(context, '/nucleicRecord',
-                        arguments: Argument(params: dataList[_index]));
+                        arguments:
+                            Argument(params: item['heaInfoDailyNATDTOList']));
                   },
                 ),
                 Offstage(
@@ -235,8 +239,6 @@ class _NucleicReportList extends State<NucleicReportList> {
 
   Future _heaCardList() async {
     var res = await getStuHea(pagination: pagination);
-
-    print(res);
     this.setState(() {
       loading = false;
     });
