@@ -32,14 +32,14 @@ class _NucleicReportList extends State<NucleicReportList> {
   List dataList = [];
   @override
   void initState() {
+    print(Global.profile.user.photo);
     super.initState();
     _bindClass = Global.profile.user.classIdAndNames ?? [];
     // print('_bindClass:$_bindClass');
     nuclecReport = NuclecReport(
-      personType: '1',
-      // classId: _bindClass[0]['classId'] ?? '',
-      // className: _bindClass[0]['className'] ?? ''
-    );
+        personType: '1',
+        classId: _bindClass[0]['classId'] ?? '',
+        className: _bindClass[0]['className'] ?? '');
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
@@ -102,9 +102,9 @@ class _NucleicReportList extends State<NucleicReportList> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       CircleAvatar(
-                        backgroundImage: dataList[_index]['fileUrl'] != null
-                            ? NetworkImage(Global.getHttpPicUrl(
-                                dataList[_index]['fileUrl']))
+                        backgroundImage: Global.profile.user.photo != null
+                            ? NetworkImage(
+                                Global.getHttpPicUrl(Global.profile.user.photo))
                             : AssetImage(defaultImage),
                       ),
                       Padding(

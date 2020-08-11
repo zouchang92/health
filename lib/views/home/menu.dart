@@ -13,22 +13,20 @@ class _MenuState extends State<Menu> {
   final int gridVIEWITEMCOUNT = 3;
   final String defalutBanner = 'images/banner.png';
   /*轮播-通知-数据*/
-  List images = [
-    
-  ];
+  List images = [];
   Profile _profile = Global.profile;
   /*菜单-教师*/
-  List menus ;
+  List menus;
   @override
   void initState() {
     print(_profile.news);
-    images = _profile.news??[];
+    images = _profile.news ?? [];
     // print('images:${images[2]}');
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-   
     return ListView(
       children: <Widget>[column1(), gridContainer()],
     );
@@ -43,7 +41,9 @@ class _MenuState extends State<Menu> {
       elevation: 5.0,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(15.0))),
-      child:images.length>0?swiper():swiperItem(imageUrl:null,title:'暂无通知'),
+      child: images.length > 0
+          ? swiper()
+          : swiperItem(imageUrl: null, title: '暂无通知'),
     );
   }
 
@@ -60,7 +60,7 @@ Text('更多',style: TextStyle(color:Colors.white))
           itemBuilder: (_, index) {
             // print(images[index]);
             return swiperItem(
-                imageUrl: images[index]['cover']??null,
+                imageUrl: images[index]['cover'] ?? null,
                 title: images[index]['title']);
           },
           autoplay: true,
@@ -92,14 +92,23 @@ Text('更多',style: TextStyle(color:Colors.white))
         //   height: 200.0,
         //   fit: BoxFit.cover,
         // ),
-        imageUrl!=null?Image.network(Global.getHttpPicUrl(imageUrl),
-        fit: BoxFit.contain,
-        gaplessPlayback:true,
-        errorBuilder: (context,obj,stack){
-
-          return Image.asset(defalutBanner,height: 200,fit: BoxFit.cover);
-        },
-        ):Image.asset(defalutBanner,height: 200,width: _width,fit: BoxFit.cover,alignment: Alignment.center,),
+        imageUrl != null
+            ? Image.network(
+                Global.getHttpPicUrl(imageUrl),
+                fit: BoxFit.contain,
+                gaplessPlayback: true,
+                errorBuilder: (context, obj, stack) {
+                  return Image.asset(defalutBanner,
+                      height: 200, fit: BoxFit.cover);
+                },
+              )
+            : Image.asset(
+                defalutBanner,
+                height: 200,
+                width: _width,
+                fit: BoxFit.cover,
+                alignment: Alignment.center,
+              ),
         Text(
           title,
           softWrap: false,
@@ -113,17 +122,16 @@ Text('更多',style: TextStyle(color:Colors.white))
   /*功能按钮-container*/
   Widget gridContainer() {
     // print('profile${_profile.user.personType}');
-    if((_profile.user.personType!=null)&&(_profile.user.personType=='studentDuty')){
-         menus = MenuValue.PARENT_VALUE;
-    }else{
+    if ((_profile.user.personType != null) &&
+        (_profile.user.personType == 'studentDuty')) {
+      menus = MenuValue.PARENT_VALUE;
+    } else {
       menus = MenuValue.TEACHER_VALUE;
     }
     // print('menus:$menus');
     //  menus = _profile.user.personType=='teacherDuty'?MenuValue.TEACHER_VALUE:MenuValue.PARENT_VALUE;
-   
 
-    double _widthItem =
-        (MediaQuery.of(context).size.width) / gridVIEWITEMCOUNT;
+    double _widthItem = (MediaQuery.of(context).size.width) / gridVIEWITEMCOUNT;
     // print(_width);
     int lenth = menus.length;
     double _height = ((lenth - 1) / gridVIEWITEMCOUNT + 1) * _widthItem;
@@ -144,7 +152,7 @@ Text('更多',style: TextStyle(color:Colors.white))
         itemCount: menus.length,
         itemBuilder: (_, index) {
           return FlatButton(
-              onPressed: (){
+              onPressed: () {
                 Navigator.of(context).pushNamed(menus[index]['path']);
               },
               child: Column(

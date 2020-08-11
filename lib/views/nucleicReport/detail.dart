@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
 import 'package:health/model/global.dart';
-import 'package:health/model/nuclecReport.dart';
 
 class NucleicDetail extends StatefulWidget {
   final String title = '查看详情';
@@ -47,7 +46,7 @@ class _NucleicDetailState extends State<NucleicDetail> {
                 ),
                 Divider(height: 1),
                 ListTile(
-                  title: Text('所护班级'),
+                  title: Text('所属班级'),
                   trailing: Text(item['className']),
                 ),
                 Divider(height: 1),
@@ -89,8 +88,8 @@ class _NucleicDetailState extends State<NucleicDetail> {
                     padding:
                         EdgeInsets.only(right: 230.0, top: 0.0, bottom: 20.0),
                     child: Image(
-                        image:
-                            NetworkImage(Global.getHttpPicUrl(item['report'])),
+                        image: NetworkImage(
+                            Global.getHttpPicUrl(item['report'] ?? '')),
                         width: 200.0,
                         height: 200.0)),
               ]),

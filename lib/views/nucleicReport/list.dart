@@ -162,17 +162,18 @@ class _NucleicList extends State<NucleicList> {
           ),
         ),
         Divider(height: 1),
-        // ImagePickerWidget(
-        //   maxNum: 6,
-        //   title: '核酸检测报告:',
-        //   onValueChange: (List<File> files) {
-        //     this.setState(() {
-        //       if (files.length > 0) {
-        //         nuclecReport.report = files.map((e) => e.path).toList();
-        //       }
-        //     });
-        //   },
-        // ),
+        ImagePickerWidget(
+          title: '核酸检测报告:',
+          onValueChange: (List<File> files) {
+            this.setState(() {
+              if (files.length > 0) {
+                // File file = files[0];
+                nuclecReport.report = files[0].path;
+                // nuclecReport.report = (files[0] as File).path;
+              }
+            });
+          },
+        ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
           child: RaisedButton(
@@ -213,10 +214,11 @@ class _NucleicList extends State<NucleicList> {
       {'title': 'igM:', 'text': ynLabel(nuclecReport.igG), 'type': 'chip'},
       {'title': '核酸:', 'text': ynLabel(nuclecReport.hs), 'type': 'chip'},
       {
-        'title': '检测结果',
+        'title': '检测结论',
         'text': ynLabel(nuclecReport.checkResult),
         'type': 'chip'
-      }
+      },
+      {'title': '核酸检测报告', 'text': 'nuclecReport.report', 'type': 'chip'}
     ];
     return Column(
       children: list
@@ -289,6 +291,10 @@ class _NucleicList extends State<NucleicList> {
             stuNum: user.loginName,
             classId: user.organId,
             gender: user.gender,
+            checkResult: jl[0]['code'],
+            igG: igg[0]['code'],
+            igM: igg[0]['code'],
+            hs: igg[0]['code'],
             personType: '1');
       });
     }
@@ -305,6 +311,7 @@ class _NucleicList extends State<NucleicList> {
   }
 
   Future submit() async {
+    // print(nuclecReport);
     try {
       var res = await nucleicReportList(nuclecReport);
       // if (res != null && res['code'] == 0) {

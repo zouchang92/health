@@ -176,6 +176,7 @@ getStuHea({Pagination pagination, String name}) {
   否则问题里太多这样的因为拼写提示的错误会太多 导致你看不到其他问题
 */
 nucleicReportList(NuclecReport nuclecReport) {
+  print(filterEmpty(nuclecReport.toJson()));
   return DioManager().post(Api.insterBuclecReportList,
       data: filterEmpty(nuclecReport.toJson()));
 }

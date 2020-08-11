@@ -17,17 +17,21 @@ NuclecReport _$NuclecReportFromJson(Map<String, dynamic> json) {
     hs: json['hs'] as String,
     igG: json['igG'] as String,
     igM: json['igM'] as String,
-    report: (json['report'] as List)?.map((e) => e as String)?.toList(),
+    report: json['report'] as String,
     totalTimes: json['totalTimes'] as String,
     name: json['name'] as String,
     personType: json['personType'] as String,
     stuNum: json['stuNum'] as String,
+    faceUrl: json['faceUrl'] as String,
+    checkResult: json['checkResult'] as String,
     gender: json['gender'] as String,
   )..confirmStartTime = json['confirmStartTime'] as String;
 }
 
 Map<String, dynamic> _$NuclecReportToJson(NuclecReport instance) =>
     <String, dynamic>{
+      'faceUrl': instance.faceUrl,
+      'checkResult': instance.checkResult,
       'checkTime': instance.checkTime,
       'classId': instance.classId,
       'className': instance.className,
@@ -43,5 +47,5 @@ Map<String, dynamic> _$NuclecReportToJson(NuclecReport instance) =>
       'name': instance.name,
       'personType': instance.personType,
       'stuNum': instance.stuNum,
-      'gender': instance.gender
+      'gender': instance.gender,
     };

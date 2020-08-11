@@ -27,7 +27,8 @@ class NuclecReport {
 
   String igM;
 
-  List<String> report;
+  // List<String> report;
+  String report;
 
   String totalTimes;
 

@@ -100,7 +100,7 @@ class _NucleicRecordState extends State<NucleicRecord> {
                       ),
                       InkWell(
                         child: Chip(
-                            backgroundColor: statusColor(item['checkResul']),
+                            backgroundColor: statusColor(item['checkResult']),
                             label: Text(
                                 Dictionary.getNameByUniqueNameAndCode(
                                     uniqueName: UniqueNameValues[

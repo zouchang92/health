@@ -98,7 +98,8 @@ class _NucleicHistory extends State<NucleicHistory> {
                 child: CircleAvatar(
                     radius: 30.0,
                     backgroundImage: NetworkImage(
-                        Global.getHttpPicUrl(Global.profile.user.photo)))),
+                        Global.getHttpPicUrl(Global.profile.user.photo) ??
+                            ''))),
             Positioned(top: 22, left: 90, child: Text(item['name'])),
             Positioned(
                 top: 30.0,
