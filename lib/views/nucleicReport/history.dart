@@ -1,5 +1,7 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/html_parser.dart';
+import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
 import 'package:health/model/global.dart';
 import 'package:health/model/pagination.dart';
@@ -73,11 +75,7 @@ class _NucleicHistory extends State<NucleicHistory> {
           itemBuilder: (context, _index) {
             return Card(
               color: Color(0xffffffff),
-              margin: EdgeInsets.all(15.0),
               clipBehavior: Clip.antiAlias,
-              elevation: 5.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(15.0))),
               child: cardContent((dataList[_index] as Map)),
             );
           },
@@ -92,49 +90,62 @@ class _NucleicHistory extends State<NucleicHistory> {
       Padding(
         padding: EdgeInsets.symmetric(vertical: 5.0),
         child: Stack(
-          alignment: FractionalOffset(1, 0.9),
           children: <Widget>[
-            Row(children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 10.0, top: 20.0),
+            Container(height: 100),
+            Positioned(
+                top: 20.0,
+                left: 10.0,
                 child: CircleAvatar(
-                    // radius: 35.0,
-                    // backgroundColor: Color(0xffe3dfeb),
+                    radius: 30.0,
                     backgroundImage: NetworkImage(
-                        Global.getHttpPicUrl(Global.profile.user.photo))),
-              ),
-              Padding(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: Text(item['name'])),
-            ]),
+                        Global.getHttpPicUrl(Global.profile.user.photo)))),
+            Positioned(top: 22, left: 90, child: Text(item['name'])),
+            Positioned(
+                top: 30.0,
+                right: 10.0,
+                child: InkWell(
+                  child: Icon(
+                    Icons.navigate_next,
+                    size: 30.0,
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/nucleicHistoryDetail',
+                        arguments: Argument(params: item));
+                  },
+                )),
+            Positioned(
+              top: 62,
+              left: 90,
+              child: Text('检测结论:', style: TextStyle(color: Color(0xffa9a9a9))),
+            ),
+            Positioned(
+              top: 62,
+              left: 155,
+              child: Text(
+                  Dictionary.getNameByUniqueNameAndCode(
+                      uniqueName: UniqueNameValues[UNIQUE_NAME.CHECKRESULTS],
+                      code: (item['checkResult'] == null
+                          ? '确诊'
+                          : item['checkResult'])),
+                  style: TextStyle(color: Color(0xffa9a9a9))),
+            ),
+            Positioned(
+              top: 62,
+              left: 210,
+              child: Text('检测时间:', style: TextStyle(color: Color(0xffa9a9a9))),
+            ),
+            Positioned(
+              top: 64,
+              left: 276,
+              child: Text(
+                  item['createTime'] != null
+                      ? formatTime(item['createTime'])
+                      : '',
+                  style: TextStyle(color: Color(0xffa9a9a9))),
+            ),
           ],
         ),
       ),
-      Padding(
-          padding: EdgeInsets.only(left: 60.0, bottom: 20.0),
-          child: Column(children: <Widget>[
-            Row(children: <Widget>[
-              Text('检测结论:'),
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Text(Dictionary.getNameByUniqueNameAndCode(
-                    uniqueName: UniqueNameValues[UNIQUE_NAME.CHECKRESULTS],
-                    code: (item['checkResult'] == null
-                        ? '确诊'
-                        : item['checkResult']))),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 30.0),
-                child: Text('检测时间'),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Text(item['createTime'] != null
-                    ? formatTime(item['createTime'])
-                    : ''),
-              ),
-            ]),
-          ]))
     ]);
   }
 

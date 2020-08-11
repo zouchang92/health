@@ -48,4 +48,6 @@ final routes = {
   '/nucleicDetail': (context, a, b) =>
       NucleicDetail(arg: ModalRoute.of(context).settings.arguments),
   '/nucleicHistory': (context, a, b) => NucleicHistory(),
+  '/nucleicHistoryDetail': (context, a, b) =>
+      NucleicHistoryDetail(arg: ModalRoute.of(context).settings.arguments),
 };
