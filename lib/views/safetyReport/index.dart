@@ -47,7 +47,7 @@ class _SafetyReportState extends State<SafetyReport> {
         title: Text(widget.title),
         actions: <Widget>[
           InkWell(
-            child: Icon(Icons.list),
+            child: Icon(Icons.history),
             onTap: () {
               Navigator.of(context).pushNamed('/safetyList');
             },
@@ -70,8 +70,11 @@ class _SafetyReportState extends State<SafetyReport> {
           offstage: selfHasSubmit,
           child: Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 100.0),
             child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              color: Color(0xff507cd7),
               onPressed: () {
                 if (heaSafety.classId == null || heaSafety.classId == '') {
                   FLToast.info(text: noClassTip);

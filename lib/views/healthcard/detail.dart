@@ -35,7 +35,7 @@ class _HealthCardDetailState extends State<HealthCardDetail> {
 
   Widget cardInfo() {
     return Card(
-      color: Color(0xffa196bc),
+      color: Color(0xffffffff),
       shape: Border.all(style: BorderStyle.none),
       margin: EdgeInsets.all(0),
       child: Column(
@@ -46,7 +46,7 @@ class _HealthCardDetailState extends State<HealthCardDetail> {
               child: Row(
                 children: <Widget>[
                   CircleAvatar(
-                      backgroundColor: Color(0xffe3dfeb),
+                      backgroundColor: Color(0xffffffff),
                       backgroundImage: (healthCard.faceUrl != null &&
                               healthCard.faceUrl != '')
                           ? NetworkImage(
@@ -57,22 +57,20 @@ class _HealthCardDetailState extends State<HealthCardDetail> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(healthCard.name ?? '',
-                              style: TextStyle(color: Colors.white)),
-                          Text(healthCard.className ?? '',
-                              style: TextStyle(color: Colors.white))
+                          Text(healthCard.name ?? '', style: TextStyle()),
+                          Text(healthCard.className ?? '', style: TextStyle())
                         ],
                       ))
                 ],
               ),
             ),
             Chip(
-              label: Text(
-                statusLabel(healthCard.status),
-                style: TextStyle(color: Colors.white),
-              ),
-              backgroundColor: statusColor(healthCard.status),
-            )
+                label: Text(
+                  statusLabel(healthCard.status),
+                  style: TextStyle(
+                      color: statusColor(healthCard.status), fontSize: 18.0),
+                ),
+                backgroundColor: Colors.white)
           ]),
           Divider(height: 1),
           Padding(
@@ -82,43 +80,46 @@ class _HealthCardDetailState extends State<HealthCardDetail> {
               children: <Widget>[
                 Container(
                   width: double.infinity,
+                  margin: EdgeInsets.only(top: 10.0),
                   child: Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     alignment: WrapAlignment.start,
                     children: <Widget>[
-                      Text('学号:', style: TextStyle(color: Colors.white)),
+                      Text('学号:', style: TextStyle()),
                       Padding(
                           padding: EdgeInsets.only(left: 10),
-                          child: Text(healthCard.stuNum ?? '',
-                              style: TextStyle(color: Colors.white)))
+                          child:
+                              Text(healthCard.stuNum ?? '', style: TextStyle()))
                     ],
                   ),
                 ),
                 Container(
                   width: double.infinity,
+                  margin: EdgeInsets.only(top: 10.0),
                   child: Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     alignment: WrapAlignment.start,
                     children: <Widget>[
-                      Text('电话:', style: TextStyle(color: Colors.white)),
+                      Text('电话:', style: TextStyle()),
                       Padding(
                           padding: EdgeInsets.only(left: 10),
-                          child: Text(healthCard.phone ?? '',
-                              style: TextStyle(color: Colors.white)))
+                          child:
+                              Text(healthCard.phone ?? '', style: TextStyle()))
                     ],
                   ),
                 ),
                 Container(
                   width: double.infinity,
+                  margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
                   child: Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     alignment: WrapAlignment.start,
                     children: <Widget>[
-                      Text('身份证号:', style: TextStyle(color: Colors.white)),
+                      Text('身份证号:', style: TextStyle()),
                       Padding(
                           padding: EdgeInsets.only(left: 10),
-                          child: Text(healthCard.idCard ?? '',
-                              style: TextStyle(color: Colors.white)))
+                          child:
+                              Text(healthCard.idCard ?? '', style: TextStyle()))
                     ],
                   ),
                 ),
@@ -126,14 +127,13 @@ class _HealthCardDetailState extends State<HealthCardDetail> {
                   // crossAxisAlignment: WrapCrossAlignment.center,
                   // alignment: WrapAlignment.start,
                   children: <Widget>[
-                    Text('家庭住址:', style: TextStyle(color: Colors.white)),
+                    Text('家庭住址:', style: TextStyle()),
                     Expanded(
                       flex: 1,
                       child: Padding(
                           padding: EdgeInsets.only(left: 10),
                           child: Text('',
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(color: Colors.white))),
+                              overflow: TextOverflow.clip, style: TextStyle())),
                     )
                   ],
                 ),
@@ -147,28 +147,31 @@ class _HealthCardDetailState extends State<HealthCardDetail> {
 
   Widget form() {
     return Form(
-        key: _formKey,
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              title: Text('是否发热:'),
-              trailing: Chip(label: Text(ynLabel(healthCard.isPyrexia))),
-            ),
-            Divider(height: 1),
-            ListTile(
-              title: Text('是否接触疑似人员:'),
-              trailing: Chip(label: Text(ynLabel(healthCard.isSuspected))),
-            ),
-            Divider(height: 1),
-            ListTile(
-                title: Text('是否有不适应症状:'),
-                trailing: Chip(label: Text(ynLabel(healthCard.isDiscomfort)))),
-            Divider(height: 1),
-            ListTile(
-                title: Text('是否有居家或集中隔离:'),
-                trailing: Chip(label: Text(ynLabel(healthCard.isQuarantine))))
-          ],
-        ));
+      key: _formKey,
+      child: Card(
+          margin: EdgeInsets.only(top: 10.0),
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                title: Text('是否发热:'),
+                trailing: Text(ynLabel(healthCard.isPyrexia)),
+              ),
+              Divider(height: 1),
+              ListTile(
+                title: Text('是否接触疑似人员:'),
+                trailing: Text(ynLabel(healthCard.isSuspected)),
+              ),
+              Divider(height: 1),
+              ListTile(
+                  title: Text('是否有不适应症状:'),
+                  trailing: Text(ynLabel(healthCard.isDiscomfort))),
+              Divider(height: 1),
+              ListTile(
+                  title: Text('是否有居家或集中隔离:'),
+                  trailing: Text(ynLabel(healthCard.isQuarantine)))
+            ],
+          )),
+    );
   }
 
   String ynLabel(String code) {

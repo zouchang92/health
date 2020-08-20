@@ -39,7 +39,7 @@ class _NucleicHistoryDetail extends State<NucleicHistoryDetail> {
                   ),
                   Divider(height: 1),
                   ListTile(
-                    title: Text('所护班级'),
+                    title: Text('所属班级'),
                     trailing: Text(item['className']),
                   ),
                   Divider(height: 1),

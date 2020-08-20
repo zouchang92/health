@@ -132,7 +132,7 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
     return GestureDetector(
       child: Card(
         // color: Color(0xffae96bc),
-        margin: EdgeInsets.all(15.0),
+        margin: EdgeInsets.all(0.0),
         clipBehavior: Clip.antiAlias,
         // elevation: 5.0,
         // shape: RoundedRectangleBorder(
@@ -150,88 +150,136 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
   Widget cardContent(Map item) {
     return Stack(
       children: <Widget>[
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 5.0),
-                child: Stack(
-                  alignment: FractionalOffset(1, 0.9),
-                  children: <Widget>[
-                    Row(children: <Widget>[
-                      // CircleAvatar(
-                      //     // radius: 35.0,
-                      //     backgroundColor: Color(0xffe3dfeb),
-                      //     backgroundImage: AssetImage(defaultAvatar),
-                      //     // backgroundImage: (item['photo']==null&&item['photo']=='')?AssetImage(defaultAvatar):NetworkImage(Global.getHttpPicUrl(item['photo']))
-                      //   ),
-                      Text('姓名:', style: TextStyle(color: Colors.black)),
-                      Padding(
-                          padding: EdgeInsets.only(left: 10.0),
-                          child: Text(item['name'] ?? '',
-                              style: TextStyle(color: Colors.black))),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.0),
-                        child: Text('班级信息:',
-                            style: TextStyle(color: Colors.black)),
-                      ),
-
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.0),
-                        child: Text(item['className'] ?? '',
-                            style: TextStyle(color: Colors.black)),
-                      ),
-                    ]),
-                    // Chip(
-                    //     backgroundColor: Color(0xffff0079),
-                    //     label:
-                    //         Text('未复课', style: TextStyle(color: Colors.white)))
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 5.0),
-                child: Column(
-                  children: <Widget>[
-                    // Row(children: <Widget>[
-                    //   Text('班级信息:', style: TextStyle(color: Colors.white)),
-                    //   Padding(
-                    //     padding: EdgeInsets.only(left: 10.0),
-                    //     child: Text(item['className'] ?? '',
-                    //         style: TextStyle(color: Colors.white)),
-                    //   ),
-                    // ]),
-                    Row(children: <Widget>[
-                      Text('记录状态:', style: TextStyle(color: Colors.black)),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.0),
-                        child: Chip(
-                            backgroundColor: Color(0xffff6000),
-                            label: Text(
-                                Dictionary.getNameByUniqueNameAndCode(
-                                    uniqueName: UniqueNameValues[
-                                        UNIQUE_NAME.REPORTSTATUS],
-                                    code: item['checkResult']),
-                                style: TextStyle(color: Colors.white))),
-                      ),
-                      SizedBox(width: 100.0),
-                      Text('体温:', style: TextStyle(color: Colors.blue)),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.0),
-                        child: Text(item['temp'].toString(),
-                            style: TextStyle(color: Colors.blue)),
-                      )
-                    ])
-                  ],
-                ),
-              )
-            ],
-          ),
+        Container(
+          height: 80.0,
+          color: Color(0xffffffff),
         ),
+        Divider(height: 1),
+        // Positioned(
+        //   top: 14.0,
+        //   left: 45.0,
+        //   child: CircleAvatar(
+        //       radius: 25.0,
+        //       backgroundColor: Color(0xffe3dfeb),
+        //       backgroundImage: AssetImage(defaultAvatar)),
+        // ),
+        Positioned(top: 15.0, left: 60.0, child: Text('姓名:')),
         Positioned(
-            top: 5,
-            right: 5,
+            top: 15.0,
+            left: 95.0,
+            child: Text(item['name'] ?? '',
+                style: TextStyle(color: Colors.black))),
+        Positioned(
+            top: 45.0,
+            left: 60.0,
+            child: Text('检测结论:',
+                style: TextStyle(fontSize: 14.0, color: Color(0xffa9a9a9)))),
+        Positioned(
+            top: 45.0,
+            left: 125.0,
+            child: Text(
+                Dictionary.getNameByUniqueNameAndCode(
+                    uniqueName: UniqueNameValues[UNIQUE_NAME.REPORTSTATUS],
+                    code: item['checkResult']),
+                style: TextStyle(fontSize: 14.0, color: Color(0xffa9a9a9)))),
+        Positioned(
+            top: 45.0,
+            right: 90.0,
+            child: Text('体温:',
+                style: TextStyle(fontSize: 14.0, color: Color(0xff537ed8)))),
+        Positioned(
+            top: 47.0,
+            right: 40.0,
+            child: Text(item['temp'].toString() + '℃',
+                style: TextStyle(fontSize: 14.0, color: Color(0xff537ed8)))),
+        Positioned(
+            top: 10.0, right: 10.0, child: Icon(Icons.chevron_right, size: 30)),
+        // Padding(
+        //   padding: EdgeInsets.symmetric(horizontal: 10.0),
+        //   child: Column(
+        //     children: <Widget>[
+        //       Padding(
+        //         padding: EdgeInsets.symmetric(vertical: 5.0),
+        //         child: Stack(
+        //           alignment: FractionalOffset(1, 0.9),
+        //           children: <Widget>[
+        //             Row(children: <Widget>[
+        //               // CircleAvatar(
+        //               //     // radius: 35.0,
+        //               //     backgroundColor: Color(0xffe3dfeb),
+        //               //     // backgroundImage: AssetImage(defaultAvatar),
+        //               //     backgroundImage:
+        //               //         (item['photo'] == null && item['photo'] == '')
+        //               //             ? AssetImage(defaultAvatar)
+        //               //             : NetworkImage(
+        //               //                 Global.getHttpPicUrl(item['photo']))),
+        //               Text('姓名:', style: TextStyle(color: Colors.black)),
+        //               Padding(
+        //                 padding: EdgeInsets.only(left: 10.0),
+        //                 child: Positioned(
+        //                     child: Text(item['name'] ?? '',
+        //                         style: TextStyle(color: Colors.black))),
+        //               ),
+        //               Padding(
+        //                 padding: EdgeInsets.only(left: 20.0),
+        //                 child: Text('班级信息:',
+        //                     style: TextStyle(color: Colors.black)),
+        //               ),
+        //               Padding(
+        //                 padding: EdgeInsets.only(left: 10.0),
+        //                 child: Text(item['className'] ?? '',
+        //                     style: TextStyle(color: Colors.black)),
+        //               ),
+        //             ]),
+        //             // Chip(
+        //             //     backgroundColor: Color(0xffff0079),
+        //             //     label:
+        //             //         Text('未复课', style: TextStyle(color: Colors.white)))
+        //           ],
+        //         ),
+        //       ),
+        //       Padding(
+        //         padding: EdgeInsets.symmetric(vertical: 5.0),
+        //         child: Column(
+        //           children: <Widget>[
+        //             // Row(children: <Widget>[
+        //             //   Text('班级信息:', style: TextStyle(color: Colors.white)),
+        //             //   Padding(
+        //             //     padding: EdgeInsets.only(left: 10.0),
+        //             //     child: Text(item['className'] ?? '',
+        //             //         style: TextStyle(color: Colors.white)),
+        //             //   ),
+        //             // ]),
+        //             Row(children: <Widget>[
+        //               Text('记录状态:', style: TextStyle(color: Colors.black)),
+        //               Padding(
+        //                 padding: EdgeInsets.only(left: 10.0),
+        //                 child: Chip(
+        //                     backgroundColor: Color(0xffff6000),
+        //                     label: Text(
+        //                         Dictionary.getNameByUniqueNameAndCode(
+        //                             uniqueName: UniqueNameValues[
+        //                                 UNIQUE_NAME.REPORTSTATUS],
+        //                             code: item['checkResult']),
+        //                         style: TextStyle(color: Colors.white))),
+        //               ),
+        //               SizedBox(width: 100.0),
+        //               Text('体温:', style: TextStyle(color: Colors.blue)),
+        //               Padding(
+        //                 padding: EdgeInsets.only(left: 10.0),
+        //                 child: Text(item['temp'].toString(),
+        //                     style: TextStyle(color: Colors.blue)),
+        //               )
+        //             ])
+        //           ],
+        //         ),
+        //       )
+        //     ],
+        //   ),
+        // ),
+        Positioned(
+            top: 15,
+            left: 5,
             child: Checkbox(
                 value: selecteds.contains(item['id']),
                 onChanged: (val) {
@@ -504,6 +552,8 @@ class _HealthInfoReportListState extends State<HealthInfoReportList> {
                       '${selecteds.length.toString()}/${pagination.totalCount.toString()}')
                 ]),
                 RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
                     onPressed: () {
                       updateAllStatus(checkResult: '1', id: selecteds);
                     },

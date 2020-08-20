@@ -25,13 +25,8 @@ class _HealthDetailState extends State<HealthDetail> {
         child: Column(
           children: <Widget>[
             ListTile(
-              title: Text('学生信息:'),
+              title: Text('姓名:'),
               trailing: Text(health.name ?? ''),
-            ),
-            Divider(height: 1),
-            ListTile(
-              title: Text('学校名称:'),
-              trailing: Text(health.schoolName ?? ''),
             ),
             Divider(height: 1),
             ListTile(
@@ -40,21 +35,23 @@ class _HealthDetailState extends State<HealthDetail> {
             ),
             Divider(height: 1),
             ListTile(
+              title: Text('学校名称:'),
+              trailing: Text(health.schoolName ?? ''),
+            ),
+            Divider(height: 1),
+            ListTile(
               title: Text('登记类型:'),
-              trailing: Chip(
-                  label: Text(Dictionary.getNameByUniqueNameAndCode(
-                          uniqueName:
-                              UniqueNameValues[UNIQUE_NAME.REGISTERTYPE],
-                          code: health.registerType) ??
-                      '')),
+              trailing: Text(Dictionary.getNameByUniqueNameAndCode(
+                      uniqueName: UniqueNameValues[UNIQUE_NAME.REGISTERTYPE],
+                      code: health.registerType) ??
+                  ''),
             ),
             Divider(height: 1),
             ListTile(
               title: Text('上报类型:'),
-              trailing: Chip(
-                  label: Text(Dictionary.getNameByUniqueNameAndCode(
-                      uniqueName: UniqueNameValues[UNIQUE_NAME.CHECKTYPE],
-                      code: health.checkType))),
+              trailing: Text(Dictionary.getNameByUniqueNameAndCode(
+                  uniqueName: UniqueNameValues[UNIQUE_NAME.CHECKTYPE],
+                  code: health.checkType)),
             ),
             Divider(height: 1),
             ListTile(

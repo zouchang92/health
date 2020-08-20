@@ -8,6 +8,7 @@ import 'package:flutter_picker/flutter_picker.dart';
 
 import 'package:health/model/argument.dart';
 import 'package:health/model/dictionary.dart';
+import 'package:health/model/global.dart';
 import 'package:health/model/health.dart';
 import 'package:health/model/pagination.dart';
 import 'package:health/service/index.dart';
@@ -172,12 +173,12 @@ class _HealthListState extends State<HealthList> {
   Widget listItem(Map item) {
     return InkWell(
       child: Card(
-        color: Color(0xffae96bc),
-        margin: EdgeInsets.all(15.0),
+        color: Color(0xffffffff),
+        margin: EdgeInsets.all(10.0),
         clipBehavior: Clip.antiAlias,
-        elevation: 5.0,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15.0))),
+        // elevation: 5.0,
+        // shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.all(Radius.circular(15.0))),
         child: cardContent(item),
       ),
       onTap: () {
@@ -192,125 +193,279 @@ class _HealthListState extends State<HealthList> {
     return Column(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
-          child: Column(
+          padding: EdgeInsets.symmetric(vertical: 0.0),
+          child: Stack(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 5.0),
-                child: Stack(
-                  alignment: FractionalOffset(1, 0.6),
-                  children: <Widget>[
-                    Row(children: <Widget>[
-                      // CircleAvatar(
-                      //     // radius: 35.0,
-                      //     backgroundColor: Color(0xffe3dfeb),
-                      //     backgroundImage: AssetImage(defaultAvatar),
-                      //     // backgroundImage: (item['photo']==null&&item['photo']=='')?AssetImage(defaultAvatar):NetworkImage(Global.getHttpPicUrl(item['photo']))
-                      //   ),
-                      Text('姓名:', style: TextStyle(color: Colors.white)),
-                      Padding(
-                          padding: EdgeInsets.only(left: 10.0),
-                          child: Text(item['name'] ?? '',
-                              style: TextStyle(color: Colors.white))),
-                    ]),
-                    InkWell(
-                      child: Chip(
-                          // item['illStatus']
-                          backgroundColor: statusColor(item['illStatus']),
-                          label: Text(
-                              Dictionary.getNameByUniqueNameAndCode(
-                                  uniqueName:
-                                      UniqueNameValues[UNIQUE_NAME.HEASTATUS],
-                                  code: (item['illStatus'] == null
-                                      ? '待确认'
-                                      : item['illStatus'])),
-                              style: TextStyle(color: Colors.white))),
-                      onTap: () {},
-                    )
-                  ],
+              Container(height: 140),
+              Positioned(
+                left: 20.0,
+                top: 13.0,
+                child: CircleAvatar(
+                  radius: 26.0,
+                  backgroundColor: Color(0xffe3dfeb),
+                  backgroundImage: AssetImage(defaultAvatar),
+                  // backgroundImage:
+                  //     (item['photo'] == null && item['photo'] == '')
+                  //         ? AssetImage(defaultAvatar)
+                  //         : NetworkImage(
+                  //             Global.getHttpPicUrl(item['photo']))
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 5.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(children: <Widget>[
-                      Text('班级信息:', style: TextStyle(color: Colors.white)),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.0),
-                        child: Text(item['className'] ?? '',
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                    ]),
-                    Row(children: <Widget>[
-                      Text('离校日期:', style: TextStyle(color: Colors.white)),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.0),
-                        child: Text(item['leaveDate'] ?? '',
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                    ]),
-                    Row(children: <Widget>[
-                      Text('登记类型:', style: TextStyle(color: Colors.white)),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.0),
-                        child: Chip(
-                            backgroundColor: Color(0xffff6000),
-                            label: Text(
-                                Dictionary.getNameByUniqueNameAndCode(
-                                    uniqueName: UniqueNameValues[
-                                        UNIQUE_NAME.REGISTERTYPE],
-                                    code: item['registerType']),
-                                style: TextStyle(color: Colors.white))),
-                      ),
-                    ])
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-        Divider(
-          height: 1,
-          color: Colors.white,
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(),
-              Wrap(
-                children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: InkWell(
-                        child: Chip(
-                          label:
-                              Text('正常', style: TextStyle(color: Colors.white)),
-                          backgroundColor: Color(0xff00a7ed),
-                        ),
-                        onTap: () {
-                          updateStatus(id: item['id'], illStatus: '2');
-                          dataList = [];
-                          pagination.page = 1;
-                          _healthList();
-                        },
-                      )),
-                  InkWell(
-                    child: Chip(
-                      label: Text('异常', style: TextStyle(color: Colors.white)),
-                      backgroundColor: Color(0xffda0420),
+              Positioned(
+                top: 80.0, left: 20.0,
+                // child: Text('欧阳娜娜')
+                child: Text(item['name'] ?? ''),
+              ),
+              Positioned(
+                  top: 13.0,
+                  left: 85.0,
+                  child: Text('班级信息:',
+                      style:
+                          TextStyle(color: Color(0xffa9a9a9), fontSize: 14.0))),
+              Positioned(
+                  top: 14.0,
+                  left: 147.0,
+                  child: Text(item['className'] ?? '',
+                      style:
+                          TextStyle(color: Color(0xffa9a9a9), fontSize: 14.0))),
+              Positioned(
+                right: 115.0,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xff000000), width: 1.0)),
+                  child: Container(
+                    child: Container(
+                      width: 1.0,
+                      height: 105.0,
+                      color: Color(0xffebebeb),
                     ),
-                    onTap: () {
-                      showPicker(item['id']);
-                    },
-                  )
-                ],
-              )
+                  ),
+                ),
+              ),
+              Positioned(
+                  top: 38.0,
+                  left: 85.0,
+                  child: Text('离校时间:',
+                      style:
+                          TextStyle(color: Color(0xffa9a9a9), fontSize: 14.0))),
+              Positioned(
+                top: 40.0,
+                left: 147.0,
+                child: Text(item['leaveDate'] ?? '',
+                    style: TextStyle(color: Color(0xffa9a9a9), fontSize: 14.0)),
+                // child: Text('2020-08-03',
+                //     style: TextStyle(color: Color(0xffa9a9a9), fontSize: 14.0)),
+              ),
+              Positioned(
+                  top: 65.0,
+                  left: 85,
+                  child: Text('登记类型:',
+                      style:
+                          TextStyle(color: Color(0xffa9a9a9), fontSize: 14.0))),
+              Positioned(
+                  top: 63.0,
+                  left: 150.0,
+                  child: Container(
+                    padding: EdgeInsets.all(3.0),
+                    color: Color(0xffffeadf),
+                    child: Text(
+                      '因病缺课',
+                      style:
+                          TextStyle(fontSize: 12.0, color: Color(0xfffd7d38)),
+                    ),
+                  )),
+              Positioned(
+                  top: 60.0,
+                  right: 30.0,
+                  child: Text('核查结果',
+                      style:
+                          TextStyle(color: Color(0xffa9a9a9), fontSize: 15.0))),
+              Positioned(
+                  top: 20.0,
+                  right: 33.0,
+                  child: Text(
+                    Dictionary.getNameByUniqueNameAndCode(
+                        uniqueName: UniqueNameValues[UNIQUE_NAME.HEASTATUS],
+                        code: (item['illStatus'] == null
+                            ? '待确认'
+                            : item['illStatus'])),
+                    style: TextStyle(
+                        color: statusColor(item['illStatus']), fontSize: 20.0),
+                  )),
+              Positioned(
+                  top: 97.7,
+                  child: Container(
+                    width: 200.0,
+                    child: FlatButton(
+                      color: Color(0xff74a0e2),
+                      highlightColor: Colors.blue[700],
+                      colorBrightness: Brightness.dark,
+                      splashColor: Colors.grey,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0.0)),
+                      child: Text(
+                        "正常",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+                        updateStatus(id: item['id'], illStatus: '2');
+                        dataList = [];
+                        pagination.page = 1;
+                        _healthList();
+                      },
+                    ),
+                  )),
+              Positioned(
+                  top: 97.5,
+                  right: 0.0,
+                  child: Container(
+                    width: 200.0,
+                    child: FlatButton(
+                      color: Color(0xfff2645a),
+                      highlightColor: Colors.blue[700],
+                      colorBrightness: Brightness.dark,
+                      splashColor: Colors.grey,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(00.0)),
+                      child: Text(
+                        "异常",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+                        showPicker(item['id']);
+                      },
+                    ),
+                  )),
             ],
           ),
-        )
+        ),
+
+        // Padding(
+        //   padding: EdgeInsets.symmetric(horizontal: 10.0),
+        //   child: Column(
+        //     children: <Widget>[
+        //       Padding(
+        //         padding: EdgeInsets.symmetric(vertical: 5.0),
+        //         child: Stack(
+
+        //           alignment: FractionalOffset(1, 0.6),
+        //           children: <Widget>[
+        //             Row(children: <Widget>[
+        // CircleAvatar(
+        //   // radius: 35.0,
+        //   backgroundColor: Color(0xffe3dfeb),
+        //   backgroundImage: AssetImage(defaultAvatar),
+        //   // backgroundImage:
+        //   //     (item['photo'] == null && item['photo'] == '')
+        //   //         ? AssetImage(defaultAvatar)
+        //   //         : NetworkImage(
+        //   //             Global.getHttpPicUrl(item['photo']))
+        // ),
+        //               Text('姓名:'),
+        //               Padding(
+        //                   padding: EdgeInsets.only(left: 10.0),
+        //                   child: Text(item['name'] ?? '')),
+        //             ]),
+        // InkWell(
+        //   child: Chip(
+        //       // item['illStatus']
+        //       backgroundColor: statusColor(item['illStatus']),
+        //       label: Text(Dictionary.getNameByUniqueNameAndCode(
+        //           uniqueName:
+        //               UniqueNameValues[UNIQUE_NAME.HEASTATUS],
+        //           code: (item['illStatus'] == null
+        //               ? '待确认'
+        //               : item['illStatus'])))),
+        //   onTap: () {},
+        // )
+        //           ],
+        //         ),
+        //       ),
+        //       Padding(
+        //         padding: EdgeInsets.symmetric(vertical: 5.0),
+        //         child: Column(
+        //           children: <Widget>[
+        //             Row(children: <Widget>[
+        //               Text('班级信息:'),
+        //               Padding(
+        //                 padding: EdgeInsets.only(left: 10.0),
+        //                 child: Text(item['className'] ?? ''),
+        //               ),
+        //             ]),
+        // DecoratedBox(
+        //   decoration: BoxDecoration(
+        //       border:
+        //           Border.all(color: Color(0xff000000), width: 1.0)),
+        //   child: Container(
+        //     child: Container(
+        //       width: 1.0,
+        //       height: 200.0,
+        //     ),
+        //   ),
+        // ),
+        //             Row(children: <Widget>[
+        //               Text('离校日期:'),
+        //               Padding(
+        //                 padding: EdgeInsets.only(left: 10.0),
+        //                 child: Text(item['leaveDate'] ?? ''),
+        //               ),
+        //             ]),
+        //             Row(children: <Widget>[
+        //               Text('登记类型:'),
+        //               Padding(
+        //                 padding: EdgeInsets.only(left: 10.0),
+        //                 child: Chip(
+        //                     backgroundColor: Color(0xffff6000),
+        //                     label: Text(Dictionary.getNameByUniqueNameAndCode(
+        //                         uniqueName:
+        //                             UniqueNameValues[UNIQUE_NAME.REGISTERTYPE],
+        //                         code: item['registerType']))),
+        //               ),
+        //             ])
+        //           ],
+        //         ),
+        //       )
+        //     ],
+        //   ),
+        // ),
+        // Divider(height: 1),
+        // Padding(
+        //   padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: <Widget>[
+        //       Container(),
+        //       Wrap(
+        //         children: <Widget>[
+        //           Padding(
+        //               padding: EdgeInsets.only(right: 10),
+        //               child: InkWell(
+        //                 child: Chip(
+        //                   label:
+        //                       Text('正常', style: TextStyle(color: Colors.white)),
+        //                   backgroundColor: Color(0xff00a7ed),
+        //                 ),
+        //                 onTap: () {
+        //                   updateStatus(id: item['id'], illStatus: '2');
+        //                   dataList = [];
+        //                   pagination.page = 1;
+        //                   _healthList();
+        //                 },
+        //               )),
+        //           InkWell(
+        //             child: Chip(
+        //               label: Text('异常', style: TextStyle(color: Colors.white)),
+        //               backgroundColor: Color(0xffda0420),
+        //             ),
+        //             onTap: () {
+        //               showPicker(item['id']);
+        //             },
+        //           )
+        //         ],
+        //       )
+        //     ],
+        //   ),
+        // )
       ],
     );
   }

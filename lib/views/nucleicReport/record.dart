@@ -124,7 +124,7 @@ class _NucleicRecordState extends State<NucleicRecord> {
                             : ''),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 100.0, top: 10.0),
+                        padding: EdgeInsets.only(left: 40.0, top: 10.0),
                         child:
                             Text('第' + item['totalTimes'].toString() + '次检测'),
                       ),
