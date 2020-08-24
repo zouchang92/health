@@ -23,37 +23,47 @@ class _PersonState extends State<Person> {
     return SingleChildScrollView(
       padding: EdgeInsets.all(0),
       child: Column(
-        children: <Widget>[
-          infoCard(),
-          listTile(title: '手机号码', value: _profile.user.phone),
-          Divider(height: 1),
-          listTile(title: '证件号码', value: _profile.user.credNum),
-          Divider(height: 1),
-          // Dictionary.getNameByUniqueNameAndCode(code:_profile.user.gender,uniqueName: UniqueNameValues[UNIQUE_NAME.GENDER])
-          listTile(
-              title: '性别',
-              value: Dictionary.getNameByUniqueNameAndCode(
-                  code: _profile.user.gender,
-                  uniqueName: UniqueNameValues[UNIQUE_NAME.GENDER])),
-          Divider(height: 1),
-          listTile(title: '所属机构', value: _profile.user.organName),
-          Divider(height: 1),
-          // listTile(title: '所在校区', value: _profile.user.schName),
-          // Divider(height: 1),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-            child: RaisedButton(
-              onPressed: () {
-                Global.quit();
-                Navigator.of(context).pushNamed('/login');
-              },
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(15.0))),
-              child: Text('退出登录'),
-            ),
-          ),
-        ],
+        children: <Widget>[infoCard(), list(), button()],
+      ),
+    );
+  }
+
+  Widget list() {
+    return Card(
+      shadowColor: Colors.transparent,
+      shape: Border.all(style: BorderStyle.none),
+      child: Column(children: <Widget>[
+        listTile(title: '手机号码', value: _profile.user.phone),
+        Divider(height: 1),
+        listTile(title: '证件号码', value: _profile.user.credNum),
+        Divider(height: 1),
+        // Dictionary.getNameByUniqueNameAndCode(code:_profile.user.gender,uniqueName: UniqueNameValues[UNIQUE_NAME.GENDER])
+        listTile(
+            title: '性别',
+            value: Dictionary.getNameByUniqueNameAndCode(
+                code: _profile.user.gender,
+                uniqueName: UniqueNameValues[UNIQUE_NAME.GENDER])),
+        Divider(height: 1),
+        listTile(title: '所属机构', value: _profile.user.organName),
+        Divider(height: 1),
+        // listTile(title: '所在校区', value: _profile.user.schName),
+        // Divider(height: 1),
+      ]),
+    );
+  }
+
+  Widget button() {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+      child: RaisedButton(
+        onPressed: () {
+          Global.quit();
+          Navigator.of(context).pushNamed('/login');
+        },
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15.0))),
+        child: Text('退出登录'),
       ),
     );
   }
@@ -62,9 +72,9 @@ class _PersonState extends State<Person> {
   Widget infoCard() {
     return Card(
       shadowColor: Colors.transparent,
-      color: Color(0xffae96bc),
+      color: Color(0xff507cd7),
       shape: Border.all(style: BorderStyle.none),
-      margin: EdgeInsets.all(0),
+      margin: EdgeInsets.only(bottom: 10.0),
       child: Padding(
           padding: EdgeInsets.symmetric(vertical: 50.0),
           child: Row(children: <Widget>[
@@ -87,7 +97,7 @@ class _PersonState extends State<Person> {
                 children: <Widget>[
                   /*姓名*/
                   Text(_profile.user.userName,
-                      style: TextStyle(color: Colors.white, fontSize: 20.0)),
+                      style: TextStyle(fontSize: 20.0, color: Colors.white)),
                   Text('${textRole()}:${_profile.user.loginName}',
                       style: TextStyle(color: Colors.white)),
                   Text(

@@ -295,7 +295,7 @@ class _HealthListState extends State<HealthList> {
               Positioned(
                   top: 97.7,
                   child: Container(
-                    width: 200.0,
+                    width: 177.5,
                     child: FlatButton(
                       color: Color(0xff74a0e2),
                       highlightColor: Colors.blue[700],
@@ -319,7 +319,7 @@ class _HealthListState extends State<HealthList> {
                   top: 97.5,
                   right: 0.0,
                   child: Container(
-                    width: 200.0,
+                    width: 177.5,
                     child: FlatButton(
                       color: Color(0xfff2645a),
                       highlightColor: Colors.blue[700],

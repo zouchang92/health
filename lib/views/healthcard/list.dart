@@ -141,13 +141,11 @@ class _HealthCardListState extends State<HealthCardList> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Chip(
-                          label: Text(statusLabel(dataList[_index]['status']),
-                              style: TextStyle(color: Colors.white)),
-                          backgroundColor:
-                              statusColor(dataList[_index]['status']),
-                        ),
+                        padding: EdgeInsets.only(left: 30, top: 23.0),
+                        child: Text(statusLabel(dataList[_index]['status']),
+                            style: TextStyle(
+                                color: statusColor(dataList[_index]['status']),
+                                fontSize: 14.0)),
                       ),
                     ],
                   ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/html_parser.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:health/model/global.dart';
 import 'package:health/model/profile.dart';
@@ -11,9 +12,16 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   final int gridVIEWITEMCOUNT = 3;
-  final String defalutBanner = 'images/banner.png';
+  final String defalutBanner = '/images/lbt/u81.png';
   /*轮播-通知-数据*/
   List images = [];
+  List<Map> imageList = [
+    {'cover': 'images/lbt/u81.png'},
+    {'cover': 'images/lbt/u83.png'},
+    {'cover': 'images/lbt/u85.png'},
+    {'cover': 'images/lbt/u87.png'}
+  ];
+
   Profile _profile = Global.profile;
   /*菜单-教师*/
   List menus;
@@ -36,14 +44,15 @@ class _MenuState extends State<Menu> {
   /*卡片1-卡片容器*/
   Widget column1() {
     return Card(
-      margin: EdgeInsets.all(15.0),
+      margin: EdgeInsets.all(0.0),
       clipBehavior: Clip.antiAlias,
-      elevation: 5.0,
+      elevation: 1.0,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15.0))),
-      child: images.length > 0
-          ? swiper()
-          : swiperItem(imageUrl: null, title: '暂无通知'),
+          borderRadius: BorderRadius.all(Radius.circular(0.0))),
+      // child: images.length > 0
+      //     ? swiper()
+      //     : swiperItem(imageUrl: 'null', title: ''),
+      child: swiper(),
     );
   }
 
@@ -56,32 +65,39 @@ Text('更多',style: TextStyle(color:Colors.white))
       Container(
         height: 200.0,
         child: Swiper(
-          itemCount: images.length,
+          itemCount: imageList.length,
           itemBuilder: (_, index) {
-            // print(images[index]);
-            return swiperItem(
-                imageUrl: images[index]['cover'] ?? null,
-                title: images[index]['title']);
+            // print('124123');
+            // print(imageList[index]['cover']);
+            // return swiperItem(
+            //     imageUrl: images[index]['cover'] ?? null,
+            //     title: images[index]['title']);
+            return Image.asset(
+              imageList[index]['cover'],
+              fit: BoxFit.fill,
+            );
           },
           autoplay: true,
           pagination: new SwiperPagination(),
         ),
       ),
-      FlatButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed('/newsList');
-          },
-          child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  color: Colors.blueAccent),
-              padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0),
-              // decoration: ,
-              child: Text('更多', style: TextStyle(color: Colors.white))))
+      // FlatButton(
+      //     onPressed: () {
+      //       // Navigator.of(context).pushNamed('/newsList');
+      //       print(imageList);
+      //     },
+      //     child: Container(
+      //         decoration: BoxDecoration(
+      //             borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      //             color: Colors.blueAccent),
+      //         padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0),
+      //         // decoration: ,
+      //         child: Text('更多', style: TextStyle(color: Colors.white))))
     ]);
   }
 
   /*轮播-项*/
+  // {String imageUrl, String title}
   Widget swiperItem({String imageUrl, String title}) {
     double _width = MediaQuery.of(context).size.width;
     return Stack(
@@ -94,7 +110,7 @@ Text('更多',style: TextStyle(color:Colors.white))
         // ),
         imageUrl != null
             ? Image.network(
-                Global.getHttpPicUrl(imageUrl),
+                Global.getHttpPicUrl('imageUrl'),
                 fit: BoxFit.contain,
                 gaplessPlayback: true,
                 errorBuilder: (context, obj, stack) {

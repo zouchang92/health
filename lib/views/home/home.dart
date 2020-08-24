@@ -23,8 +23,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       // appBar: AppBar(
       //   automaticallyImplyLeading: false,
-      //   title:Text(bottom[index]['name']),
-
+      //   title: Text(bottom[index]['name']),
       // ),
       body: bottom[index]['url'],
       bottomNavigationBar: BottomNavigationBar(
